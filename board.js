@@ -13,10 +13,12 @@ export class Board {
       this.view_tag; //게시글 idx
       this.i18n_txt; // 번역
     }
+
+    //개발서버, 로컬 확인용 URL변경
     API_URI() {
       // console.log(window.location.href.slice(0,16))
       if(window.location.pathname.length >= 16 && (window.location.href.slice(0, 16) == "http://localhost" || window.location.href.slice(0, 16) == "http://127.0.0.1") || window.location.href.slice(0,10) == "http://172" || window.location.href.slice(0, 16) == "https://qa.takeo") {
-        return "https://cpdev-api.takeonecompany.com/public/";
+        return "";
       }else {
         return "/public/";
       }
