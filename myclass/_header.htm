@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>   
+    <meta name="keywords" content="시대에듀 마이페이지">
+    <meta name="author" content="시대교육">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+	
+	<script type="text/javascript" src="{jqueryui___}"></script>
+	<script type="text/javascript" src="\{cm.path}/js/common.js"></script>
+	<script type="text/javascript" src="\{cm.path}/js/cm_shop_common.js"></script>
+	<script type="text/javascript" src="\{cm.path}/js/lib/css-browser-selector.js"></script>
+	<script type="text/javascript" src="/js/lib/min/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="/_skin/myroom/js/lib/1.9.1.jquery-ui.min.js"></script>
+	<!-- chart js -->
+	<script type="text/javascript" src="js/jquery.easypiechart.js"></script>
+	<script type="text/javascript" src="js/jquery.easypiechart.min.js"></script>
+	<!-- //chart js -->
+	
+	<script type="text/javascript" src="js/my_class_common.js"></script>
+	
+	{? nowpage == 'my_studyroom'}
+	<script type="text/javascript" src="/bbs/js/select_box.js"></script>
+<!-- 	<script type="text/javascript" src="js/my_studyroom.js"></script> -->
+	<script type="text/javascript" src="js/my_board.js"></script>
+	<script type="text/javascript" src="/suntest/chosen_new.jquery.js"></script>
+	{: nowpage == 'my_cart'}
+	<script type="text/javascript" src="js/my_cart.js"></script>
+	{: nowpage == 'my_order'}
+	<script type="text/javascript" src="js/my_order.js"></script>
+	{: nowpage == 'my_information'}
+	<script type="text/javascript" src="js/my_info.js"></script>
+	<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="kcaptcha" src="/js/jquery.kcaptcha.js"></script>
+	{: nowpage == 'class_detail'}
+	<script type="text/javascript" src="js/class_mylec.js"></script>
+	{: _bo_table == 'cs_notice' || _bo_table == 'cs_inquery'}
+	<script type="text/javascript" src="js/my_board.js"></script>
+	<script type="text/javascript" src="/suntest/chosen_new.jquery.js"></script>
+	<script type="text/javascript" src="/bbs/js/select_box.js"></script>	
+	{/}
+	
+	<link type="text/css" rel="stylesheet" href="https://static-sdedu.akamaized.net/img1/fonts/NanumSquare/nanumsquare_v2.css"  charset="utf-8">
+	<link type="text/css" rel="stylesheet" href="https://static-sdedu.akamaized.net/img1/fonts/notosanskr_v2/notosans_ie8.css"  charset="utf-8">
+	<link type="text/css" rel="stylesheet" href="https://static-sdedu.akamaized.net/img1/fonts/SpoqaHanSanskr/SpoqaHanSanskr.css"  charset="utf-8">
+	<link type="text/css" rel="stylesheet" href="/css/font/notosanskr/notosans_ie8.css">
+	<link type="text/css" rel="stylesheet" href="css/1.9.1.jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css"><!-- css reset -->
+	<link rel="stylesheet" type="text/css" href="css/myclass.css"><!-- page common -->
+	<link rel="stylesheet" type="text/css" href="css/chosen.css"><!-- page common -->
+	
+	{? nowpage == 'my_studyroom' || _bo_table == 'cs_notice' || _bo_table == 'cs_inquery' || nowpage == 'my_faq' || nowpage == 'public_guide' || _quality == 'p_quality' || nowpage == 'my_payment'}
+	<link rel="stylesheet" type="text/css" href="css/myboard.css"><!-- 고객센터 영역 -->
+	{: nowpage == 'class_membership'}
+	<link rel="stylesheet" type="text/css" href="/_skin/tpl_skin/css/content_apply.css">
+	{: nowpage == 'my_coupon'}
+	<script type="text/javascript" src="js/my_coupon.js"></script>
+	{/}
+	
+	<script type="text/javascript">
+
+		//전역변수 선언
+		var g4_path      = "..";
+		var g4_bbs      = "bbs";
+		var g4_is_member = "{member.mb_level}";
+		var g4_is_admin  = "<?php echo $is_admin ?>";
+		var g4_bo_table  = "<?php echo isset($bo_table) ? $bo_table : ''; ?>";
+		var g4_charset   = "<?php echo $g4['charset'] ?>";
+		var g4_is_gecko  = navigator.userAgent.toLowerCase().indexOf("gecko") != -1;
+		var g4_is_ie     = navigator.userAgent.toLowerCase().indexOf("msie") != -1;
+		var g4_domain ="<?=$_SERVER['HTTP_HOST']?>";
+		var g4_mb_id     ="{member.mb_id}";
+        //전역변수 선언 끝
+	</script>
+	
+
+    <title>시대에듀 마이페이지</title>
+</head>
+<body>
+	{? certi != "certi"}
+	<!-- tpl_skin header -->
+	{ =include_file("../sidae/include/total_login_head.inc.htm" ) }
+	{/}
+	</div>
+	<!-- //tpl_skin header -->
+	{#head_inc}
+	
+	{=include_file('popup.htm')}

@@ -1,0 +1,59 @@
+<link rel="stylesheet" type="text/css" href="css/side_menu.css"/>
+<div class="sideMenuArea">
+	<div class="menu_top">
+		<a href="/myclass" class="btn">
+			<img src="/_skin/myclass/images/lnb_logo.png" alt="sd에듀" class="mgb5"/><br />
+			마이페이지</a>
+	</div>
+	<ul class="menuList">
+		<li>
+			<a href="/myclass/class_mylec.php" class="link link1 {? page_index == 'class'}selected{/}">내강의실</a>
+		</li>
+		<li>
+			<a href="/myclass/my_isbn.php" class="link link1 {? page_index == 'my_isbn'}selected{/}">도서등록</a>
+		</li>
+		<li>
+			<a href="/myclass/mock_exam.php" class="link link1 {? page_index == 'mock'}selected{/}">모의고사</a>
+		</li>
+		<li>
+			<a href="/myclass/my_studyroom.php" class="link link1 {? page_index == 'my_studyroom'}selected{/}">학습자료실</a>
+		</li>
+		<li>
+			<a href="javascript:void(0)" class="link link1 nopage {? page_index == 'my_coupon' || page_index == 'my_cash'}selected{/}">쿠폰&적립금</a>
+			<a href="/myclass/my_coupon.php" class="link link2 mgt5 {? page_index == 'my_coupon'}selected{/}">쿠폰 내역</a>
+			<a href="/myclass/my_cash.php" class="link link2 {? page_index == 'my_cash'}selected{/}">적립금 내역</a>
+		</li>
+		<li>
+			<a href="javascript:void(0)" class="link link1 nopage {? page_index == 'my_cart' || page_index == 'my_order'}selected{/}">결제정보</a>
+			<a href="/myclass/my_cart.php" class="link link2 mgt5 {? page_index == 'my_cart'}selected{/}">장바구니 내역</a>
+			<a href="/myclass/my_order.php" class="link link2 {? page_index == 'my_order'}selected{/}">주문/배송 내역</a>
+		</li>
+		<li>
+			<a href="javascript:void(0)" class="link link1 nopage {? _bo_table == 'cs_notice' || page_index == 'my_faq' || _bo_table == 'cs_inquery' || page_index == 'my_payment'}selected{/}">고객센터</a>
+			<a href="/myclass/my_board.php?bo_table=cs_notice" class="link link2 mgt5 {? _bo_table == 'cs_notice'}selected{/}">공지사항</a>
+			<a href="/myclass/my_faq.php?f=cscenter" class="link link2 {? page_index == 'my_faq'}selected{/}">FAQ</a>
+			<a href="/myclass/my_board.php?bo_table=cs_inquery" class="link link2 {? _bo_table == 'cs_inquery'}selected{/}">1:1문의</a>
+			<a href="/myclass/my_payment.php" class="link link2 {? page_index == 'my_payment'}selected{/}">자유결제</a>
+		</li>
+		<li>
+			<a href="/myclass/my_information.php" class="link link1 {? page_index == 'my_information'}selected{/} ">회원정보</a>
+		</li>
+	</ul>
+	
+	<ul class="blankList">
+		<li>
+			<a href="javascript:void(0)" onclick="fmbNew();" class="link icon icon-img icon-cs">상담예약신청<i class="icon icon-link-right"></i></a>
+		</li>
+		<li>
+			<a href="#guidePopup" class="icon icon-img icon-guide cmPopupFn">사용자가이드<i class="icon icon-link-right"></i></a><!-- /popkon/?f=cscenter_user_guide -->
+		</li>
+		<li>
+			<a href="/popkon/?f=cscenter_program" target="_blank" class="icon icon-img icon-program">프로그램설치<i class="icon icon-link-right"></i></a>
+		</li>
+		<li>
+			<a href="https://939.co.kr/" target="_blank" class="icon icon-img icon-pc">PC원격지원<i class="icon icon-link-right"></i></a>
+		</li>
+	</ul>
+</div>
+
+{ = include_file("../tpl_skin/include/open-fmb-renewal.inc.htm" ) }

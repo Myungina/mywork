@@ -1,0 +1,87 @@
+<!-- <div class="myClassHeaderArea">
+	<div class="w1000 center-wrap tl">
+		<a href="/popkon" target="_site" class="sdedu-logo">
+			<img src="/_skin/sidae/images/brand/common/sidae_logo_.png" alt="주)시대교육그룹"/>
+		</a>
+	</div>
+</div> -->
+<input type="hidden" id="mb_id" name="mb_id" value="{member.mb_id}"></input>
+{? page_index == 'index'}
+
+{:}
+<!--cmContainer -->
+<section class="cmContainer mgb100">
+	<div class="w1000 center-wrap clear-after ">
+		<!-- side menu -->
+		{ = include_file("side_menu.htm")}
+		<!-- //side menu -->
+		<!-- side content -->
+		<div class="subContentArea ">
+			<div class="pageTop">
+				<h1 class="cmPageTit pagename">
+					{? nowpage == 'class_mylec' && lec_type == 'audio'}
+						오디오북
+					{: nowpage == 'class_detial'}
+						강의 상세보기
+					{: nowpage == 'class_mylec' && lec_type == 'endclass'}
+						수강종료강의					
+					{: nowpage == 'class_mylec' && lec_type == 'free'}
+						무료강의
+					{:  nowpage == 'class_mylec' && lec_type == 'lecture'}
+						유료강의
+					{:  nowpage == 'class_mylec' && lec_type == 'likelist'}
+					 	즐겨찾기
+					{: nowpage == 'class_mylec' && lec_type == 'membership'}
+					 	수강회원권
+					{: nowpage == 'class_membership'}
+					 	수강회원권 강의추가
+					{: nowpage == 'class_detail'}
+					 	강의 상세보기
+					{: nowpage == 'my_isbn'}
+						도서등록
+					{: nowpage == 'mock_exam' && type == 'end'}
+						시험종료
+					{: (nowpage == 'mock_exam' && type == 'ing' ) || ( nowpage == 'mock_exam' &&  type == '')}
+						모의고사
+					{: nowpage == 'mock_exam'  && type == 'fit'}
+						핏(문제은행)
+					{: nowpage == 'mock_exam'  && type == 'company'}
+						합격시대 모의고사
+					{: svs == 'myclass'}
+						{? _bo_table == 'cs_inquery' || _quality == 'p_quality'}
+							1:1문의
+						{:}
+							학습자료실
+						{/}
+					{: nowpage == 'my_studyroom'}
+						학습자료실
+					{: nowpage == 'my_coupon'}
+						쿠폰 내역
+					{: nowpage == 'my_cash'}
+						적립금 내역
+					{: nowpage == 'my_cart'}
+						장바구니 내역
+					{: nowpage == 'my_order'}
+						주문/배송 내역
+					{: _bo_table == 'cs_notice'}
+						공지사항
+					{: nowpage == 'my_faq'}
+					 	FAQ
+					{: _bo_table == 'cs_inquery' || _quality == 'p_quality'}
+						1:1문의
+					{: nowpage == 'my_payment'}
+						자유결제
+					{: nowpage == 'my_information'}
+						{? exit == ''}	
+							{? info_chk != 'y'}
+								비밀번호 확인
+							{: info_chk == 'y'}
+								회원정보 수정
+							{/}
+						{: exit == 'y'}
+							회원탈퇴
+						{/}
+					{/}
+				</h1>	
+			</div>	
+{/}

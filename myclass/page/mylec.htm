@@ -1,0 +1,320 @@
+<form id="item_info" name="item_info" method="post">
+	<input type=hidden value="{detail.it_id}" id="it_id" name="it_id">
+	<input type=hidden value="{detail.ca_id}" id="ca_id" name="ca_id">
+	<input type=hidden value="{cat_first}" id="cat_id" name="cat_id">
+	<input type=hidden value="{cat_select}" id="cat_select" name="cat_select">
+	<input type=hidden value="{tbsubject_select}" id="tbsubject_idx" name="tbsubject_idx">
+	<input type=hidden value="{tbsubject_ord}" id="tbsubject_ord" name="tbsubject_ord">
+	<input type=hidden value="{plusBtnData}" id="plusBtnData" name="plusBtnData">
+	<input type=hidden value="{fav}" id="fav" name="fav">
+</form>
+
+<div class="cmSideHead mgt35 ">
+	<h3 class="cmContentTit mgb10">{detail.it_name}</h3>
+	<p class="cmInfomationTxt col-deepgray">
+		수강기간 : {detail.s_date} ~ {detail.e_date}
+		&nbsp;&nbsp;｜&nbsp;&nbsp;
+		총 강의수 : {detail.all_tb_cnt}강 [ <span class="col-red">{? detail.shooting_yet == 0}완강{:}진행중{/}</span> ]
+	</p>
+</div>
+	
+<ul class="myclassMainInfo lecPlayerInfo item4 mgt25 tc">
+	<li class="detailCntArea">
+		<p class="ft_19">학습 진도율</p>
+		<span class="myCnt myCnt_m ">{detail.per}%</span>
+		<p class="sm_txt col-gray">(<b>{detail.watched_cnt}</b> / 총 {detail.all_tb_cnt}강)</p>
+	</li> 
+	<li class="detailCntArea">
+		<p class="ft_19">남은 수강일</p>
+		<span class="myCnt myCnt_m ">{detail.left_day}일</span>
+		<p class="sm_txt col-gray">(<b>{detail.all_day - detail.left_day}</b> / 총 {detail.all_day}일)</p>
+	</li> 
+	<li class="detailCntArea">
+		<p class="ft_19">북마크</p>
+		<span class="myCnt myCnt_m ">{detail.bm_cnt}</span>
+		<a href="#bMarkPopup" class="cmPopupFn btn btn-s bMarkBtn" onclick="bookmarkListBtn();">목록보기</a>
+	</li> 
+	<li class="">
+		<p class="ft_19 mgb5">수강 증빙 서류</p>
+		{? detail.od_settle_use == 'free' || detail.od_settle_use == 'extension' || detail.membership_status == 1 || fav != ""}
+		-
+		{:}
+		<a href="#" class="btn btn-s lecConfirmBtn mgt5" onclick="showCertify('{detail.ca_id}','first')">수강확인증</a> <br>
+		<a href="#" class="btn btn-s leccompleteBtn mgt5" onclick="showCertify('{detail.ca_id}','','{detail.per}')">수강이수증</a>
+		{/}
+	</li>
+</ul>
+
+<ul class=" mgb65 div-table w_100 mgt20">
+	<li class="tl w_70 noticeTxt col-deepgray">
+		재생시 <img src="/_skin/myclass/images/icon/icon_ex.png" alt="ie_icon" class="">익스 외 브라우저 사용 가능
+		(<img src="/_skin/myclass/images/icon/icon_cr.png" alt="chrom_icon"> 크롬 브라우저 설치를 권장)<br>
+		<u class="bold">학습 문의는 강의 수강 시 플레이어에서만 가능</u>
+	</li>
+	<li class="tr w_30">
+		<a href="/popkon/?f=cscenter_program" target="_blank" class="btn btn-l blankBtn mgr10">프로그램 설치 ></a>
+		<a href="/popkon/?f=cscenter_user_guide" target="_blank" class="btn btn-l blankBtn">가이드 보기 ></a>
+	</li>
+</ul>
+
+<div class="lecControlArea">
+	<h3 class="cmNoticeTit mgb15">과정을 선택해 주세요</h3>
+	<ul class="btnTypeList applyLecList">
+	
+		{@ cat_list}
+			{? plusBtnData == "open"}
+				<li>
+					<a href="#" class="leclistViewBtn {? cat_list.cat_select == '' && cat_first == cat_list.item_cate || cat_list.cat_select == cat_list.item_cate}selected{/} btn btn-m" onclick="catChange(this);" data-ci="{.item_cate}" data-sub="">{.cat_name}</a>
+				</li>
+			{:}
+				{? .cat_cnt < 5}
+					<li>
+						<a href="#" class="leclistViewBtn {? cat_list.cat_select == '' && cat_first == cat_list.item_cate || cat_list.cat_select == cat_list.item_cate}selected{/} btn btn-m" onclick="catChange(this);" data-ci="{.item_cate}" data-sub="">{.cat_name}</a>
+					</li>
+				{: .cat_cnt > 4}
+					<li>
+						<a href="#" class="leclistViewBtn {? cat_list.cat_select == '' && cat_first == cat_list.item_cate || cat_list.cat_select == cat_list.item_cate}selected{/} btn btn-m" onclick="catChange(this);" data-ci="{.item_cate}" data-sub="" style="display: none;">{.cat_name}</a>
+					</li>
+				{/}				
+			{/}
+		{/}		
+		{? plusBtnData != 'open'}
+		<li class="btn_all_view">
+			<a href="#" class="btn btn-xs listplusBtn" onclick="CatPlusFn();">+더보기</a>
+		</li>
+		{/}
+		
+	</ul>
+	<ul class="cmListMenu_t2 mgt20" id="subject_cat_id">
+		{? fav == ""}
+		<li><a href="javascript:void(0)" class="btn cmTypeBtn {? tbsubject_select == ''}selected{/} mgb5" data-idx="" data-cate="{cat_select}" data-sub="" data-ord="" onclick="tbsubjectChange(this);">전체</a></li>
+		{/}
+		{@ tbsubject_list}
+		<li><a href="javascript:void(0)" class="btn cmTypeBtn {? tbsubject_select == .tbsubject_idx}selected{/} curriTypeVal" data-idx="{.tbsubject_idx}" data-cate="{.item_cate}" data-sub="{.item_cate_sub}" data-ord="{.tbsubject_ord}" onclick="tbsubjectChange(this);">{.tbsubject_name}</a></li>
+		{/}
+	</ul>
+</div>
+<ul class="lecPlayerList cmListArea mgt45">
+	{@ tb_content_list}
+	{? .tbtypes_change == "Y"}
+	<li class="cmConentTit_li"><h3 class="cmContentTit mgb10">{.tbtypes_name} ({.curri_cnt}강)</h3></li>
+	<li class="liat_header div-table">
+		<div class="w_65 tc">	
+			<b>강좌명</b>
+		</div>
+		<div class="w_10 tc"> 
+			<b>강의자료</b>
+		</div>
+		<div class="w_25 tc"> 
+			<b>수강하기</b>
+		</div>
+	</li>
+	{/}
+	<!-- for :S-->
+	{? .subject_change == "Y"}
+	<li class="hideDetailParent">
+		<!--강의 타입별 :S-->
+		<div class="subjectParentArea div-table w_100">
+			<div class="cmListIcon  chartArea w_15 ">
+				<div class="chart center-wrap" data-percent="{.curri_per}">
+                   	<p class="chart_txt">
+                   		진도율
+                   		<span class="percent myCnt myCnt_b">{.curri_per}%</span>
+                   	</p>                       	
+                	<canvas height="85" width="85"></canvas>
+				</div>
+			</div>		
+			
+			<div class="cmListTxt pdl10">
+				<h3 class="cmProductName cmProductName{.tb_id}">{.tb_name}</h3>
+				<h4 class="cmListTSubTit"></h4>
+				<p class="classDate mgb10 mgt5">
+					{.lec_name}｜{? .shooting_status == 1}완강{:}진행중{/}｜{.all_tb_times}
+				</p>
+				{? fav == ""}
+				<a href="javascript:void(0)" class="btn btn-s likeListAddBtn likeListAddBtn{.tb_id}" {? .like_chk != ''}style="display: none;"{/} onclick="set_fav_lec('{.tb_id}');">즐겨찾기 등록</a>
+				<a href="javascript:void(0)" class="btn btn-s CencleBtn CencleBtn{.tb_id}" {? .like_chk == ''}style="display: none;"{/} onclick="remove_fav_lec('{.tb_id}');">즐겨찾기 해제</a>
+				{/}
+			</div>	
+			
+			<div class="lecplayArea tc w_10">					
+				<a href="" class="btn cartArrowDown">목차열기</a>
+			</div>
+			
+			<div class="lecFileArea w_10 tc">
+				{? .total_pds == "1"}
+					<a href="#ddataPopup" class="btn lecFileDownBtn" onclick="myRoomfileDownNew('{.tb_id}','pds','{.chk_pds}','{.chk_mp3}','0'); return false;"><img src="/_skin/myclass/images/icon/icon_filedown.png" alt="강의자료"/></a>
+				{:}
+					-
+				{/}
+			</div>
+			
+			<div class="cmListBtn w_25 tc">
+				{? .it_type == '55'}
+					<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_audio','{.upload_file_key}','{.media_content_key_audio}','','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">듣기</a>
+				{:}
+					<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_lesson','{.upload_file_key}','{.media_content_key}','p_quality','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">일반</a>
+					<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_lesson','{.upload_file_key}','{.media_content_key}','p_quality_hd','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">고화질</a>
+					<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_mp3','{.upload_file_key}','{.media_content_key_mp3}','p_quality_hd','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">MP3</a>
+				{/}
+			</div>
+		</div>
+		<div class="lecDetailArea hideDetailChild">				
+			<!-- for :S-->
+			<div class="subjectChildArea div-table">
+				<div class="cmListIcon chartArea w_15">
+					{? .per == 0}
+					<div class="chart center-wrap" data-percent="0">
+						<p class="chart_txt tc chart_no">
+							미수강
+						</p>
+						<canvas height="85" width="85"></canvas>
+					</div>
+					{:}
+					<div class="chart center-wrap" data-percent="100">
+	                   	<p class="chart_txt">
+							{.lp_updatetime}<br><b>수강</b>
+	                   	</p>
+						   <canvas height="85" width="85"></canvas>
+						</div>
+					{/}   	
+				</div>		
+				
+				<div class="cmListTxt pdl10">
+					<h3 class="cmProductName cmProductSubName">{.tb_num} {.tb_content}</h3>
+					<h4 class="cmListTSubTit"></h4>
+					<p class="classDate mgt5">
+						{.lec_name}｜{.tc_status}｜{.tb_times}
+					</p>
+				</div>			
+				
+				<div class="lecFileArea w_10 tc">
+					{? .chk_down == "1"}
+						<a href="#ddataPopup" class="btn lecFileDownBtn" onclick="myRoomfileDownNew('{.tb_id}','pds','{.chk_pds}','{.chk_mp3}','0'); return false;"><img src="/_skin/myclass/images/icon/icon_filedown.png" alt="강의자료"/></a>
+					{:}
+						-
+					{/}
+				</div>
+				
+				<div class="cmListBtn w_25 tc">
+					{? .it_type == '55'}
+						<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_audio','{.upload_file_key}','{.media_content_key_audio}','','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">듣기</a>
+					{:}
+						<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_lesson','{.upload_file_key}','{.media_content_key}','p_quality','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">일반</a>
+						<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_lesson','{.upload_file_key}','{.media_content_key}','p_quality_hd','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">고화질</a>
+						<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_mp3','{.upload_file_key}','{.media_content_key}','p_quality_hd','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">MP3</a>
+					{/}
+				</div>
+			</div>	
+			<!-- for :E-->
+		</div>
+		<!--강의 타입별 :E-->
+		{:}
+		<!--강의  타입아래 차시별 :S-->
+		<div class="lecDetailArea hideDetailChild">				
+			<!-- for :S-->
+			<div class="subjectChildArea div-table">
+				<div class="cmListIcon chartArea w_15">
+					{? .per == 0}
+					<div class="chart center-wrap" data-percent="0">
+						<p class="chart_txt tc chart_no">
+							미수강
+						</p>
+						<canvas height="85" width="85"></canvas>
+					</div>
+					{:}
+					<div class="chart center-wrap" data-percent="100">
+	                   	<p class="chart_txt">
+							{.lp_updatetime}<br><b>수강</b>
+	                   	</p>
+						   <canvas height="85" width="85"></canvas>
+						</div>
+					{/}
+				</div>		
+				
+				<div class="cmListTxt pdl10">
+					<h3 class="cmProductName cmProductSubName">{.tb_num} {.tb_content}</h3>
+					<h4 class="cmListTSubTit"></h4>
+					<p class="classDate mgt5">
+						{.lec_name}｜ {.tc_status}｜ {.tb_times}
+					</p>
+				</div>			
+				
+				<div class="lecFileArea w_10 tc">
+					{? .chk_down == "1"}
+						<a href="#ddataPopup" class="btn lecFileDownBtn" onclick="myRoomfileDownNew('{.tb_id}','pds','{.chk_pds}','{.chk_mp3}','0'); return false;"><img src="/_skin/myclass/images/icon/icon_filedown.png" alt="강의자료"/></a>
+					{:}
+						-
+					{/}
+				</div>
+				
+				<div class="cmListBtn w_25 tc">
+					{? .it_type == '55'}
+						<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_audio','{.upload_file_key}','{.media_content_key_audio}','','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">듣기</a>
+					{:}
+						<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_lesson','{.upload_file_key}','{.media_content_key}','p_quality','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">일반</a>
+						<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_lesson','{.upload_file_key}','{.media_content_key}','p_quality_hd','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">고화질</a>
+						<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{.it_id}','{.tb_id}','{.tb_idx}','{.tb_server_2}','_mp3','{.upload_file_key}','{.media_content_key}','p_quality_hd','{reset_limit_cnt}'); return false;" class="btn playBtn mgr5">MP3</a>
+					{/}
+				</div>
+			</div>	
+			<!-- for :E-->
+		</div>
+		{/}
+		{? .subject_end == "Y"}			
+		<!--강의  타입아래 차시별 :E-->
+	</li>
+	{/}	
+	{/}	
+	<!-- for :E-->
+</ul>
+
+<!-- 북마크 -->
+<div class="bMarkPopup cmPopupLayer fullLayer" id="bMarkPopup">
+	<div class="orderDetailArea cmPopupArea">
+		<div class="cmPopupHead bg-lightblue tc">
+			<h2>북마크</h2>
+			<p class="cmPopupCloseBtn"><img src="/_skin/myclass/images/icon/btn_colse.png" alt="닫기"/></p>
+		</div>
+		<div class="cmPopupContent bg-skyblue bookmarkPopup">
+			<!-- ~ ajax_bookmark.php $content_html ~ -->
+		</div>
+	</div>	
+</div>
+<!-- 북마크 -->
+
+<!-- 강의자료 -->
+<div class="ddataPopup cmPopupLayer fullLayer" id="ddataPopup">
+	<div class="ddataPopup cmPopupArea">
+		<div class="cmPopupHead bg-lightblue tc">
+			<h2>자료 다운로드</h2>
+			<p class="cmPopupCloseBtn"><img src="/_skin/myclass/images/icon/btn_colse.png" alt="닫기"/></p>
+		</div>
+		<div class="cmPopupContent bg-skyblue">
+			<div class="popuptxtContent downloadArea ">
+				<form name="download_mp3" method="post" id="download_pds" action="/myclass/tb_file_download.php" target="_blank">
+					<input type="hidden" class="zipfile_name" value="" name="zipfile_name">
+		    		<div class="cartAllChkArea">
+						<input type="checkbox" class="cmChkbox" name="downAllChk" id="downAllChk">
+						<!-- 나중에살려 아카마이 	-->
+						<label for="downAllChk" class="cmChkboxLabel allChkBtn downAllBtn">전체선택</label>
+					</div>
+					<!-- 나중에살려 아카마이 <p class="pull-right pdt5">※ 자료 선택 후 다운로드 버튼을 눌러주세요.</p>	-->
+					<p class="pull-right pdt5">※ 자료명을 누르면 다운로드 됩니다.</p>
+					<ul class="cmListArea mgt15 downList" id="ddateDownList">
+		        		
+		        	</ul>
+		        	<div class="resultArea tc mgt20">
+							<!-- 나중에살려 아카마이 -->
+							<button href="#" class="btn btn-l downloadChkBtn" id="downloadChkBtn" onclick="tb_file_down_st('p')">선택파일 다운로드</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>	
+</div>
+<!-- 강의자료 -->
+
+<!--초기화 팝업:S--> 
+{=include_file("page/my_reset_popup.htm")}
+<!--초기화 팝업:E-->

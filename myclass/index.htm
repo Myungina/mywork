@@ -1,0 +1,95 @@
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<section class="cmContainer pdt50">
+	<div class="cmContentArea">
+		<div class="div-table">
+			<div class="pdr25"><a href="/popkon"><img src="/_skin/myclass/images/main_logo.png" alt="주)시대교육그룹" height="100%"/></a></div>
+			<div><h1 class="cmPageTit mgb0"> {member.mb_name}님 마이페이지</h1></div>
+			<div><a href="/myclass/my_information.php" class="btn mymodifyBtn mgl25">회원정보 ></a></div>
+		</div>
+		<ul class="myclassSubInfo">
+			<li><a href="/myclass/my_order.php">주문/배송 <span class="col-red">*</span></a></li>
+			<li><a href="/myclass/my_cart.php">장바구니 <span class="myCnt myCnt_s"> {member.myWishCnt}</span></a></li> <!-- head -->
+			<li><a href="/myclass/my_coupon.php">쿠폰 <span class="myCnt myCnt_s"> {=GetMemberCouponCnt()}</span></a></li> <!-- head -->
+			<li><a href="/myclass/my_cash.php">적립금 <span class="myCnt myCnt_s"> {=number_format(cash.mb_cash)}</span></a></li> <!-- index -->
+			<li><a href="/myclass/my_board.php?bo_table=cs_inquery">질문/답변 <span class="myCnt  myCnt_s"> {member.myInqueryCnt}/{member.myInqueryCom}</span></a></li> <!-- head -->
+		</ul>	
+		<ul class="myclassMainInfo  myclassMainInfo_big">
+			<li><a href="/myclass/class_mylec.php?type=membership" class="typeLecBtn">수강회원권 <span class="myCnt myCnt_xl mgt10 ft_21">{my_score.pass_cnt + my_score.pass_item_cnt}{? m_list.s_date == 1} <i class="icoNew dot">N</i>{/}</span></a></li> <!-- head -->
+			<li><a href="/myclass/class_mylec.php?type=lecture" class="typeLecBtn">유료강의 <span class="myCnt myCnt_xl mgt10 ft_21">{my_score.paid_cnt}{? l_list.s_date == 1} <i class="icoNew dot">N</i>{/}</span></a></li> <!-- head -->
+			<li><a href="/myclass/class_mylec.php?type=free" class="typeLecBtn">무료강의 <span class="myCnt myCnt_xl mgt10 ft_21">{my_score.free_cnt}{? fl_list.s_date == 1} <i class="icoNew dot">N</i>{/}</span></a></li> <!-- head -->
+			<li><a href="/myclass/class_mylec.php?type=likelist" class="typeLecBtn">즐겨찾기 <span class="myCnt myCnt_xl mgt10 ft_21">{my_score.like_cnt}</span></a></li> <!-- head -->
+			<li><a href="/myclass/class_mylec.php?type=audio" class="typeLecBtn">오디오북 <span class="myCnt myCnt_xl mgt10 ft_21">{my_score.audio_cnt}{? a_list.s_date == 1} <i class="icoNew dot">N</i>{/}</span></a></li> <!-- head -->
+			<li><a href="/myclass/class_mylec.php?type=endclass" class="typeLecBtn">수강종료 <span class="myCnt myCnt_xl mgt10 ft_21">{my_score.end_cnt}</span></a></li> <!-- head -->
+			<li><a href="/myclass/mock_exam.php" class="typeLecBtn">모의고사 <span class="myCnt myCnt_xl mgt10">{my_score.mock_cnt}{? mok_list.s_date == 1} <i class="icoNew dot">N</i>{/}</span></a></li> <!-- head -->
+		</ul>	
+		
+		<h3 class="cmContentTit mgb20">최근 수강중인 강의</h3>
+		<ul class="cmListArea latelyPlayer">
+			{? last_lec.it_name != ''}
+			<li>
+				<div class="cmListIcon chartArea tc w_15 pdl0">
+					<div class="chart center-wrap" data-percent="{last_lec.tb_per}"> <!-- data-percent에 진도율 넣어줘여 -->
+	                   	<p class="chart_txt tc">
+	                   		진도율
+	                   		<span class="percent myCnt myCnt_b"><!-- jquery --></span>
+	                   	</p>                       	
+	                </div>
+				</div>		
+				<div class="cmListTxt w_60">
+					<h3 class="playerName">{last_lec.it_name}</h3>
+					<p class="player_info mgt10">
+						<b>{last_lec.cat_name} > {last_lec.tbsubject_name} > {last_lec.tbtypes_name}</b><br>
+						{last_lec.tb_idx}. {last_lec.tb_content}<!--  | {last_lec.lp_currtime} -->
+					</p>
+				</div>	
+				<div class="cmListBtn tc v_middle ">
+					{? last_lec.pause_state == '0'}
+						{? last_lec.it_type == '55'}
+							<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{last_lec.it_id}','{last_lec.tb_id}','{last_lec.tb_idx}','23','_audio','','{last_lec.media_content_key_audio}','','{reset_limit_cnt}'); return false;" class="btn classViewBtn"><i class="icon icon-player"></i>이어보기</a>
+						{:}
+							<a href="" onclick="reset_apply_btn('{member.mb_id}','{device_cnt}','{device_reset_cnt}','{last_lec.it_id}','{last_lec.tb_id}','{last_lec.tb_idx}','23','_lesson','','{last_lec.media_content_key}','p_quality_hd','{reset_limit_cnt}'); return false;" class="btn classViewBtn"><i class="icon icon-player"></i>이어보기</a>
+						{/}
+					{:}
+					<a href="#" class="btn classViewBtn noClickBtn"><i class="icon icon-player"></i>휴강상태</a>
+					{/}
+				</div>
+			</li>
+			{:}
+			<li>
+				<div class="w100_ noDateList">
+					<p class="tc">수강중인 강의가 없습니다.</p>
+				</div>
+			</li>
+			{/}
+		</ul>
+		
+		<div class="bannerArea">
+			<div class="bannerImg tl">
+				<a href='/bbs/board.php?bo_table=dcc_after_apply&svs=popkon' target="_blank"><img src="/_skin/myclass/images/bottom_bn.png" alt="합격후기 이벤트"/></a>
+			</div>
+		</div>
+		
+		<ul class="cm_tab_ment myclassMenu border-none-b mgt55">
+			<li class="menuBtn w_25"><a href="/myclass/my_isbn.php">도서등록</a></li>
+			<li class="menuBtn w_25"><a href="/myclass/my_coupon.php">쿠폰등록</a></li>
+			<li class="menuBtn w_25"><a href="/myclass/my_studyroom.php">학습자료실</a></li>
+			<li class="menuBtn w_25"><a href="javascript:void(0)" onclick="fmbNew();" >상담예약신청</a></li>
+		</ul>
+		<ul class="cm_tab_ment myclassMenu  mgb50">
+			<li class="menuBtn w_25"><a href="/myclass/my_board.php?bo_table=cs_notice">고객센터</a></li>
+			<li class="menuBtn w_25"><a href="/popkon/?f=cscenter_user_guide" target="_blank">사용자 가이드</a></li>
+			<li class="menuBtn w_25"><a href="/popkon/?f=cscenter_program" target="_blank">필요 프로그램 설치</a></li>
+			<li class="menuBtn w_25"><a href="https://939.co.kr/" target="_blank">PC 원격지원</a></li>
+		</ul>
+	</div>
+</section>
+
+<!--초기화 팝업:S--> 
+{=include_file("/page/my_reset_popup.htm")}
+<!--초기화 팝업:E-->
+
+{ = include_file("/../tpl_skin/include/open-fmb-renewal.inc.htm")}
+
+{? _clientip == '119.192.180.000' }
+<!--//{=CMLatest('p_tpl_bbs', 'dcc_exam', 2, 50,bo_sql)}-->
+{/}

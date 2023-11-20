@@ -1,0 +1,118 @@
+<script>
+$(document).ready(function(){
+	
+    var nowDate = new Date();
+    var startDate = new Date(new Date('February 03 2022 00:00:00 GMT+0900 (대한민국 표준시)'));
+    var endDate = new Date(new Date('February 28 2022 23:59:59 GMT+0900 (대한민국 표준시)'));
+
+    if (nowDate > startDate &&  nowDate < endDate){
+    	if(get_cookie("appOpenPopup") != 'done' && get_cookie("evt_cookie") !='on'){
+			$("#appOpenPopup").show();
+		}
+	}
+	$("#appOpenPopup .today_hide_btn").click(function(e){
+		e.preventDefault();
+		set_cookie("appOpenPopup","done", 24);
+		$("#appOpenPopup").hide();
+	});
+})
+</script>
+<!--마이페이지 전용 팝업 [오른쪽 하단정렬]-->
+<div class="cmPopupWrap">
+	<div class="popupContainer">
+		<!--이용가이드-->
+		<!-- <div class="cmMianPopupContent myclassGuidePopup " id="myclassGuidePopup">
+			<img src="/_skin/myclass/images/popup/popup.png" alt="마이페이지 리뉴얼 오픈 이용자가이드"/>
+			<span class="cmPopupClose">X</span>
+			<a href="#guidePopup" class="cmPopupShowBtn guidePopupBtn cmPopupFn">이용자 가이드 보기</a>
+			<a href="#" class="today_hide_btn">오늘 하루 열지 않기 <span class="icon_x">+</span></a>
+		</div> 		 -->
+		<!--//이용가이드-->
+		<div class="cmMianPopupContent appOpenPopup " id="appOpenPopup">
+			<img src="/_skin/sidae/images/popup/mypage_popup.png" alt="마이페이지 리뉴얼 오픈 이용자가이드"/>
+			<span class="cmPopupClose">X</span>
+			<a href="https://play.google.com/store/apps/details?id=kr.co.eowork.sidae" class="cmPopupLinkBtn" target="_blank">이용자 가이드 보기</a>
+			<a href="#" class="today_hide_btn">오늘 하루 열지 않기</a>
+		</div>
+	</div>
+</div>
+<!--마이페이지 전용 팝업 [오른쪽 하단정렬]-->
+
+
+<!--플래그 팝업 상세:S-->
+<div class="guidePopup cmPopupLayer fullLayer" id="guidePopup">
+	<div class="orderDetailArea cmPopupArea">
+		<div class="cmPopupHead bg-lightblue tc">
+			<h2>마이페이지 사용자 가이드</h2>
+			<p class="cmPopupCloseBtn"><img src="/_skin/myclass/images/icon/btn_colse.png" alt="닫기"></p>
+		</div>
+		<div class="cmPopupContent bg-skyblue bookmarkPopup">
+	        <div class="popuptxtContent scrollArea">
+	        	<div class="inner_content">
+	        		<h3>01. 마이페이지에서 보유한 콘텐츠를 바로 확인이 가능합니다.</h3>
+	        		<ul class="list-dot">
+	        			<li>쿠폰, 적립금, 질문/답변 내역을 확인할 수 있습니다. </li>
+	        			<li>강의, 모의고사, 오디오북 등 신청한 콘텐츠를 확인할 수 있습니다.</li>
+	        			<li>최근 수강 했던 항목이 노출되며, 이어보기를 통해 이어서 수강할 수 있습니다.</li>
+	        		</ul>
+	        		<div class="imgArea"><img src="/_skin/myclass/images/popup/main.png" alt="메인_img"/></div>
+	        	</div>
+	        	<div class="inner_content">
+	        		<h3>02. 메뉴정보</h3>
+	        		<ul class="list-dot">
+	        			<li>기존 화면 상단에서 좌측으로 위치가 변경 되었습니다.</li>
+	        			<li>상세 메뉴를 활성화 하여 원하는 메뉴로 바로 이동할 수 있게 하였습니다.</li>
+	        		</ul>
+	        		<div class="imgArea"><img src="/_skin/myclass/images/popup/sub.png" alt="서브_img"/></div>
+	        	</div>
+	        	<div class="inner_content">
+	        		<h3>03. 수강방법 </h3>
+					<ul class="list-dot">
+						<li>내강의실 &gt; 신청한 강의 항목을 선택합니다.</li>
+						<li>현재 수강 강의를 클릭 하면 수강 중인 강의 리스트가 노출됩니다.</li>
+						<li>[바로가기] 버튼을 통해 강의 상세정보를 확인할 수 있습니다.</li>
+						<li>최근 수강 했던 항목이 노출되며, 이어보기를 통해 이어서 수강할 수 있습니다.</li>
+					</ul>
+					<div class="imgArea"><img src="/_skin/sidae/images/cscenter_new/user_guide_new/lecture2.png" alt="수강"></div>
+					<ul class="list-dot mgt10">
+						<li>전체 진도율 및 강의수 외 수강 정보를 확인할 수 있습니다.</li>
+						<li>PC에서 수강 진행 시 북마크 저장한 목록을 확인 할 수 있으며, 저장된 항목을 이어서 수강할 수 있습니다.<br> ※ 모바일에서 저장된 항목은 제외</li>
+					</ul>
+					<div class="imgArea"><img src="/_skin/sidae/images/cscenter_new/user_guide_new/lecture3.png" alt="수강"></div>
+					<ul class="list-dot mgt10">
+						<li>목차별 정보를 확인 할 수 있으며, [일반][고화질][Mp3] 화질 및 음성 지원 등 선택 하여 수강 할 수 있습니다.</li>
+						<li>[즐겨찾기(등록/해제)]를 통해 원하는 강의만 즐겨찾기에서 수강 할 수 있습니다.</li>
+						<li>강의자료가 있는 경우 아이콘이 노출되며, 다운로드 할 수 있습니다.</li>
+					</ul>
+					<div class="imgArea"><img src="/_skin/sidae/images/cscenter_new/user_guide_new/lecture4.png" alt="수강"></div>
+	        	</div>
+	        	<div class="inner_content">
+	        		<h3>04. 휴강신청방법</h3>
+					<ul class="list-dot">
+						<li>내강의실 &gt; 유료강의 &gt; 신청한 강의 항목을 선택합니다.</li>
+						<li>[휴강신청] 버튼 클릭 -&gt; 얼럿창에 체크박스 체크 -&gt; 확인 버튼을 누르면 휴강 신청이 완료됩니다.</li>
+						<li> 휴강 횟수는 총 2회 가능하며, 1회당 30일 휴강 신청이 가능합니다.<br>※ 휴강 취소는 신청한 당일만 가능</li>
+					</ul>
+					<div class="imgArea"><img src="/_skin/sidae/images/cscenter_new/user_guide_new/lecture5.png" alt="휴강"></div>
+	        	</div>
+	        	<div class="inner_content">
+	        		<h3>05. 주문내역 조회</h3>
+					<ul class="list-dot">
+						<li>내강의실 &gt; 주문배송을 선택합니다.</li>
+						<li>기간 검색을 통해 주문내역을 조회 할 수 있으며, 항목별로 확인할 수 있습니다.</li>
+						<li>주문한 내역을 확인할 수 있으며, [상세정보]를 통해 할인내역, 포함상품 등 상세 정보를 확인할 수 있습니다.</li>
+					</ul>
+					<div class="imgArea"><img src="/_skin/sidae/images/cscenter_new/user_guide_new/oder2.png" alt="주문"></div>
+	        	</div>
+	        	<div class="inner_content">
+	        		<h3>06. 배송내역 조회</h3>
+					<ul class="list-dot">
+						<li>[배송내역]을 통해 주문서에 포함된 배송 내역 및 배송조회 정보를 확인할 수 있습니다.</li>
+					</ul>
+					<div class="imgArea"><img src="/_skin/sidae/images/cscenter_new/user_guide_new/oder3.png" alt="배송"></div>
+	        	</div>
+	        </div>
+        </div>
+	</div>	
+</div>
+<!--플래그 팝업 상세:E-->

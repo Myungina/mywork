@@ -1,0 +1,225 @@
+<!------ 게시판 리스트페이지 : S ------->
+
+<!-- _bo_table == 'cs_notice' 공지사항 -->
+<!-- _bo_table == 'cs_inquery' 1:1 문의 -->
+<!-- 게시판리스트 : S-->
+<script></script>
+<section class="boContainer pdt35 {? _bo_table == 'cs_notice'}boNotice {: _bo_table == 'cs_inquery'}boInquiry{/}">
+
+    <!------- 공지사항 상단 : S ------->
+    {? _bo_table == 'cs_notice'}
+        <!-- 타이틀 :S -->
+        <div class="boPageTtlBox">
+            <h2 class="boPageTtl tc">최신뉴스&amp;공지사항</h2>
+            <h3 class="boPageSubTtl tc">시대교육의 새로운 소식을 확인하세요</h3>
+        </div>
+        <!-- //타이틀 :E -->
+
+        <!-- 검색어찾기 : S-->
+        <form name="fsearch" method="get">
+            <input type="hidden" name="bo_table" value="{_bo_table}">
+            <input type="hidden" name="sfl" value="{sfl}">
+
+            <div class="search-group">
+                <!--셀렉트박스-->
+                <div class="search-box mal">
+                    <p>
+                        <a href="#none" id="chHref">
+                            {? sfl == 'wr_subject'}
+                                제목
+                            {: sfl == 'wr_content'}
+                                내용
+                            {: sfl == 'wr_subject_content'}
+                                제목+내용
+                            {:}
+                                제목
+                            {/}
+                        </a>
+                    </p>
+                    <ul id="selectCon">
+                        <li>
+                            <a href="#wr_subject" onclick="">제목</a>
+                        </li>
+                        <li>
+                            <a href="#wr_content" onclick="">내용</a>
+                        </li>
+                        <li>
+                            <a href="#wr_subject_content" onclick="">제목+내용</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--//셀렉트박스-->
+                <div class="search-txt mal">
+                    <input type="text" name="stx" id="sch-txt" title="검색어 입력" placeholder="검색어를 입력해주세요." value="{stx}" maxlength="20">
+                </div>
+                <span class="search_del">검색삭제</span>
+                <button type="submit">검색</button>
+            </div>
+        </form>
+        <!-- //검색어찾기 : E-->
+
+        <!------- //공지사항 상단 : E ------->
+
+    <!------- 1:1문의 상단 : S ------->
+    {: _bo_table == 'cs_inquery'}
+        <!-- tab :S -->
+        <ul class="cm_tab_ment mgt15 mgb20"><!-- 답변상태별 카운트 head.php에서 계산해옴 -->
+            <li class="menuBtn w_33 {? inq_type == 2 && member.myInqueryWait != 0}selected{/} {? member.myInqueryWait == 0}unactivated{/}"><a href="/myclass/my_board.php?bo_table=cs_inquery&inq_type=2">답변대기 <b class="num">{member.myInqueryWait}</b></a></li>
+            <li class="menuBtn w_33 {? inq_type == 3 && member.myInqueryChk != 0}selected{/} {? member.myInqueryChk == 0}unactivated{/}"><a href="/myclass/my_board.php?bo_table=cs_inquery&inq_type=3">답변 확인중 <b class="num">{member.myInqueryChk}</b></a></li>
+            <li class="menuBtn w_33 {? inq_type == 1 && member.myInqueryCom != 0}selected{/} {? member.myInqueryCom == 0}unactivated{/}"><a href="/myclass/my_board.php?bo_table=cs_inquery&inq_type=1">답변완료 <b class="num">{member.myInqueryCom}</b></a></li>
+        </ul>
+        <!-- tab : E -->
+
+        <ul class="cmInfomationTxt mgb65">
+            <li class="mgb5">
+                동영상 학습 문의는 강의 수강 중에만 학습 문의를 하실 수 있습니다.
+            </li>
+            <li class="mgb0">
+                플레이어 화면 우측 <b>[학습질문]</b>을 통해 작성
+            </li>
+        </ul>
+        <!------- 1:1문의 상단 : E ------->
+    {/}
+
+    <!-- 게시판 상단바 -->
+    <div class="listBottonArea total-search clear-after no-top-line">
+		<p class="list-total">
+			전체
+            <span>({cnt_row.cnt})</span>
+		</p>
+		<ul class="view_btn_wrap pull-right">
+            {? inq_type != '' || stx != ''}
+            <li>
+                <a href="my_board.php?bo_table={_bo_table}" class="boardLibraryBtn btn" id="">전체목록</a>
+            </li>	
+            {/}
+            {? _bo_table == 'cs_inquery'}
+            <li>
+                <a href="/bbs/write.php?bo_table=cs_inquery&svs=myclass" class="boardWriteBtn btn">글쓰기</a>
+            </li>	
+            {/}
+        </ul>
+	</div>
+    <!-- //게시판 상단바 -->
+
+    <!------- 게시판영역 : S ------->
+    <div class="boTableArea boTableList">
+        <table class="boTable" width="100%" align="center" cellpadding="0" cellspacing="0">
+            <thead></thead>
+            <tbody>
+                <!-- 게시물이 있는 경우 -->
+                {? list|length > 0}
+                    {@ list}
+                    <tr {? .is_notice == 1} style="background-color: #eeeded;"{/}>
+                        <td class="txt-main"> <!-- 다운로드 파일이 없는 경우 -->
+                            <h3 class="boListTtl">
+                                <a href="/myclass/my_board_view.php?bo_table={_bo_table}&wr_id={.wr_id}&stx={stx}&sfl={sfl}&page={page}{? _bo_table == 'cs_inquery'}&inq_type={inq_type}{/}">{? _bo_table == "cs_notice" && .is_notice == 1}[공지사항] {/}{.wr_subject}</a>  
+                                {? .is_new == "NEW"}
+                                    <span class="icoNew dot">N</span>
+                                {/}
+                            </h3>
+                            {? _bo_table == "cs_inquery"}
+                                <span class="boListcat">분류 : 
+                                    {? .is_notice == 1}
+                                        공지사항
+                                    {:}
+                                        { .ca_name}
+                                    {/}
+                                </span>
+                                <!-- 작성자 S -->
+                                {? .is_notice == 1}
+                                <span class="boLisWriter">작성자 :  <!--공지사항에서는 분류값이 한줄에서 두줄로 바뀌면서,, 옆에 margin을 없애야해서 불가피하게 지저분해진ㅠㅠ-->
+                                {:}
+                                <br><span class="boLisWriter no-mgl">작성자 : 
+                                {/}
+                                {? .is_notice == 1}
+                                    시대교육
+                                {:}
+                                    {.wr_name}
+                                {/}
+                                </span>
+                                <!-- 작성자 E -->
+
+                                <!--작성일 S -->
+                                <span class="boListDate">작성일 : 
+                                    {.wr_datetime_s}
+                                </span>
+                                <!--작성일 E -->
+
+                                <!-- 처리상태 S -->
+                                {? .is_notice == 0}
+                                <span class="boListstatus">
+                                    처리상태 : 
+                                    {? .wr_7 == 2}
+                                        <i class="txt_status_yet">미완료</i>
+                                    {: .wr_7 == 3}
+                                        <i class="txt_status_ing">확인중</i>
+                                    {: .wr_7 == 1}
+                                        <i class="txt_status_done">답변완료</i>
+                                    {/}
+                                </span>
+                                {/}
+                                <!-- 처리상태 E -->
+                            {:}
+                            <span class="boListDate">작성일 : 
+                                {.wr_datetime_s}
+                            </span>
+                            {/}
+
+                        {? .file.count > 0}
+                            <a href="/bbs/download_file.php?bo_table={_bo_table}&wr_id={.wr_id}" class="btn btnDownload">다운로드</a>
+                        {/}
+                        </td>
+                    </tr>
+                    {/}
+                    {? cnt_row.cnt == 0}
+                        <tr>
+                            <td class="cmListArea" colspan="2" style="border:none;">
+                                <div class="noDataList">
+                                    <p class="tc noDateList">작성한 내역이 없습니다</p>  
+                                </div>                      
+                            </td>
+                        </tr>
+                    {/}
+                    <!-- //게시물이 있는 경우 -->
+                {:}
+                <!-- 게시물이 없는 경우 -->
+                <tr>
+                    <td class="cmListArea" colspan="2" style="border:none;">
+                        <div class="noDataList">
+                            <p class="tc noDateList">작성한 내역이 없습니다</p>  
+                        </div>                      
+                    </td>
+                </tr>
+                <!-- //게시물이 없는 경우 -->
+                {/}
+            </tbody>
+        </table>
+
+         <!-- 게시판하단 페이지번호 -->
+        <div class="listBottonArea page-bottom">
+            <div class="clear-after">
+                <ul class="view_btn_wrap pull-right">
+                    {? _bo_table == 'cs_inquery'}
+                        <li>
+                            <a href="/bbs/write.php?bo_table=cs_inquery&svs=myclass" class="boardWriteBtn btn">글쓰기</a>
+                            <!-- <a href="my_board_write.php?bo_table={_bo_table}" class="boardWriteBtn btn" id="">글쓰기</a> -->
+                        </li>
+                    {/}
+                </ul>                
+            </div>
+            <ul class="list_page_wrap">
+                {? total_page > 1}
+                    {page_text}
+                {/}
+            </ul>
+        </div>
+        <!-- //게시판하단 페이지번호 -->
+
+    </div>
+    <!------- 게시판영역 : E ------->
+
+</section>
+<!-- 게시판리스트 : E-->
+
+<!------ 게시판 리스트페이지 : E ------->
