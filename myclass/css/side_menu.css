@@ -1,0 +1,94 @@
+/*btn*/
+.link{
+	display:block;
+	color:#000;
+}
+.link1:not(.nopage):hover,
+.link1.selected{
+	color:#5967f1
+}
+.link2:hover,
+.link2.selected{
+	font-family:"noto6" !important;
+	text-decoration:underline;
+}
+.link.nopage{
+	pointer-events: none;
+}
+/*layout*/
+.sideMenuArea{
+	width:160px;
+	float:left;
+}
+.sideMenuArea .menu_top{
+	background:#204B80;
+	padding:24px 0;
+	font-size:20px;
+	font-family:"noto6";
+	text-align:center;
+}
+.sideMenuArea .menu_top a.btn{
+	color:#fff;
+}
+.menuList{
+	width:100%;
+	border:1px solid #dddddd;
+	box-sizing:border-box;
+}
+.menuList li{
+	border-bottom:1px solid #dddddd;
+	padding: 15px 0;
+	text-align:center;
+}
+.menuList li:last-child{
+	border-bottom:none;
+}
+.menuList li a{
+	width:100%;	
+}
+.menuList li a.link1{
+	font-size:16px;
+	font-family:'noto6';
+}
+.menuList li a.link2{
+	margin-top:7px;;
+	font-size:14px;
+	font-family:'noto3';
+}
+.blankList{
+	width:100%;
+	margin:33px 0 0 0;
+}
+.blankList li{
+	width:100%;
+	height:44px;
+	border-bottom:1px solid #dadada;
+	background:#f1f1f1;
+}
+.blankList li:last-child{
+	border-bottom:none;
+}
+.blankList li a{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	position:relative;
+	padding:0 20px 0 45px;
+	box-sizing:border-box;
+	font-size: 15px;
+	line-height: 44px;
+	vertical-align:middle;
+}
+.blankList li a:after{
+	position:absolute;
+	right:20px;
+	display:inline-block;
+	content:'>';
+	font-size:14px;
+
+}
+.blankList li a:hover{
+	background-color:#8c8faf;
+	color:#fff;
+	font-family:"noto5";
+}

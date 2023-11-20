@@ -1,0 +1,43 @@
+.myclassSubInfo{
+	width:auto;
+	overflow:hidden;
+	margin:37px 0 0 0;
+}
+.myclassSubInfo li{
+	float:left;
+	margin: 0 42px 0 0;
+	color:#a0a0a0;
+}
+.myclassSubInfo li a{
+	display:inline-block;
+	width:auto;
+	font-size: 17px;
+	font-family:"noto5";
+	color:#a0a0a0;
+}
+
+/*banner*/
+.bannerArea{
+	margin:55px 0 0;
+}
+.bannerArea .bannerImg{
+	width:100%;
+	box-sizing:border-box;
+	background:#697ba1;
+	padding:20px 0 12px 33px;
+}
+.icoNew{
+	display: inline-block;
+	width:15px;
+	height:15px;
+    background: #df1a23;
+    line-height: 13.5px;
+    font-size: 12px!important;
+    text-align: center;
+    color: #fff !important;
+    vertical-align: middle;
+    font-weight: 100;
+    margin: 0 0 0 0;
+    font-family: 'noto5';
+    font-style:normal;
+}

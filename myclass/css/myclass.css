@@ -1,0 +1,1116 @@
+/*head*/
+.myClassHeaderArea{
+	padding:30px 0 30px;
+	border-bottom:3px solid #f2f2f2;
+}
+.sdedu-logo{
+	display:inline-block;
+}
+.pageTop{
+	padding-bottom:15px;
+	border-bottom:1px solid #000;
+}
+.membershipAddArea{
+	padding: 20px 24px;
+	border: 3px solid #d1d1d1;
+}
+/*tab*/
+.cm_tab_ment{
+	display:table;
+	width:100%;
+	border:1px solid #d1d1d1;
+	box-sizing:border-box;
+}
+.cm_tab_ment.myclassMenu {
+	border:3px solid #d1d1d1;
+}
+.cm_tab_ment.myclassMenu:last-of-type{
+	border-top:1px solid #d1d1d1;
+}
+.cm_tab_ment .menuBtn{
+	display:table-cell;
+	height:50px;
+	vertical-align:middle;
+	text-align:center;
+	border-right: 1px solid #d1d1d1;
+	box-sizing:border-box;
+}
+.cm_tab_ment .menuBtn:last-child{
+	border-right:none;
+}
+.cm_tab_ment .menuBtn a{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	padding:15px 0;
+	box-sizing:border-box;
+	border:1px solid #fff;
+	line-height:100%;
+}
+.cm_tab_ment .menuBtn a:hover{
+	border:1px solid #000;
+	color:#000;
+}
+.cm_tab_ment .menuBtn.selected a {
+	border:1px solid #000;
+}
+.cm_tab_ment .menuBtn.selected a,
+.cm_tab_ment .menuBtn a.selected{
+	background:#000;
+	color:#fff;
+}
+
+/*list-tab*/
+.myclassMainInfo{
+	width:100%;
+	overflow:hidden;
+	margin:15px 0 61px 0;
+	padding: 12px 0;
+	border:3px solid #d1d1d1;
+	box-sizing:border-box;
+}
+.myclassMainInfo.lecPlayerInfo{
+	margin:26px 0 18px;
+}
+.myclassMainInfo li{
+	width:14.22%;
+	height:100%;
+	float:left;	
+	box-sizing:border-box;
+	border-right:2px solid #d1d1d1;
+}
+.myclassMainInfo.lecPlayerInfo li {
+	border-right:1px solid #d1d1d1;
+	padding: 10px 0;
+} 
+.myclassMainInfo.item6 li{
+	width:16.66%
+}
+.myclassMainInfo.item4 li{
+	width:25%
+}
+.myclassMainInfo li:last-child{
+	border-right:none;
+}
+.myclassMainInfo li .typeLecBtn {
+	display:inline-block;
+	padding: 13px 0;
+	width:100%;
+	text-align:center;
+	font-size: 16px;
+	color:#000;
+	line-height: 100%;
+}
+.myclassMainInfo_small li .typeLecBtn{
+	padding:10px 0;
+	color:#8b8b8b
+}
+.myclassMainInfo_big  li .typeLecBtn{
+	font-size:19px;
+}
+.myclassMainInfo li a.selected,
+.myclassMainInfo li a:hover{
+	color:#000;
+	font-family:"noto6"
+}
+.myclassMainInfo li a.selected .myCnt{
+	color:#df1a23;
+	font-family:"noto6";
+}
+.myclassSubInfo li a:hover .myCnt,
+.myclassMainInfo li a:hover .myCnt{
+	text-decoration:underline;
+	color:#df1a23;
+}
+.myclassMenu li a{
+	font-size: 15px;
+	color: #868686;
+	font-family:"noto5";
+}
+.latelyPlayer .playerName{
+	font-size:19px;
+}
+.cmListArea li .player_info{
+	font-size: 15px;
+	color: #555555;
+	line-height: 160%;
+}
+.cmListMenu{
+	width:auto;
+	display:table;
+}
+.cmListMenu > *,
+.cmListMenu > not(.tab_menus),
+.cmListMenu > not(.tab_menus) a {
+	display:table-cell;
+	vertical-align:middle;-moz-binding;
+	border-right:1px solid #000;
+}
+.cmListMenu > *:last-child{
+	border-right:none;
+}
+.cmListMenu  a{
+	position:relative;
+	display:inline-block;
+	padding:0 30px;
+	text-align:center;
+	color:#676767;
+	font-size:16px;
+	margin-right:0
+}
+.cmListMenu  a.selected,
+.cmListMenu  a:hover{
+	color:#000;
+	font-family:"noto5";
+}
+.cmListMenu a:after{
+	position:absolute;
+	display:block;
+	width:1px;
+	height: 18px;
+	background: #000;
+	content:'';
+	right:0;
+	top: calc(50% - 7px);
+}
+.cmListMenu > *:last-child:after{
+	display:none;
+}
+.cmListMenu_t2{
+	width:100%;
+	overflow:hidden;
+	font-size:17px;
+}
+.cmListMenu_t2 > *{
+	position:relative;
+	float:left;
+	/* margin-bottom:5px; */
+	/* border-right:1px solid #000; */
+	font-size:16px;
+	display: table;
+	padding:7px 0;
+	padding-right: 16.5px;
+	margin-right:16.5px;
+	font-size: 16px;
+}
+.cmListMenu_t2 > *:first-of-type{
+	padding-left:;
+}
+.cmListMenu_t2 > *:last-of-type{
+	padding-right:0;
+	margin-right:0;
+}
+.cmListMenu_t2 > *:after{
+	position:absolute;
+	display:block;
+	width:1px;
+	height: 18px;
+	background: #000;
+	content:'';
+	right:0;
+	top: calc(50% - 7px);
+}
+.cmListMenu_t2 > *:last-child:after{
+	display:none;
+}
+.cmListMenu_t2 > * > *{
+	display:table-cell;
+	vertical-align:middle;
+}
+.cmListMenu_t2 > *:first-of-type a.cmTypeBtn{
+	
+}
+.cmListMenu_t2  a.link-tab{
+	padding:0 15px;
+}
+.cmListMenu_t2  a.selected,
+.cmListMenu_t2  a:not(.link-tab):hover{
+	color:#000;
+}
+.cmListMenu_t2  a.link-tab.selected,
+.cmListMenu_t2  a.link-tab:hover{
+	background:#e8e8e8;
+	border-radius:5px;
+}
+/*count*/
+.myCnt{
+	display:inline-block;
+	font-family: "noto5";
+}
+.myCnt.myCnt_xl{
+	display:block;
+	color:#df1a23;
+	font-family:"noto6";
+	font-size: 21px;
+	line-height: 100%;
+}
+.myCnt.myCnt_l{
+	display:block;
+	color:#8b8b8b;
+	font-family:"noto6";
+}
+.myCnt.myCnt_m{
+	display:block;
+	color:#df1a23;
+	font-size:21px;
+	font-family:'noto6';
+	font-weight:100;
+	line-height:100%;
+}
+.myCnt.myCnt_s{
+	color:#000;
+}
+.detailCntArea .myCnt{
+	margin:10px auto 7px;
+}
+/*list*/
+.divBoxArea{
+	width:100%;
+	padding: 20px 24px;
+    border: 3px solid #dddddd;
+    box-sizing:border-box;
+}
+.cmListArea:not(.lecPlayerList){
+	width:100%;
+	border-top:2px solid #000;
+	border-bottom:2px solid #000;
+}
+.cmListArea .right-bar{
+	position:relative;
+}
+.cmListArea .right-bar:after{
+	position:absolute;
+	display:block;
+	width:1px;
+	height:70%;
+	content:'';
+	background:#bdbdbd;
+	right:0;
+	top:15%;
+}
+.lecPlayerList{
+	border-bottom:2px solid #000;
+}
+.lecPlayerList .lecDetailArea{
+	position:relative;
+	background:#f6f6f6
+}
+.lecPlayerList .lecDetailArea:after{
+	position:absolute;
+	display:block;
+	content:'';
+	width:97%;
+	height:1px;
+	background:#d7d7d7;
+	left:1.5%;
+	bottom:0;
+}
+.cmListArea#memberAddList{
+	/*display:none;*/
+}
+.cmListArea li{
+	display:table;
+	width:100%;
+	border-bottom: 1px solid #bdbdbd;
+	position:relative;
+}
+.cmListArea li.cmConentTit_li{
+	margin-top:70px;
+}
+.cmListArea li.cmConentTit_li:first-of-type{
+	margin-top:0 !important;
+}
+.cmListArea li:last-child{
+	border-bottom:none;
+}
+.cmListArea .liat_header{
+	padding:15px 0;
+	font-size:16px;
+}
+.lecPlayerList .liat_header{
+	border-top:2px solid #000
+}
+.cmListArea li .cmListIcon,
+.cmListArea li:not(.hideDetailParent) .cmListTxt,
+.cmListArea li:not(.hideDetailParent) .cmListBtn{
+	display:table-cell;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+.deliveryListArea li:not(.hideDetailParent) .cmListTxt,
+.deliveryListArea li:not(.hideDetailParent) .cmListBtn{
+	padding-top:15px;
+	padding-bottom:15px;
+}
+#ddateDownList.cmListArea li .cmListTxt{
+	padding-top:12px;
+	padding-bottom:12px;
+}
+.cashListArea.cmListArea li .cmListTxt{
+	padding-top:15px;
+	padding-bottom:15px;
+}
+.bMarkSaveList.cmListArea li .cmListTxt{
+	padding-top:13px;
+	padding-bottom:13px;
+}
+.cmListArea .subjectParentArea .cmListIcon{
+	padding-top:20px;
+	padding-bottom:20px;
+}
+.cmListArea li .cmListTit  a:hover {
+    text-decoration: underline;
+    box-sizing: border-box;
+}
+.cmListArea .cmListNum{
+	display:table-cell;
+	vertical-align:middle;
+	width:7%;
+	text-align:center;
+	font-size:16px;
+}
+.cmListArea .hideDetailParent > div:not(.hideDetailChild){
+	padding:10px 0;
+}
+.cartListArea .hideDetailParent > div:first-of-type{
+	margin-bottom:20px;
+}
+.cmListArea .subjectChildArea{
+	position:relative;
+	width: 100%;
+	margin:0 auto;	
+}
+.cmListArea .subjectChildArea:after{
+	position:absolute;
+	display:block;
+	width:96%;
+	height:1px;
+	content:'';
+	background:#d7d7d7;
+	left:2%;
+	bottom:0;
+}
+.cmListArea .subjectChildArea:last-of-type:after{
+	display:none;
+}
+.cmListArea .subjectChildArea .cmListIcon{
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.cmListArea li .cmListIcon {
+	width: 15%;
+	vertical-align:middle;
+	/*padding-left:17px;*/
+	text-align:left;
+}
+.cmListArea li .cmListTxt{
+	word-break:keep-all;
+	vertical-align:middle;
+}
+.cmListArea li .cmListTxt.w_80{
+	width:80%;
+}
+.cmListArea li .cmListBtn{
+	width:20%;
+	vertical-align:middle;
+}
+.cmListArea .noDateList{
+	font-size:19px;
+	font-family:"noto5";
+	color:#a0a0a0;
+	padding:50px 0;
+}
+.cmListArea .productName{
+	position:relative;
+	box-sizing:border-box;
+	width:100%;
+	height:100%;
+}
+.cmListArea li > div:last-child:not(.productDetailArea,.orderProductlArea){
+
+	box-sizing: border-box;
+}
+.cmListArea .productName .cmListTit{
+	display:inline-block;
+	vertical-align: middle;
+}
+.endclassTitle{
+	display:table-cell;
+	vertical-align:middle;
+	font-size:23px;
+	font-family:"noto6";
+	line-height:140%;
+	
+}
+.hideDetailChild{
+	display:none;
+	width:100%;
+	overflow:hidden;
+}
+.productDetailArea dl{
+	width:100%;
+	padding:22px 0 22px 26px;
+	box-sizing:border-box;
+	background:#f6f6f6;
+	font-size: 14px;
+	color:#444444;
+}
+.productDetailArea.type_s dl{
+	font-size:13px;
+}
+.productDetailArea dl dt{
+	font-size:15px;
+	margin-bottom:4px;
+	margin-top:20px;
+	font-family:'noto6';
+}
+.productDetailArea.type_s dl{
+	padding:22px 0 22px 20px;
+}
+.productDetailArea.type_s dl dt{
+	font-size:14px;
+}
+.productDetailArea dl dt:first-of-type{
+	margin-top:0;
+}
+.productDetailArea dl dd{
+	font-family:'noto2';
+	margin-bottom: 5px;
+}
+.dateSearchArea{
+	width:100%;
+	margin:14px 0 16px 0;
+	padding:22px 32px;
+	box-sizing:border-box;
+	background:#edeff2;
+}
+.dateSearchArea > h2{
+	padding-right:32px;
+	font-size:17px;
+}
+.dateSearchArea .searchBtnArea{
+	width:187px;
+	margin-right: 23px;
+	border:1px solid #9f9f9f;
+}
+.dateSearchArea .searchBtnArea li{
+	border-right:1px solid #9f9f9f;
+	width:33.33%
+}
+.dateSearchArea .searchBtnArea li:last-child{
+	border-right:none;
+}
+.dateSearchArea .searchBtnArea a{
+	display:inline-block;
+	width:100%;
+	height: 28px;
+	text-align:center;
+	color:#3b3b3b;
+	border:1px solid #fff;
+	background:#fff;
+	box-sizing:border-box;
+	font-size:13px;
+	line-height: 28px;
+}
+.dateSearchArea .searchBtnArea a:hover,
+.dateSearchArea .searchBtnArea a.selected{
+	border:1px solid #5967f1;
+	color:#5967f1;
+	font-family:'noto5';
+}
+.dateSearchArea .search-input{
+	display:table;
+}
+.dateSearchArea .search-input li:not(.date_between){
+	background:url(/_skin/myclass/images/icon/icon_calender.png)#fff 90% center no-repeat;
+	box-sizing:border-box;
+	border: 1px solid #9f9f9f;
+	margin-left:-1px;
+	height:30px;
+	overflow:hidden;
+}
+.dateSearchArea .search-input li.date_between{
+	padding:0 5px;
+}
+.dateSearchArea .search-input li .in-date{
+	display:inline-block;
+	vertical-align:top;
+	width:158px;
+	height: 29px;
+	padding-left:29px;
+	box-sizing:border-box;
+	border:none;
+	background:none;
+	cursor:default;
+}
+.dateSearchArea .search-input li .in-date::-ms-clear { display:none; }
+.orderProductlArea{
+	width:100%;
+	position:relative;
+	box-sizing:border-box;
+	background:#f1f2f5;	
+}
+.orderProductlArea dl{
+	padding:20px 20px;
+}
+.orderProductlArea dl dd{
+	font-size: 15px;
+	margin-bottom: 15px;
+}
+.orderProductlArea dl dd:last-of-type{
+	margin-bottom:0
+}
+.orderProductlArea dl dd b{
+	display:inline-block;
+	margin-top:5px;
+}
+.deliveryAdress{
+	width:100%;
+	padding:20px 20px 20px 38px;
+	box-sizing:border-box;
+	background:url('/_skin/myclass/images/icon/icon_location.png') 20px 22px no-repeat #e4e5e9;
+	font-size: 14px;
+}
+.btnTypeList{
+	width:100%;
+	overflow:hidden;
+}
+.btnTypeList li{
+	display:inline-block;
+	float:left;
+	margin-bottom:10px;
+	width:auto;
+	vertical-align:middle;
+	padding-right:10px;
+}
+.btnTypeList li.btn_all_view{
+	display:none;
+}
+.lecDetailArea{
+	padding:10px 0;
+	background:#f6f6f6;
+}
+/*list-bottom*/
+
+.listBottonArea{
+	padding:12.5px 0 4% 0
+}
+
+.listBottonArea .btn{
+	width:71px;
+	padding:7px 0;
+	box-sizing:border-box;
+	border:1px solid #878787;
+	color:#878787;
+	font-size:13px;
+	line-height:100%;
+}
+.listBottonArea .btn:hover{
+	border:1px solid #000;
+	color:#000;
+}
+.search-btn {
+	width:77px;
+	height:30px;
+	cursor:pointer;
+}
+.cmNoticeArea{
+	width:100%;
+	padding:30px;
+	box-sizing:border-box;
+	margin-top:44px;
+	background:#f6f6f6;
+	font-size:14px;
+}
+.totalCash{
+	border-right:2px solid #dddddd;
+	padding-right:24px;
+}
+/*table*/
+.lecInfoTable{
+	width:100%;
+	font-size:14px;
+}
+.lecInfoTable td:first-child{
+	text-align:justify;
+	width:48px;
+}
+.topInfoArea{
+	font-size:14px;
+}
+.topInfoArea td{
+	padding:3px 0;
+}
+/*text-type*/
+.totalCart{
+	padding:25px 0;
+	font-size:20px;
+	font-family:"noto5";
+}
+.totalCart .priceTxt{
+	padding-right: 0;
+	font-size: 24px;
+}
+.totalCash .priceTxt{
+	padding-right: 0;
+	font-size: 29px;
+}
+.paymentInfo{
+	margin-top:10px;
+	font-size:14px;
+}
+.paymentInfo .btn{
+	margin:0 3px;
+}
+/*layerpopup*/
+.cmPopupLayer{
+	 display:none; 
+	width:auto;
+	height:auto;
+	position:relative;
+}
+.cmPopupLayer .popup-bg{
+	position:absolute;
+	width:100%;
+	height:100%;
+	left:0;
+	top:0;
+	z-index:0
+}
+.cmPopupLayer.cmPopupArea {
+	position:relative;
+	border:3px solid #000;
+	z-index:1;
+}
+.cmPopupLayer .cmPopupHead {
+	padding: 12px 0 19px;
+	position:relative;
+	overflow:hidden;
+	height: 53px;
+	box-sizing: border-box;
+}
+.cmPopupLayer .cmPopupHead  h1{
+	line-height:100%;
+}
+.cmPopupLayer .cmPopupHead .cmPopupCloseBtn,
+.deliveryDetail .cmPopupCloseBtn{
+	position:absolute;
+	right:10px;
+	top: 9px;
+	cursor:pointer;
+}
+.cmPopupContent{
+	width:100%;
+	height: calc(100% - 53px);
+	overflow:auto;
+	padding:0 3%;
+	box-sizing:border-box;
+	font-size: 15px;
+}
+.cmSideLayer{
+	display:none;
+	width:auto;
+	position:absolute;
+	z-index: 99;
+}
+.cmSideLayer.accountNumLayer{
+	width: 270px;
+	background:#fff;
+	padding: 2%;
+	border: 2px solid #000;
+    box-sizing:border-box;
+}
+.cmSideLayer.accountNumLayer .cmPopupCloseBtn{
+	margin:10px auto 0;
+	text-align:center;
+	padding:2px 0;
+	box-sizing:border-box;
+	cursor:pointer;
+}
+.cmPopupLayer.fullLayer{
+	position:fixed;
+	width:100%;
+	height:100%;
+	left:0;
+	top:0;
+	background:rgba(0,0,0,0.25);
+	z-index:99;
+}
+.fullLayer .cmPopupArea{	
+	position:relative;
+	background:#fff;
+	width:400px;
+	left:calc(50% - 200px);
+	border:3px solid #000;
+	box-sizing:border-box;
+}
+.fullLayer.orderDetail .cmPopupArea{
+	width:600px;
+	height: 700px;
+	margin:5% auto;
+	left:0;
+	/* min-height: 500px; */
+	/* max-height: 70%; */
+	overflow: auto;
+}
+.fullLayer.bMarkPopup .cmPopupArea{
+	width:800px;
+	height:821px;
+	margin:5% auto;
+	left:0;
+	overflow:auto;
+} 
+.cmPopupContent .popuptxtContent{
+    background:#fff;
+    margin-bottom:2%;
+    padding: 20px 28px;
+    box-sizing:border-box;
+    font-size:14px;
+}
+.cmPopupContent .popuptxtContent:first-of-type{
+	margin-top:21px;
+}
+
+.cmPopupLayer.fullLayer .chkBtnArea{
+	margin: 20px auto 0;
+}
+.cmPopupLayer .refrashChgTxt em{
+	font-style:normal;
+}
+
+/*사용자가이드 팝업:S*/
+.cmPopupLayer.guidePopup.fullLayer .cmPopupArea{
+	width:1000px;
+	height:80%;
+	left:calc(50% - 500px);
+	top:10%;
+}
+.guidePopup .inner_content{
+	margin-bottom:90px;
+}
+.guidePopup .inner_content h3{
+	font-size:16px;
+	margin-bottom:25px;
+	font-weight:900;
+}
+.guidePopup .inner_content .list-dot{
+	margin-bottom:20px;
+}
+.guidePopup .inner_content .list-dot li{
+	font-size:14px;
+	font-weight:100;	
+	margin-bottom:3px;
+	color:#605f5f;
+}
+.guidePopup .inner_content .imgArea{
+	border:2px solid #d5d5d5;
+	text-align:center;
+	padding:20px 0;
+}
+/*사용자가이드 팝업:E*/
+
+/*휴강취소:S*/
+.lecRefrashCencle .cmPopupArea{
+	position:relative;
+	background:#fff;
+	width:400px;
+	height: 226px;
+	left:calc(50% - 200px);
+	top:calc(50% - 103px);
+	border:3px solid #000;
+	box-sizing:border-box;
+	padding: 1%;
+}
+
+.lecRefrashConfirm .cmPopupArea{
+	height: 330px;
+	top: calc(50% - 203px);
+}
+#lecRefrashCencle2 .cmPopupArea{
+	height:256px;
+}
+.lecControlArea{
+	width:100%;
+	padding:24px 29px;
+	background:#edeff2;
+	box-sizing:border-box;
+}
+.purchaseConfirm .cmPopupArea{
+	height:270px;
+	top:calc(50% - 135px);	
+}
+
+/*연장신청:E*/
+
+/*주문상세:S*/
+.orderDetail .popuptxtContent .cmListTit{
+	margin-bottom:7px;
+}
+.orderDetail .orderTotalPrice{
+	height: 90px;
+	padding: 17px 0 19px 32px;
+	margin-top: calc(50% - 239px);
+	border-left:2px solid #dee0e3;
+	box-sizing:border-box;
+	font-size:16px;
+}
+.orderDetail .orderTotalPrice h1{
+	margin-top:3px;
+	font-size:25px;
+	line-height:100%;
+}
+.orderDetail .ordercalcArea{
+	
+}
+.orderDetail .ordercalcArea li {
+	width:80%;
+	margin-bottom:5px;
+	box-sizing:border-box;
+}
+.orderDetail .ordercalcArea li .tr{
+	padding-right:4%;
+}
+/*주문상세:E*/
+
+.purchaseConfirm .cmPopupContent,
+.lecRefrashConfirm .cmPopupContent{
+    margin: 10px auto 0;
+}
+.purchaseConfirm .chkArea,
+.lecRefrashConfirm .chkArea{
+	margin: 20px auto 0;
+}
+.purchaseConfirm .chkArea label,
+.lecRefrashConfirm .chkArea label{
+	font-size:16px;
+	font-family:'noto3';
+}
+.purchaseConfirm .chkArea label{
+	padding-left:22px;
+}
+/*배소조회/북마크;S*/
+.deliveryDetail{
+	width:100%;
+	max-height:250px;
+	overflow:hidden;
+	background:#fff;
+	border:2px solid #000;
+	position:absolute;
+    top:103px;
+    left:0;    
+    padding:2%;
+    box-sizing:border-box;
+}
+.deliveryDetail .deliveryArea{
+	height:100%;
+}
+.deliveryDetail .deliveryArea .cmPopupContent {
+	height:calc(100% - 34px);
+}
+.deliveryDetail .deliveryListArea{
+	max-height: 170px;
+	overflow:auto;
+	margin-top: 10px;
+}
+.bMarkPopup .scrollArea{
+	max-height:494px;
+}
+/*배송조회/.북마크:E*/
+
+/*다운로드*/
+.downloadArea{
+	height:94%;
+}
+.downloadArea form{
+	height:80%;
+}
+.downloadArea .downList{
+	height:100%;
+	overflow:auto;
+}
+.fullLayer.ddataPopup .cmPopupArea{
+	width:700px;
+	height: 90%;
+	/* margin:5% auto; */
+	left: calc(50% - 350px);
+	top: 5%;
+}
+.downloadArea .downList .cmChkboxLabel{
+	line-height:130%;
+}
+.downloadArea .downList .cmChkboxLabel:after{
+	top:2px;
+}
+/*제 3자 동의 팝업*/
+.third_party_pop_wrap{
+	width:480px;
+	background:#fff;
+	border:2px solid #000;
+	position:absolute;
+    top:42px;
+    left:0;    
+    padding:2%;
+    z-index:99;
+    box-sizing:border-box;
+}
+
+/* 기기 초기화 안내 팝업 */
+.lecResetConfirm .cmPopupArea {
+	top: calc(50% - 182.5px);
+}
+.lecResetConfirm .chkArea {
+	margin: 25px auto 0;
+}
+
+/*관심과정*/
+.myFavLecPopup{
+	display:none;
+}
+.myFavLecPopup .cmPopupArea{
+	width:540px;
+	height:90%;
+	margin:4% 0;
+	left:calc(50% - 270px);
+}
+.favListArea{
+	height: calc(100% - 275px);
+	overflow:auto;
+	border-top:2px solid #000;
+	border-bottom: 2px solid #000;
+}
+.favListArea .cmListMenu_t2{
+	padding:15px 0;
+	border-bottom:1px solid #bdbdbd;
+}
+.favListArea .subtab-content {
+	height: 86%;
+}
+.fav_list{
+	height:100%;
+	overflow: auto;
+}
+.fav_list li{
+	padding:10px 0;
+	border-bottom:1px solid #bdbdbd; 
+}
+.fav_list li:last-child{
+	border-bottom:none;
+}
+.favListArea .cmChkboxLabel:after{
+	top:0;
+}
+
+/*íšŒì›ì •ë³´ */
+.agree-input {
+	display:none;
+	position:relative;
+}
+.agree-input.show{
+	display:table;
+}
+.TimeCnt{
+	position:absolute;
+	right:10px;
+	top: 30px;
+	font-family:"noto6";
+}
+/* 리스트 */
+
+
+/* 학습자료실 */
+.my_study .total-search {
+	padding:0 0 13px;
+}
+.my_study .cmContentTit {
+	font-size: 19px;
+    font-family: "noto5";
+}
+.my_study .membershipAddArea {
+	background:#edeff2;
+	padding: 24px 29px;
+	border:none;
+}
+.my_study .cmListArea .boardBtn-box {
+	border:none !important;
+}
+.my_study .cmListArea .all_btn_wrap {
+	width: 71px;
+	padding: 7px 0;
+	box-sizing: border-box;
+	border: 1px solid #878787;
+	color: #878787;
+	font-size: 13px;
+	line-height: 100%;
+	position: absolute;
+    bottom: 15px;
+    right: 10px;
+}
+
+.my_study .cmListArea li {
+	padding:0 0 0 10px;
+}
+.my_study .cmListArea li:nth-of-type(1) {
+	padding:0;
+}
+.my_study .cmListArea li .cmListTit {
+	font-size:17px;
+}
+.my_study .cmListArea li .cmListIcon,
+.my_study .cmListArea li .cmListTxt {
+	padding-top:20px;
+	padding-bottom:20px;
+}
+.my_study .cmListArea li .cmListArr {
+	width: 12.5% !important;
+	padding-right:5px;
+}
+.my_study .cmListTxt p {
+	width: 630px;
+	font-size: 17px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.my_study .cmListTxt p span {
+	display:inline-block;
+	padding:0 10px;
+}
+.my_study .cmListTxt p span:first-child {
+	padding-left:0;
+}
+.my_study .cmListIcon + .cmListTxt p {
+	width: 520px;
+}
+.my_study .cmListIcon img {
+	width: 65px;
+	height: auto;
+	margin-right: 14px;
+}
+.my_study .classDate {
+	font-size:14px;
+	font-family: 'noto3';
+}
+.my_study .study_book_cmListTit {
+	width: 520px !important;
+}
+.my_study .study_book_cmListTit {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2; /* 두 줄 */
+	-webkit-box-orient: vertical;
+	line-height: 1.2em;
+	max-height: 2.4em; /* 두 줄 */
+}
+.my_study .study_book_cmListTit a {
+    width:100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+/*     white-space: nowrap; */
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* 두 줄 */
+    -webkit-box-orient: vertical;
+    line-height: 1.2em;
+    max-height: 2.4em; /* 두 줄 */
+}
