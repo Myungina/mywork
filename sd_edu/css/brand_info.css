@@ -1,0 +1,2615 @@
+@charset "utf-8";
+/*공통으로 쓰는 css:S*/
+.inner,
+.mid{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    position:relative;
+}
+.detail_style_bn{
+    display: table;
+    width:100%;
+    box-sizing:border-box;
+    padding:12% 0 7%;
+    background-size:67%;
+}
+.culture_con_tit {
+    display: table-cell;
+    width:100%;
+    text-align:left;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.detail_style_bn:nth-of-type(2n) .culture_con_tit{
+    text-align: right;
+}
+
+.culture_con_tit > h1{
+    font-size:33px;
+    margin:0 0 52px 0;
+    font-weight: 100;
+    font-family:"noto6";
+    line-height:40px;
+}
+
+.detail_style_bn .culture_con_tit > p {
+    font-size:18px;
+    line-height:28px;
+    position: relative;
+}
+
+.detail_style_bn .culture_con_tit > p:after{
+    position: absolute;
+    left:0;
+    top:-25px;
+    width:500px;
+    height:1px;
+    background:#000;
+    display:block;
+    content:'';
+}
+
+.detail_style_bn:nth-of-type(2n) .culture_con_tit > p:after{
+    left:calc(50% + 50px);
+}
+
+.culture_wrap .detail_style_bn1 {
+    background:url('/_skin/sidae/brand/new/culture/culture_con1_bg.png') right center no-repeat;
+    height:481px;
+    padding:50px 0;
+}
+.culture_wrap .detail_style_bn2 {
+    background:url('/_skin/sidae/brand/new/culture/culture_con2_bg.png') 96px center no-repeat;
+    height:394px;
+    padding-top:117px;
+}
+.culture_wrap .detail_style_bn3 {
+    background:url('/_skin/sidae/brand/new/culture/culture_con3_bg.png') right center no-repeat;
+    height:543px;
+    padding-top:137px;
+}
+
+
+.business_banner{
+    width:100%;
+    margin:0 auto;
+    position:relative;
+}
+.business_banner img{
+    max-width: 100%;
+}
+.business_banner.business_banner1{
+    background:#cc4f5e;
+}
+.business_banner.business_banner2{
+    background:#ca665c;
+}
+.business_banner.business_banner3{
+    background:#4e4bd1;
+}
+.business_banner.business_banner4{
+    background:#795dca;
+}
+
+.business_banner .mobile_bn{
+    display: none;
+}
+.business_banner .site_link{
+    display:block;
+    width:194px;
+    height:44px;
+    position:absolute;
+    font-size:0;
+    right:0;
+    top:calc(50% - 22px);
+}
+
+
+/*공통 css:E*/
+
+/*회사 소개:S*/
+.company .company_con {
+    width:100%;
+    position:relative;
+}
+.company .company_con .content_title{
+    font-family:'noto6';
+    text-align: center;
+    letter-spacing: -1px;
+    margin-bottom:57px;
+}
+
+.company .company_con .content_title > h2{
+    font-size:45px;
+    display: inline-block;
+    padding:10px 0;
+    font-family:'noto5';
+}
+
+.company .company_con .content_title > p{
+    font-size:28px;
+    color:#fff;
+    line-height:35px;
+    margin-top:40px;
+    font-family:'noto5';
+}
+
+.company .company_con1 {
+    padding:80px 0;
+    background:url('/_skin/sidae/brand/new/brand_info/con2.png') center no-repeat;
+}
+
+.company .company_con1 .content_title h2{
+    color:#9ee2ff;
+    border-top:1px solid #596875;
+    border-bottom:1px solid #596875;
+}
+
+.company .company_con1 .list_style1 {
+    width:100%;
+    overflow:hidden;
+    text-align: center;
+    font-size:0;
+}
+
+.company .company_con1 .list_style1 li {
+    width:30%;
+    display: inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align: top;
+    text-align: center;
+    margin:0 0 0 5%;
+    box-sizing: border-box;
+}
+
+.company .company_con1 .list_style1 li:first-child{
+    margin:0;
+}
+.company .company_con1 .list_style1 li  img{
+    display: block;
+    width: 100%;
+}
+
+.company .company_con1 .list_style1 li p {
+    width:100%;
+    background:rgba(0,0,0,0.5);
+    color:#fff;
+    padding:20px 0;
+    line-height:24px;
+    font-size:18px;
+    letter-spacing: -1.2px;
+    font-family:'noto2';
+}
+
+.company .company_con1 .list_style1 li p b{
+    color:#fff;
+    font-weight: 100;
+    font-family:'noto5';
+}
+
+.company .company_con2{
+    padding:95px 0;
+    height:556px;
+    box-sizing:border-box;
+    background:url('/_skin/sidae/brand/new/brand_info/con3_bg.png') center no-repeat;
+}
+
+.company .company_con2 .content_title h2{
+    color:#2d3945;
+    border-top:1px solid #9db0b4;
+    border-bottom:1px solid #9db0b4;
+}
+
+.company .company_con2 .list_style1{
+    display: table;
+    width:100%;
+    margin:0 auto;
+}
+
+.company .company_con2 .list_style1 li {
+    display: table-cell;
+    vertical-align: middle;
+    width:33.33%;
+    text-align: center;
+}
+
+.company .company_con2 .list_style1 li h4{
+    font-size:27px;
+    font-family:'noto5';
+    margin:15px auto;
+}
+
+.company .company_con2 .list_style1 li p{
+    font-size:17px;
+    line-height:24px;
+}
+
+/*회사 소개:E*/
+
+/*인사말 :S*/
+.ceo_img {
+    position: absolute;
+    right:0;
+    top:100px;
+}
+.ceo_hello .ceo_top{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+
+}
+
+.ceo_hello .ceo_sign{
+    margin:40px 0 20px;
+    font-size:17px;
+}
+
+.ceo_hello .ceo_sign span,
+.ceo_hello .ceo_sign b{
+    color:#40628c;
+}
+
+.ceo_hello .ceo_sign> img{
+    vertical-align: middle;
+    margin:-5px 0 0 10px;
+}
+
+.ceo_hello .ceo_sign b {
+    font-family:'noto5';
+}
+.ceo_hello .ceo_txt {
+    margin-bottom:66px;
+}
+.ceo_hello .ceo_txt p {
+    font-size:16px;
+    font-family:'noto2';
+    font-weight:100;
+    margin:0 0 20px 0;
+    line-height:28px;
+    width:70%;
+    word-break:keep-all;
+}
+
+.ceo_hello .ceo_txt h2{
+    font-size: 18px;
+    letter-spacing: -1px;
+    font-weight: 100;
+    font-family: 'noto5';
+
+}
+/* 인사말 :E*/
+
+/*CI BI :S*/
+.Symbol,
+.identity,
+.signature,
+.color-sys,
+.Brand{
+    margin:0 0 99px 0;
+}
+.identity dl,
+.Symbol dl{
+    width:60%;
+    padding:0 0 0 5%;
+}
+.explain dt,
+.sub_con_title{
+    font-size:20px;
+    font-family:'noto5';
+    margin: 0 0 10px 0;
+}
+
+.explain dd{
+    font-size: 15px;
+    font-family:'noto2';
+    line-height:22px;
+    margin-bottom:24px;
+}
+
+.explain dd:last-of-type{
+    margin-bottom:0
+}
+
+.identity {
+    border:1px solid #dedede;
+    padding:65px 73px 85px;
+}
+
+.identity  > img {
+    margin-top:18px;
+}
+
+.identity .down_wrap{
+    position: absolute;
+    bottom:0;
+    right:0;
+}
+
+.identity .logo_down{
+    width:190px;
+    height:44px;
+    text-align: center;
+    display: block;
+    float:left;
+    line-height:44px;
+    padding:0 32px 0 50px;
+    background:url('/_skin/sidae/brand/new/ci/icon_down.png') 32px center no-repeat;
+    border-top:1px solid #dedede;
+    border-left:1px solid #dedede;
+    font-size:15px;
+    font-family:'noto3';
+    color:#333;
+}
+
+.identity .logo_down:hover{
+    font-family:'noto5';
+    color:#000;
+}
+
+.signature{
+    border:1px solid #dedede;
+    width:100%;
+    margin-bottom:32px;
+}
+
+.signature td{
+    padding:50px 0;
+    border:1px solid #dedede;
+    position: relative;
+    text-align:center;
+}
+
+.signature td span{
+    position: absolute;
+    left:20px;
+    font-size:14px;
+    font-family:;'noto2';
+    top:10px
+}
+
+.color-sys{
+    overflow:hidden;
+}
+
+.color-sys li{
+    width:357px;
+    height:58px;
+    float:left;
+    color:#fff;
+    text-align:right;
+    padding:29px 15px;
+    box-sizing:border-box;
+    font-size:12px;
+    font-family:'noto2';
+}
+
+.color-sys li b{
+    font-family:'noto5';
+    color:#fff;
+    letter-spacing:4px;
+    padding-left:13px;
+    font-size:14px;
+}
+
+.color-sys li.sys-black{
+    background:#000;
+    margin-left:18px;
+}
+
+.color-sys li.sys-red{
+    background:#dd1a21;
+}
+
+.brand {
+    margin:0 0 100px 0;
+}
+.brand ul{
+    border:1px #dedede solid;
+    font-size:0;
+}
+.brand ul li{
+    border-left:1px #dedede solid;
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align: top;
+    width:20%;
+    font-size:0;
+    padding:30px 0 0 0;
+    position:relative;
+}
+.brand ul li p{
+    position: absolute;;
+    width:100%;
+    text-align:center;
+    top:110%;
+    font-size:17px;
+    font-family: 'noto5';
+    font-weight: 100;
+}
+.brand ul li:first-child{
+    border-left:0;
+}
+.brand ul li img{
+    display: block;
+    margin:0 auto 30px auto;
+}
+.brand ul li a{
+    display: inline-block;
+    text-align: center;
+    font-size:14px;
+    width:50%;
+    border-top:1px #dedede solid;
+    line-height:40px;
+}
+.brand ul li a:hover{
+    font-family: 'noto5'
+}
+.brand ul li a:first-of-type{
+    border-right:1px #dedede solid;
+}
+.brand ul li a:before{
+    background:url('/_skin/sidae/brand/new/ci/icon_down.png') center bottom no-repeat;
+    content:"";
+    display: inline-block;
+    width:20px;
+    height:15px;
+    vertical-align:middle;
+    margin-top:-5px;
+}
+
+/*오시는길*/
+.map_wrap .map iframe{
+    width:100%;
+}
+.page_title.no_pd{
+    padding-bottom:0;
+}
+.title_list{
+    padding:55px 0;
+}
+.title_list li{
+    padding:50px 0 0 0;
+}
+.title_list li:first-child{
+    padding:0;
+}
+.title_list li .title{
+    font-size:22px;
+    color:#000;
+    font-family: 'noto4';
+    font-weight:600;
+    margin:0 0 20px 0;
+}
+.title_list li p{
+    font-size:16px;
+    line-height:150%;
+    margin:15px 0 0 0;
+    word-break:keep-all;
+}
+.title_list li p:first-child{
+    margin:0;
+}
+.title_list li p b:first-child{
+    margin:0 0 8px 0;
+}
+.title_list li b{
+    font-family: 'noto4';
+    font-weight:600;
+    display: block;
+    margin:15px 0 8px 0;
+}
+.title_list li b.in-block{
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    margin:0;
+}
+.title_list li .purple{
+    color:#9c4dc5;
+    font-family: 'noto4';
+    font-weight:600;
+}
+.title_list li .square{
+    margin:0 0 0 15px;
+}
+.title_list li .square:first-child{
+    margin:0;
+}
+.title_list li .square:before{
+    content: "";
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align: top;
+    width:20px;
+    height:20px;
+    line-height:20px;
+    font-size:14px;
+    text-align:center;
+    color:#fff;
+    margin:0 5px 0 0;
+}
+.title_list li .square.type1:before{
+    content: "일";
+    background:#99d16b;
+}
+.title_list li .square.type2:before{
+    content: "G";
+    background:#99d16b;
+}
+.title_list li .square.type3:before{
+    content: "급";
+    background:#e63333;
+}
+.title_list li .square.type4:before{
+    content: "R";
+    background:#e63333;
+}
+
+
+/*사회공헌:S*/
+.news_wrap {
+}
+.news_wrap .news_con{
+    width:100%;
+    margin:0 auto;
+    position:relative;
+}
+.news_wrap .news_con .content_title{
+    font-size:30px;
+    margin-bottom:30px;
+    line-height:120%;
+    word-break:keep-all;
+}
+
+.news_wrap .news_con .content_title strong{
+    font-family:'noto5';
+    font-weight:100;
+    word-break:keep-all;
+    display: inline-block;
+}
+
+.news_wrap .news_con .slide_title{
+    text-align: center;
+    margin: 26px 0 0 0;
+    font-size:20px;
+    font-family:'noto5';
+    font-weight: 100;
+    letter-spacing: -1px;
+}
+.news_wrap .news_con .slide_sub_title{
+    font-size:20px;
+    font-family:'noto2';
+    line-height:100%;
+    text-align:center;
+    margin:9px auto 0 ;
+}
+.news_wrap .news_con .hope_swiper_btn,
+.news_wrap .news_con .book_swiper_btn{
+    position:absolute;
+    width:110%;
+    top:calc(50% - 0px);
+    left:-5%;
+}
+.news_wrap .news_con .book_swiper_btn > span,
+.news_wrap .news_con .hope_swiper_btn > span{
+    display:block;
+    width:33px;
+    height:52px;
+    background-size:contain;
+}
+.news_wrap .news_con .swiper-button-prev{
+    left:0;
+    background:url(/_skin/sidae/brand/new/l_arrow.png) no-repeat center center;
+}
+.news_wrap .news_con .swiper-button-next{
+    right:0;
+    background:url(/_skin/sidae/brand/new/r_arrow.png) no-repeat center center;
+}
+.news_wrap .news_con .swiper-button-next:after,
+.news_wrap .news_con .swiper-button-prev:after{
+    display: none;
+}
+.news_wrap .news_con  .book_donation_wrap ,
+.news_wrap .news_con  .hope_wrap {
+    width:100%;
+    overflow:hidden;
+}
+.news_wrap .news_con .swiper-slide > img{
+    width:100%;
+}
+.business_pagination{
+    text-align: center;
+    width: 100%;
+    padding:2% 0 0 0;
+    position: relative!important;
+    display: none;
+}
+.business_pagination span{
+    border:3px #fff solid;
+    width:18px;
+    height:18px;
+    box-sizing: border-box;
+}
+.business_pagination span.swiper-pagination-bullet{
+    background:#d4d4d4;
+    border:3px #fff solid;
+    opacity: 1;
+    box-sizing: border-box;
+}
+ .business_pagination span.swiper-pagination-bullet-active{
+    background:#fff;
+    border:3px #de1424 solid;
+}
+
+.news_wrap .news_con1{
+    padding:46px 0 133px;
+}
+.news_wrap .news_con2{
+    background:url('/_skin/sidae/brand/new/news/news_con1_bg.png') center no-repeat;
+    padding:66px 0;
+}
+.news_wrap .news_con3{
+    padding:127px 0  115px;
+}
+.news_wrap .news_con4{
+    background:url('/_skin/sidae/brand/new/news/news_con2_bg.png') center no-repeat;
+    padding:66px 0;
+}
+
+/*사회공헌 :E*/
+
+/*기업문화:S*/
+.culture_wrap{
+    padding:80px 0 0;
+}
+
+.culture_con4 {
+    padding: 60px 0 66px 0;
+}
+.culture_con4  ul {
+    width:100%;
+    overflow:hidden;
+    font-size:0;
+}
+.culture_con4 ul li {
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align: top;
+    width:49%;
+    height:120px;
+    box-sizing:border-box;
+    padding:33px 10px 32px 135px;
+    border:1px solid #000;
+    box-sizing:border-box;
+    margin: 0 2% 1.5% 0;
+}
+
+.culture_con4 ul li:nth-child(2n){
+    margin:0 0 1.5% 0;
+}
+
+.culture_con4 ul li p{
+    font-size:21px;
+    font-family:'noto6';
+    letter-spacing: -0.7px;
+    margin:0 0 10px 0;
+}
+
+.culture_con4 ul li span{
+    color:#7b7975;
+    font-family:'noto5';
+    font-weight: 100;
+    font-size: 15px;
+    line-height:22px;
+    letter-spacing:-0.25px;
+    word-break: keep-all;
+}
+
+.culture_con4 ul li:nth-of-type(1){
+    background:url('/_skin/sidae/brand/new/culture/benefit1.png') 50px center no-repeat;
+}
+.culture_con4 ul li:nth-of-type(2){
+    background:url('/_skin/sidae/brand/new/culture/benefit2.png') 50px center no-repeat;
+}
+.culture_con4 ul li:nth-of-type(3){
+    background:url('/_skin/sidae/brand/new/culture/benefit3.png') 50px center no-repeat;
+}
+.culture_con4 ul li:nth-of-type(4){
+    background:url('/_skin/sidae/brand/new/culture/benefit4.png') 50px center no-repeat;
+}
+.culture_con4 ul li:nth-of-type(5){
+    padding:20px 10px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit5.png') 50px center no-repeat;
+}
+.culture_con4 ul li:nth-of-type(6){
+    padding:20px 10px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit6.png') 50px center no-repeat;
+}
+.culture_con4 ul li:nth-of-type(7){
+    padding:20px 10px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit7.png') 50px center no-repeat;
+}
+.culture_con4 ul li:nth-of-type(8){
+    padding:20px 10px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit8.png') 50px center no-repeat;
+}
+.culture_con4 ul li:nth-of-type(9){
+    padding:20px 10px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit9.png') 50px center no-repeat;
+}
+/*기업문화:E*/
+
+/*인재채용:S*/
+.recruit_wrap{
+    margin: 0 0 99px 0;
+}
+.recuit_con1{
+    padding:28px 0 124px;
+}
+.recuit_con1 .div-table-cell{
+    width:33.33%;
+    text-align: center;
+}
+.recuit_con1 .div-table-cell .table-inner{
+    width:95%;
+    height:270px;
+    border-radius: 26px;
+    border:1px solid #d7d7d7;
+    padding:60px 0;
+    box-sizing:border-box;
+}
+.recuit_con1 .div-table-cell .table-inner p{
+    font-size:24px;
+    font-family:'noto6';
+    line-height:38px;
+    margin:15px 0 15px;
+}
+.recuit_con1 .div-table-cell .table-inner span{
+    font-size:16px;
+    line-height:23px;
+}
+.recuit_con2{
+    background:url('/_skin/sidae/brand/new/recruit/con2_bg.png') center no-repeat;
+    padding:0 0 67px 0;
+}
+.recuit_con2 .page_title h3{
+    color:#fff;
+}
+.recuit_con2 .div-table{
+    margin:80px 0 0 0 ;
+}
+.recuit_con2 .div-table .div-table-cell{
+    vertical-align: top;
+    width:25%;
+    padding:0 2%;
+}
+.recuit_con2 .table-inner{
+    text-align: center;
+}
+.recuit_con2 .table-inner i{
+    display: block;
+    font-size:14px;
+    font-family: 'noto5';
+    color:#7eabdd;
+    font-style:normal;
+    margin-bottom:15px;
+}
+.recuit_con2 .table-inner h2{
+    color:#fff;
+    font-size:22px;
+    font-family:'noto6';
+    margin:15px 0 15px;
+}
+.recuit_con2 .table-inner p{
+    color:#fff;
+    font-size:15px;
+    font-family:'noto2';
+    line-height:20px;
+    font-weight: 100;
+    word-break: keep-all;
+}
+.recuit_con2 .inner > p{
+    color:#90a9c5;
+    font-size:15px;
+    margin:76px 0 0 0 ;
+}
+.recuit_con3{
+    padding:0 0 100px 0;
+}
+.faq_list{
+    border-top:2px solid #000;
+}
+.faq_list li {
+    height:63px;
+    overflow:hidden;
+    border-bottom:1px solid #7c7c7c;
+    position:relative;
+    cursor: pointer;
+}
+.faq_list li.faq_list_cate{
+    display:none;
+}
+.faq_list li:after{
+    position: absolute;
+    right:35px;
+    top:27px;
+    width:22px;
+    height:20px;
+    display: block;
+    content:'';
+    background:url('/_skin/sidae/brand/new/common/list_down_icon.png') no-repeat center;
+}
+
+.faq_list li.selected{
+    height:auto;
+}
+
+.faq_list li.selected:after{
+    background:url('/_skin/sidae/brand/new/common/list_up_icon.png') no-repeat center;
+}
+
+.faq_list li .q{
+    height:63px;
+    line-height:63px;
+    padding:0 0 0 35px;
+    font-size:16px;
+    font-family:'noto3';
+    color:#6b6b6b;
+}
+.faq_list li.selected .q{
+    color:#000;
+    font-family:'noto5';
+}
+.faq_list li .a{
+    padding:27px 35px;
+    background:#f6f6f6;
+    color:#000;;
+    font-family:'noto3';
+}
+
+/*인재채용:E*/
+
+
+/*인사제도;S*/
+.comsystem_con1 img{
+    margin:20px 0 ;
+}
+
+.comsystem_con1 p{
+    text-align:center;
+    font-size:24px;
+    font-family:"noto3";
+}
+
+.comsystem_con1 p > span{
+    display:inline-block;
+    padding:3px 10px;
+    background:linear-gradient(90deg,#f98469, #ea464e);
+    color:#fff;
+    font-family:'noto6';
+    margin:10px 0 0 0;
+    position:relative;
+    z-index:2;
+}
+.comsystem_con1 .three_squared{
+    margin:50px 0 15px 0;
+}
+.comsystem_con1 .three_squared .div-table-cell{
+    width: 33.33%;
+    text-align: center;
+    vertical-align: middle;
+    padding:0 0 75px 0;
+    position:relative;
+}
+.comsystem_con1 .three_squared .div-table-cell span{
+    border:1px #818181 solid;
+    width:97%;
+    display: block;
+    padding:14% 0;
+    font-size:25px;
+    font-family: 'noto5';
+    margin:0 auto;
+    border-radius: 20px;
+    background:#fff;
+    z-index:2;
+    position:relative;
+}
+.comsystem_con1 .three_squared .div-table-cell:after{
+    border-bottom:1px #d7d7d7 solid;
+    content: "";
+    position:absolute;
+    width:50%;
+    bottom:35px;
+    right:0;
+}
+.comsystem_con1 .three_squared .div-table-cell:before{
+    border-left:1px #d7d7d7 solid;
+    content: "";
+    position:absolute;
+    height:60%;
+    bottom:35px;
+    left:50%;
+    z-index: 1;
+}
+.comsystem_con1 .three_squared .div-table-cell:nth-of-type(2):before{
+    bottom:0;
+}
+.comsystem_con1 .three_squared .div-table-cell:nth-of-type(2):after{
+    width:100%;
+    left:0;
+}
+.comsystem_con1 .three_squared .div-table-cell:nth-of-type(3):after{
+    left:0;
+}
+.comsystem_con1{
+    margin: 0 0 80px 0;
+}
+.comsystem_con2 {
+    margin: 0 0 100px 0;
+}
+.comsystem_con2  ul {
+    width:100%;
+    overflow:hidden;
+    font-size:0;
+}
+.comsystem_con2 ul li {
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align: top;
+    width:49.5%;
+    height:120px;
+    box-sizing:border-box;
+    padding:29px 10px 32px 135px;
+    border:1px solid #000;
+    margin:0 0 1% 1%;
+}
+.comsystem_con2 ul li:nth-child(2n+1){
+    margin:0 0 1% 0;
+}
+.comsystem_con2 ul li p{
+    font-size:21px;
+    font-family:'noto6';
+    letter-spacing: -0.7px;
+    margin:0 0 10px 0;
+}
+
+.comsystem_con2 ul li span{
+    color:#7b7975;
+    font-family:'noto5';
+    font-weight: 100;
+    font-size: 15px;
+    line-height:130%;
+    letter-spacing:-0.25px;
+    display:inline-block;
+    word-break:keep-all;
+}
+
+.comsystem_con2 ul li:nth-of-type(1){
+    background:url('/_skin/sidae/brand/new/culture/benefit1.png') 50px center no-repeat;
+}
+.comsystem_con2 ul li:nth-of-type(2){
+    background:url('/_skin/sidae/brand/new/culture/benefit2.png') 50px center no-repeat;
+}
+.comsystem_con2 ul li:nth-of-type(3){
+    background:url('/_skin/sidae/brand/new/culture/benefit3.png') 50px center no-repeat;
+}
+.comsystem_con2 ul li:nth-of-type(4){
+    background:url('/_skin/sidae/brand/new/culture/benefit4.png') 50px center no-repeat;
+}
+.comsystem_con2 ul li:nth-of-type(5){
+    background:url('/_skin/sidae/brand/new/culture/benefit10.png') 50px center no-repeat;
+}
+.comsystem_con2 ul li:nth-of-type(6){
+    padding:20px 20px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit8.png') 50px center no-repeat;
+}
+.comsystem_con2 ul li:nth-of-type(7){
+    padding:20px 20px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit5.png') 50px center no-repeat;
+}
+.comsystem_con2 ul li:nth-of-type(8){
+    padding:20px 20px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit6.png') 50px center no-repeat;
+}
+.comsystem_con2 ul li:nth-of-type(9){
+    padding:20px 20px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit7.png') 50px center no-repeat;
+}
+.comsystem_con2 ul li:nth-of-type(10){
+    padding:20px 20px 32px 135px;
+    background:url('/_skin/sidae/brand/new/culture/benefit9.png') 50px center no-repeat;
+}
+
+
+/*인사제도:E*/
+
+/*도서출판:S*/
+.business_con .div-table  > div{
+    padding:0 0.3%
+}
+.business_con .div-table .img_wrap{
+    display: block;
+    width:100%;
+}
+.business_con .div-table .img_wrap img{
+    display: block;
+    width: 100%
+}
+.business .business_con1 .slide_title {
+    font-size:20px;
+    line-height:28px;
+    text-align: center;
+    font-family:'noto6';
+    margin:26px 0 19px 0 ;
+}
+.business .business_con1 .slide_sub_title{
+    font-size:16px;
+    line-height:23px;
+    text-align: center;
+}
+.business .business_con2{
+    padding:50px 0;
+}
+.business .detail_style_bn1 {
+    background:url('/_skin/sidae/brand/new/business/business1_con2_img1.png') 490px  center no-repeat;
+}
+.business .detail_style_bn2 {
+    background:url('/_skin/sidae/brand/new/business/business1_con2_img2.png') 0 center no-repeat;
+}
+.business .detail_style_bn3 {
+    background:url('/_skin/sidae/brand/new/business/business1_con2_img3.png') 430px center no-repeat;
+}
+.business .culture_con_tit{
+    vertical-align: middle;
+}
+/*도서출판:E*/
+
+/*온라인 강의:S*/
+.popkon .detail_style_bn{
+    margin:0 0 100px;
+}
+.popkon .detail_style_bn .culture_con_tit{
+    text-align: right;
+    vertical-align: top;
+}
+.popkon .detail_style_bn:nth-of-type(2n) .culture_con_tit{
+    text-align: left;
+}
+.popkon .detail_style_bn1 {
+    background:url('/_skin/sidae/brand/new/business/popkon_img1.png') 13px  center no-repeat;
+    height:394px;
+    padding:60px 0 0 0;
+}
+.popkon .detail_style_bn2 {
+    background:url('/_skin/sidae/brand/new/business/popkon_img2.png') 560px center no-repeat;
+    height:394px;
+    padding:10px 0 0 0;
+}
+.popkon .detail_style_bn3 {
+    background:url('/_skin/sidae/brand/new/business/popkon_img3.png') 25px center no-repeat;
+    height:394px;
+    padding:60px 0 0 0;
+}
+.popkon .detail_style_bn4 {
+    background:url('/_skin/sidae/brand/new/business/popkon_img4.png') 560px center no-repeat;
+    height:394px;
+    padding:60px 0 0 0;
+}
+
+.popkon .detail_style_bn .culture_con_tit > p:after{
+    left:calc(50% - 100px);
+    width:654px;
+}
+.popkon .detail_style_bn1 .culture_con_tit > p:after{
+    width:473px;
+    left:calc(50% + 77px);
+}
+.popkon .detail_style_bn:nth-of-type(2n) .culture_con_tit > p:after{
+    left:0
+}
+
+/*온라인 강의 :E*/
+
+/*ai :S*/
+
+.ai .detail_style_bn1 .culture_con_tit{
+    text-align: right;
+}
+.ai .detail_style_bn1 .culture_con_tit p:after{
+    left:calc(50% - 190px);
+    width:745px;
+}
+
+.ai .detail_style_bn1 {
+    padding:45px 0;
+    background:url('/_skin/sidae/brand/new/business/ai_img1.png') left center no-repeat;
+    height: 380px;
+}
+.ai .business_con1{
+    padding-top:50px;
+}
+.ai .business_con2{
+    background:url('/_skin/sidae/brand/new/business/ai_con2_bg.png') center no-repeat;
+    padding:6px 0 89px;
+}
+
+.ai .business_con2 .list_style1{
+    overflow:hidden;
+}
+
+.ai .business_con2 .list_style1 li {
+    float:left;
+    width:30%;
+    margin-right:5%;
+    text-align: center;
+}
+.ai .business_con2 .list_style1 li:last-child,
+.ai .business_con3 .list_style2 li:last-child{
+    margin-right:0;
+}
+
+.ai .business_con2 .list_style1 li p,
+.ai .business_con3 .list_style2 li p{
+    background:rgba(225,225,225,0.6);
+    padding:20px 0;
+    font-size:20px;
+    line-height:29px;
+    font-family:'noto3';
+}
+.ai .business_con3 .list_style2 li p {
+    background:#fff;
+    word-break: keep-all;
+}
+
+.ai .business_con2 .list_style1 li p b,
+.ai .business_con2 .list_style2 li p b{
+    font-family:'noto6';
+}
+
+.ai .business_con3{
+    padding-bottom:100px;
+}
+
+.ai .business_con3 .list_style2{
+    overflow:hidden;
+}
+.ai .business_con3 .list_style2 li{
+    float:left;
+    width:24%;
+    margin-right:1%;
+    text-align: center;
+}
+
+.ai .business_con3 .list_style2 li div{
+    border:1px solid #d7d7d7;
+    border-radius: 20px;
+    height:124px;
+    width:100%;
+    padding:31px 0;
+}
+/*ai :E*/
+
+/*모의고사:S*/
+.pass .business_con1{
+    background:url('/_skin/sidae/brand/new/business/pass_con1_bg.png')center no-repeat;
+    padding:77px 0;
+    height:764px;
+}
+
+.pass .business_con1 .pass_img{
+    width:503px;
+    position:absolute;
+    background:url('/_skin/sidae/brand/new/business/pass_con1_icon_bg.png') center no-repeat;
+    box-shadow:5px 5px 15px #2d3966;
+    padding:6% 3.5% 8% 3.5%;
+}
+.pass .business_con1 .pass_img:after{
+    content: "";
+    position:absolute;
+    right:6%;
+    width:45px;
+    height:50px;
+    bottom:9%;
+}
+.pass .business_con1 .pass_img1:after{
+    background:url('/_skin/sidae/brand/new/business/pass_con1_icon2.png') center no-repeat;
+}
+.pass .business_con1 .pass_img2:after{
+    background:url('/_skin/sidae/brand/new/business/pass_con1_icon1.png') center no-repeat;
+}
+.pass .business_con1 .pass_img3:after{
+    background:url('/_skin/sidae/brand/new/business/pass_con1_icon3.png') center no-repeat;
+}
+.pass .business_con1 .pass_img h2{
+    font-size:28px;
+    color:#66faff;
+    margin-bottom:20px;
+    font-weight: 100;
+    font-family:'noto5';
+}
+
+.pass .business_con1 .pass_img p{
+    font-size:18px;
+    color:#fff;
+    line-height:26px;
+    font-family:'noto2';
+}
+
+.pass .business_con1 .pass_img2{
+    text-align: right;
+    right:3%;
+    top:110px;
+}
+
+.pass .business_con1 .pass_img3{
+    left:13%;
+    top:341px;
+}
+
+.pass .business_con2 {
+    padding:98px 0;
+    text-align: center;
+}
+
+.pass .business_con2 .inner > p{
+    font-size:33px;
+    text-align: center;
+}
+
+.pass .business_con2 .inner > p > b{
+    font-weight:100;
+    font-family:'noto5';
+}
+
+.pass .business_con2 .inner > p.text-bg{
+    font-size:22px;
+    margin:26px auto 0;
+    height:35px;
+    background:linear-gradient(90deg,#65decf, #52a8ef);
+    color:#fff;
+    line-height:35px;
+    display: inline-block;
+    padding:0 4%;
+}
+
+.pass .business_con2 .inner > p.text-bg b{
+    color:#fff;
+}
+
+.pass .business_con2 ul{
+    overflow:hidden;
+    width:100%;
+    margin:62px 0 0 0 ;
+}
+
+.pass .business_con2 ul li {
+    float: left;
+    width:30%;
+    margin-right:5%;
+    text-align:center;
+    border:1px solid #d7d7d7;
+    border-radius: 30px;
+    height:210px;
+    padding:48px 0 0;
+}
+
+.pass .business_con2 ul li:last-child{
+    margin-right:0;
+}
+
+.pass .business_con2 ul li b{
+    display: block;
+    font-size:24px;
+    font-weight: 100;
+    font-family:'noto5';
+    margin:10px 0 0 0 ;
+}
+/*모의고사 :E*/
+
+/*반응형:S*/
+@media (min-width:961px) and (max-width:1200px){
+    #sub_section .inner,
+    #sub_section .content{
+        max-width: 90%;
+    }
+    #sub_section .content.ceo_top .inner{
+        max-width:100%;
+    }
+    .ceo_img {
+        max-width: 290px;
+    }
+    .company .company_con1 .list_style1 li p,
+    .company .company_con2 .list_style1 li p{
+        font-size:16px;
+    }
+    .business .business_con1 .div-table > div{
+        padding:0 0.7%;
+        width:33%;
+    }
+    .business .business_con1 .slide_sub_title{
+        font-size:15px;
+        max-width:85%;
+        margin:0 auto;
+        word-break: keep-all;
+    }
+    .business .business_con1 .slide_sub_title br{
+        display: none;
+    }
+    .culture_con_tit > h1 {
+        font-size:28px;
+        margin: 0 0 5% 0;
+        line-height:125%;
+    }
+    .detail_style_bn .culture_con_tit > p{
+        font-size:15px;
+        line-height:150%;
+    }
+    .business .detail_style_bn{
+        background-size:55%!important;
+    }
+    .business .detail_style_bn1,
+    .business .detail_style_bn3{
+        background-position: right center;
+    }
+    .popkon .detail_style_bn1,
+    .popkon .detail_style_bn2,
+    .popkon .detail_style_bn3,
+    .popkon .detail_style_bn4{
+        height:auto;
+        padding:7% 0!important;
+        background-size:60%!important;
+    }
+    .ai .detail_style_bn{
+        height:auto;
+        padding:7% 0 9% 0!important;
+        background-size:40%!important;
+        background-position: left bottom;
+    }
+    .culture_wrap .detail_style_bn1,
+    .culture_wrap .detail_style_bn2,
+    .culture_wrap .detail_style_bn3{
+        height:auto;
+        padding:7% 0 9% 0!important;
+        background-size:40%!important;
+    }
+    .culture_wrap .detail_style_bn2{
+        background-position:left center;
+    }
+    /*AI모의면접 : S*/
+    .ai .business_con2 .list_style1 li img{
+        max-width: 100%;
+    }
+    .ai .business_con2 .list_style1 li p,
+    .ai .business_con3 .list_style2 li p{
+        font-size:16px;
+        line-height: 140%;
+    }
+    /*AI모의면접 : E*/
+    /*모의고사:S*/
+    .pass .business_con1{
+        background-position:left center;
+    }
+    .pass .business_con1 .pass_img{
+        padding:6% 3.5% 8% 3.5%;
+        max-width: 503px;
+        width:48%;
+        background-size: cover;
+    }
+    .pass .business_con1 .pass_img2{
+        top:200px;
+        right:0;
+    }
+    .pass .business_con1 .pass_img3{
+        left:10%;
+        top:390px;
+    }
+    .pass .business_con1 .pass_img h2{
+        font-size:24px;
+        margin-bottom:3%;
+    }
+    .pass .business_con1 .pass_img p{
+        font-size:15px;
+        line-height:150%;
+    }
+    /*모의고사:E*/
+    /*기업문화:S*/
+    .culture_con4 ul li {
+        height:auto;
+        padding:3% 0 3% 9%!important;;
+        margin: 0 2% 1.5% 0;
+        background-position:6.5% center!important;
+    }
+    .culture_con4 ul li p{
+        font-size:18px;
+    }
+    .culture_con4 ul li span{
+        font-size: 13px;
+        line-height:140%;
+    }
+    /*기업문화:E*/
+    /*채용안내 :S*/
+    .recuit_con1 .div-table-cell .table-inner p{
+        font-size: 22px;
+    }
+    .recuit_con1 .div-table-cell .table-inner span{
+        font-size:15px;
+        line-height: 140%
+    }
+    /*채용안내 :E*/
+    /*인사제도;S*/
+    .comsystem_con1 .three_squared{
+        margin:4% 0 1% 0;
+    }
+    .comsystem_con1 .three_squared .div-table-cell span{
+        font-size:23px;
+    }
+    .comsystem_con2 ul li{
+        height:auto;
+        padding:3% 0 3% 11%!important;
+        margin: 0 0 1.5% 1%;
+        background-position:9% center!important;
+    }
+    .comsystem_con2 ul li p{
+        font-size:19px;
+    }
+    .comsystem_con2 ul li span{
+        font-size:13px;
+        line-height:140%;
+    }
+    /*인사제도:E*/
+}
+
+@media (min-width:0px) and (max-width:960px){
+    #sub_section .inner,
+    #sub_section .content{
+        max-width: 90%;
+    }
+    #sub_section .content.ceo_top .inner{
+        max-width: 100%;
+    }
+    .hope_swiper_btn,
+    .book_swiper_btn{
+        display: none;
+    }
+    .business_pagination{
+        display:block;
+        bottom:0!important;
+    }
+    .business_pagination span{
+        margin:0 0 0 0.2%;
+    }
+    .company .company_con1 .list_style1 li{
+        width: 32%;
+        margin:0 0 0 2%;
+    }
+    .company .company_con2 .list_style1 li h4{
+        font-size:24px;
+    }
+    .company .company_con1 .list_style1 li p,
+    .company .company_con2 .list_style1 li p{
+        font-size:15px;
+        letter-spacing: -1px;
+    }
+    /*인사말 :S*/
+    #sub_section .content.ceo_top .page_title{
+        padding:7% 240px 8% 0;
+    }
+    .ceo_img {
+        max-width:28%;
+        top:7%;
+    }
+    .ceo_hello .ceo_top{
+        max-width:100%;
+    }
+    .ceo_hello .ceo_sign{
+        margin:5% 0 3%;
+    }
+    .ceo_hello .ceo_sign> img{
+        margin:-0.8% 0 0 1%;
+    }
+    .ceo_hello .ceo_txt {
+        margin-bottom:8%;
+    }
+    .ceo_hello .ceo_txt p {
+        font-size:15px;
+        margin:0 0 2% 0;
+        line-height:170%;
+        width:100%;
+    }
+
+    .ceo_hello .ceo_txt h2{
+        font-size: 17px;
+    }
+    /* 인사말 :E*/
+
+    /*CI BI :S*/
+    .Symbol,
+    .identity,
+    .signature,
+    .color-sys,
+    .Brand{
+        margin:0 0 10% 0;
+    }
+    .explain dt,
+    .sub_con_title{
+        font-size:20px;
+        margin: 0 0 1% 0;
+    }
+    .Symbol img{
+        display: block;
+        margin:0 0 4% 0;
+        max-width:60%;
+    }
+
+    .identity .explain{
+        padding:5% 0 0 0 ;
+    }
+    .identity dl,
+    .Symbol dl{
+        padding:0;
+        width:100%;
+    }
+
+    .explain dd{
+        line-height:150%;
+        margin:0 0 3% 0;
+    }
+
+    .explain dd:last-of-type{
+        margin-bottom:0
+    }
+
+    .identity {
+        padding:7% 7% 10% 7%;
+    }
+
+    .identity  > img {
+        margin-top:0;
+        max-width:55%
+    }
+
+    .identity .down_wrap{
+        left:0;
+        bottom:0;
+        width:100%;
+        border-top:1px solid #dedede;
+    }
+
+    .identity .logo_down{
+        width:50%;
+        padding:0;
+        border-top:0;
+        background:none;
+    }
+    .identity .logo_down:before{
+        content: "";
+        width:20px;
+        height:15px;
+        display: inline-block;
+        vertical-align: middle;
+        margin:-5px 0 0 0;
+        background:url('/_skin/sidae/brand/new/ci/icon_down.png') center center no-repeat;
+        box-sizing:border-box;
+    }
+
+    .signature{
+        margin-bottom:4%;
+    }
+
+    .signature td{
+        padding:7% 3% 5% 3% ;
+    }
+
+    .signature td img{
+        max-width: 90%;
+    }
+
+    .signature td span{
+        position: absolute;
+        left:4%;
+        top:6%
+    }
+
+    .color-sys{
+        overflow:hidden;
+    }
+
+    .color-sys li{
+        width:49%;
+        padding:3% 2%;
+    }
+
+    .color-sys li b{
+        padding-left:2.5%;
+    }
+
+    .color-sys li.sys-black{
+        margin-left:2%;
+    }
+
+    .brand {
+        margin:0 0 10% 0;
+    }
+    .brand ul{
+        border-bottom:0;
+    }
+    .brand ul li{
+        width:50%;
+    }
+    .brand ul li:first-child,
+    .brand ul li:nth-of-type(3),
+    .brand ul li:nth-of-type(5){
+        border-left:0;
+    }
+    .brand ul li:nth-of-type(5){
+        width: 100%;
+    }
+    .brand ul li img{
+        display: block;
+    }
+    .brand ul li a{
+        display: inline-block;
+        text-align: center;
+        font-size:14px;
+        width:50%;
+        border-bottom:1px #dedede solid;
+        line-height:40px;
+    }
+    .brand ul li a:first-of-type{
+        border-right:1px #dedede solid;
+    }
+    .brand ul li a:before{
+        background:url('/_skin/sidae/brand/new/ci/icon_down.png') center bottom no-repeat;
+        content:"";
+        display: inline-block;
+        width:20px;
+        height:15px;
+        vertical-align:middle;
+        margin-top:-5px;
+    }
+    .brand ul li p {
+        display: none;
+    }
+     /*CI BI :E*/
+    /*도서출판 :S*/
+    .business .business_con1 .div-table > div{
+        padding:0 0.7%;
+        width:33%;
+    }
+    .business .business_con1 .slide_sub_title{
+        font-size:15px;
+        max-width:85%;
+        margin:0 auto;
+        word-break: keep-all;
+        letter-spacing: -1px;
+    }
+    .business .business_con1 .slide_sub_title br{
+        display: none;
+    }
+    .culture_con_tit > h1 {
+        font-size:24px;
+        text-align: center;
+        border-bottom:1px #000 solid;
+        padding:0 0 1% 0;
+        width:80%;
+        margin:0 auto 3% auto;
+        line-height: 120%;
+    }
+    .detail_style_bn{
+        background-position:center top!important;
+    }
+    .business .detail_style_bn{
+        padding:32% 0 0 0;
+        background-size:70%;
+        margin:0 0 7% 0!important;
+    }
+    .popkon .detail_style_bn{
+        margin:0 0 11% 0;
+    }
+    .popkon .detail_style_bn1,
+    .popkon .detail_style_bn2,
+    .popkon .detail_style_bn3,
+    .popkon .detail_style_bn4{
+        height:auto;
+        padding:34% 0 0 0;
+        background-size:41%!important;
+    }
+    .popkon .detail_style_bn1{
+        background-size:60%!important;
+    }
+     /*기업소식 : S*/
+    .culture_wrap .detail_style_bn{
+        padding:32% 0 0 0;
+        background-size:70%;
+        margin:0 0 7% 0!important;
+    }
+    .culture_wrap .detail_style_bn1,
+    .culture_wrap .detail_style_bn2,
+    .culture_wrap .detail_style_bn3{
+        height:auto;
+        padding:46% 0 0 0;
+        background-size:60%!important;
+    }
+    .culture_wrap .detail_style_bn2{
+        padding:41% 0 0 0;
+    }
+    .culture_wrap .detail_style_bn3{
+        padding:53% 0 0 0;
+    }
+    /*기업소식 : E*/
+    .ai .business_con1{
+        padding:3% 0 7% 0;
+    }
+    .ai .business_con2{
+        padding:1% 0 9% 0;
+    }
+    .ai .business_con3{
+        padding:0 0 10% 0;
+    }
+    .ai .detail_style_bn1{
+        height:auto;
+        padding:38% 0 0 0;
+        background-size:48%!important;
+    }
+    .ai .detail_style_bn1 .culture_con_tit img{
+        display: block;
+        margin:0 auto 2% auto;
+        max-width:30%;
+    }
+    .detail_style_bn .culture_con_tit > p{
+        font-size:15px;
+        line-height:150%;
+        text-align: center;
+        word-break: keep-all;
+        max-width: 80%;
+        margin:0 auto;
+    }
+    .detail_style_bn .culture_con_tit > p .tablet{
+        display: none;
+    }
+    .detail_style_bn .culture_con_tit > p:after{
+        display: none;
+    }
+    .detail_style_bn .culture_con_tit > p br{
+    }
+    /*도서출판 :E*/
+    /*AI모의면접 : S*/
+    .ai .business_con3 .list_style2 li{
+        width:48%;
+        margin:4% 0 0 2%
+    }
+    .ai .business_con3 .list_style2 li:nth-of-type(2n+1){
+        margin:4% 0 0 0;
+    }
+     .ai .business_con3 .list_style2 li:nth-of-type(1),
+    .ai .business_con3 .list_style2 li:nth-of-type(2){
+        margin-top:0
+    }
+     .ai .business_con2 .list_style1 li img{
+        max-width: 100%;
+    }
+    .ai .business_con2 .list_style1 li p,
+    .ai .business_con3 .list_style2 li p{
+        font-size:15px;
+        line-height: 140%;
+        padding: 4% 0;
+    }
+    /*AI모의면접 : E*/
+    /*모의고사:S*/
+    .pass .business_con1{
+        padding:5% 0;
+        height:auto;
+        background-position:left center;
+        background-size:cover;
+        text-align:right;
+    }
+    .pass .business_con1 .pass_img{
+        width:100%;
+        position:relative;
+        padding:6% 3.5% 8% 3.5%;
+        max-width: 503px;
+        top:auto;
+        right:auto;
+        left:auto;
+        text-align: left;
+        margin:4% 0 0 auto;
+    }
+    .pass .business_con1 .pass_img1{
+        margin:0 0 0 auto;
+    }
+    .pass .business_con1 .pass_img h2{
+        font-size:25px;
+        margin-bottom:3%;
+    }
+
+    .pass .business_con1 .pass_img p{
+        font-size:16px;
+        line-height:150%;
+    }
+    .pass .business_con2 {
+        padding:10% 0;
+    }
+    .pass .business_con2 .inner > p{
+        font-size:27px;
+        word-break:keep-all;
+    }
+    .pass .business_con2 .inner > p.text-bg{
+        font-size:20px;
+        margin:3% auto 0;
+        padding:1% 3%;
+        height:auto;
+        line-height:140%;
+    }
+    .pass .business_con2 ul{
+        margin:7% 0 0 0 ;
+    }
+    .pass .business_con2 ul li {
+        width:31%;
+        margin-right:3.5%;
+        padding:7% 0;
+        height:auto;
+    }
+    .pass .business_con2 ul li  img{
+        display: block;
+        margin:0 auto;
+        max-width:25%;
+    }
+    .pass .business_con2 ul li b{
+        font-size:20px;
+        margin:3% 0 0 0 ;
+    }
+    /*모의고사 :E*/
+     /*기업문화:S*/
+    .news_wrap .news_con1{
+        padding:5% 0 12%;
+    }
+    .news_wrap .news_con2{
+        padding:7% 0;
+    }
+    .news_wrap .news_con3{
+        padding:12% 0;
+    }
+    .news_wrap .news_con4{
+        padding:7% 0;
+    }
+    .news_wrap .news_con .content_title{
+        margin:0 0 4% 0;
+        text-align:center;
+    }
+    .culture_con4{
+        padding:2% 0 7%;
+    }
+    .culture_con4 ul li {
+        height:auto;
+        margin:2% 0 0 0;
+        width:100%;
+    }
+    .culture_con4 ul li:nth-of-type(2n){
+        margin: 2% 0 0 0;
+    }
+    .culture_con4 ul li:first-child{
+        margin:0;
+    }
+    .culture_con4 ul li p{
+        font-size:19px;
+    }
+    .culture_con4 ul li span{
+        font-size: 14px;
+        line-height:140%;
+    }
+    /*기업문화:E*/
+   /*인재채용:S*/
+    .recruit_wrap{
+        margin: 0 0 10% 0;
+    }
+    .recuit_con1{
+        padding:3% 0 7%;
+    }
+    .recuit_con1 .div-table-cell{
+        width:33.33%;
+        text-align: center;
+    }
+    .recuit_con1 .div-table-cell .table-inner{
+        width:94%;
+        height:260px;
+        padding:22% 0;
+    }
+    .recuit_con1 .div-table-cell .table-inner p{
+        font-size:20px;
+        line-height:130%;
+        margin:2% 0 4%;
+    }
+    .recuit_con1 .div-table-cell .table-inner span{
+        letter-spacing: -1px;
+        word-break: keep-all;
+        line-height:150%;
+        font-size:14px;
+    }
+    .recuit_con2{
+        padding:0 0 7% 0;
+        background-position: center top;
+        background-size: cover;
+    }
+    .recuit_con2 .page_title h3,
+    .recuit_con3 .page_title h3{
+        padding:0;
+    }
+    .recuit_con2 .div-table{
+        margin:8% 0 0 0 ;
+        font-size:0;
+    }
+    .recuit_con2 .div-table .div-table-cell{
+        display: inline-block;
+        vertical-align: top;
+        padding:2%;
+        width:48%;
+        margin:0 0 1% 1%
+    }
+    .recuit_con2 .div-table .div-table-cell:nth-of-type(2n){
+        margin:0 0 1% 0;
+    }
+    .recuit_con2 .table-inner i{
+        font-size:14px;
+        margin-bottom:2%;
+    }
+    .recuit_con2 .table-inner h2{
+        font-size:18px;
+        margin:5% 0;
+    }
+    .recuit_con2 .table-inner p{
+        color:#fff;
+        font-size:15px;
+        font-family:'noto3';
+        line-height:140%;
+    }
+    .recuit_con2 .inner > p{
+        font-size:14px;
+        margin:8% 0 0 0 ;
+    }
+    .recuit_con3{
+        padding:0 0 10% 0;
+    }
+    .faq_list li .q{
+        padding:0 0 0 4%;
+        font-size:15px;
+    }
+    .faq_list li .a{
+        padding:27px 35px;
+        font-size:14px;
+    }
+    /*인재채용:E*/
+    /*인사제도;S*/
+    .comsystem_con1 .three_squared{
+        margin:4% 0 1% 0;
+    }
+    .comsystem_con1 .three_squared .div-table-cell span{
+        font-size:23px;
+    }
+    .comsystem_con1{
+        margin:0 0 8%0;
+    }
+    .comsystem_con2{
+        margin: 0 0 10% 0;
+    }
+    .comsystem_con2 ul li {
+        height:auto;
+        margin:2% 0 0 0;
+        width:100%;
+    }
+    .comsystem_con2 ul li:nth-of-type(2n+1){
+        margin: 2% 0 0 0;
+    }
+    .comsystem_con2 ul li:first-child{
+        margin:0;
+    }
+    .comsystem_con2 ul li p{
+        font-size:19px;
+    }
+    .comsystem_con2 ul li span{
+        font-size: 14px;
+        line-height:140%;
+    }
+    /*인사제도:E*/
+
+    /*오시는길: S*/
+    .map_wrap .map iframe{
+        height:350px;
+    }
+    .title_list{
+        padding:6% 0;
+    }
+    .title_list li{
+        padding:5% 0 0 0;
+    }
+    .title_list li .title{
+        font-size:20px;
+        margin:0 0 2% 0;
+    }
+    .title_list li p{
+        font-size:15px;
+        margin:1% 0 0 0;
+    }
+    .title_list li p b:first-child{
+        margin:0 0 1% 0;
+    }
+    .title_list li b{
+        margin:2% 0 1% 0;
+    }
+    .title_list li .square{
+        margin:0 0 0 2%;
+    }
+    .title_list li .square:before{
+        font-size:13px;
+        margin:0 1% 0 0;
+    }
+    /*오시는길: E*/
+
+    /*맨밑 배너*/
+    .business_banner .site_link{
+        width:26%;
+        height:24%;
+        position:absolute;
+        font-size:0;
+        right:auto;
+        left:50%;
+        margin:0 0 0 -13%;
+        top:auto;
+        bottom:9%;
+    }
+    .business_banner img{
+        display: none;
+    }
+    .business_banner img.mobile_bn{
+        display: block;
+        max-width: 100%;
+    }
+}
+
+@media (min-width:0px) and (max-width:700px){
+    .mo_scr{
+      overflow-x:auto;
+      overflow-y:hidden;
+      position:relative;
+      z-index:2;
+        /*
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        */
+    }
+    /*
+    .mo_scr::-webkit-scrollbar {
+        display: none;
+    }
+*/
+    .news_wrap .news_con2,
+    .news_wrap .news_con4{
+        background-size: cover;
+    }
+    .company .company_con .content_title{
+        margin-bottom:0.8333rem;
+    }
+    .company .company_con .content_title > p{
+        font-size:  0.7889rem;
+        margin-top:0.5556rem;
+        word-break: keep-all;
+        line-height:140%;
+    }
+    .company .company_con .content_title h2{
+        font-size: 1.2rem;
+    }
+
+    .company .company_con1,
+    .company .company_con2{
+        background-size:cover;
+        height:auto;
+        padding:8% 0;
+    }
+
+    .company .company_con .list_style1{
+        width: 35rem;
+    }
+    .company .company_con .list_style1 li p{
+        font-size: 0.6111rem;
+        line-height:150%;
+    }
+    .company .company_con .list_style1 li h4{
+        font-size:0.65rem;
+    }
+    .news_wrap .news_con .content_title{
+        font-size: 0.8333rem;
+    }
+    .news_wrap .news_con .book_donation_wrap, .news_wrap .news_con .hope_wrap{
+        width:90%;
+        margin:0 auto;
+    }
+    .news_wrap .news_con .slide_title{
+        font-size:0.7778rem;
+        margin: 4% 0 0 0;
+    }
+    .news_wrap .news_con .slide_sub_title{
+        font-size:0.7778rem;
+    }
+    .swiper-pagination.business_pagination{
+        position: relative;
+        display:block;
+        padding:6% 0 0 0;
+        bottom:auto;
+    }
+    .business_pagination span{
+        margin:0 0 0 1.5%;
+        width:0.7rem;
+        height: 0.7rem;
+    }
+    .company .company_con2 .list_style1{
+        display: block;
+        width:100%;
+    }
+    .company .company_con2 .list_style1 li {
+        display: table;
+        vertical-align: middle;
+        width:100%;
+        text-align: left;
+        margin:3% 0 0 0;
+    }
+    .company .company_con2 .list_style1 li > * {
+        display: table-cell;
+        vertical-align: middle;
+        padding:1% 0 1% 10%;
+        width:30%;
+    }
+    .company .company_con2 .list_style1 li > div:last-child{
+        text-align: left;
+        width:70%;
+    }
+
+    /*인사말 :S*/
+    #sub_section .content.ceo_top .page_title{
+        padding:7% 7rem 15% 0
+    }
+    .ceo_img {
+        max-width:6.5rem;
+        top:6%;
+    }
+    .ceo_hello .ceo_top{
+        max-width:100%;
+    }
+
+    .ceo_hello .ceo_sign{
+        margin:5% 0 0;
+        font-size:0.5rem
+    }
+    .ceo_hello .ceo_sign> img{
+        margin:-0.8% 0 0 1%;
+        max-width: 3rem
+    }
+    .ceo_hello .ceo_txt {
+        margin-bottom:8%;
+    }
+    .ceo_hello .ceo_txt p {
+        font-size:0.557rem;
+    }
+    .ceo_hello .ceo_txt p br{
+        display: none;
+    }
+    .ceo_hello .ceo_txt h2{
+        font-size: 0.607rem;
+    }
+    /*인사말 :E*/
+  /*CI BI :S*/
+    .Symbol,
+    .identity,
+    .signature,
+    .color-sys,
+    .Brand{
+        margin:0 0 12% 0;
+    }
+    .Symbol img{
+        max-width: 100%;
+        margin:0 auto 6% auto;
+    }
+
+    .sub_con_title{
+        font-size:0.8333rem;
+        margin: 0 0 4% 0;
+    }
+    .explain dt{
+        font-size:0.8333rem;
+        margin: 0 0 2% 0;
+    }
+    .explain dd{
+        font-size:  0.5556rem
+    }
+
+    .explain dd:last-of-type{
+        margin-bottom:0
+    }
+
+    .explain dd br{
+        display: none;
+    }
+
+    .identity {
+        padding:7% 7% 18% 7%;
+    }
+
+    .identity .logo_down{
+        font-size:0.57rem;
+    }
+
+    .signature{
+        margin-bottom:4%;
+    }
+
+    .signature td{
+        padding:10% 0 2% ;
+    }
+    .signature td img{
+        max-width: 75%;
+    }
+    .signature td span{
+        left:0;
+        top:10%;
+        text-align: center;
+        width:100%;
+        font-size:0.57rem;
+    }
+
+    .color-sys{
+        overflow:hidden;
+    }
+
+    .color-sys li{
+        width:49%;
+        padding:4% 2%;
+        height: auto;
+        font-size:0.57rem;
+        text-align: center;
+    }
+
+    .color-sys li b{
+        padding-left:2.5%;
+    }
+
+    .color-sys li.sys-black{
+        margin-left:2%;
+    }
+
+    .brand {
+        margin:0 0 10% 0;
+    }
+    .brand ul{
+        border-bottom:0;
+    }
+    .brand ul li{
+        width:100%;
+        border-left:0;
+    }
+    .brand ul li a{
+        font-size:0.57rem;
+        width:50%;
+        border-bottom:1px #dedede solid;
+        line-height:40px;
+    }
+    .brand ul li a:first-of-type{
+        border-right:1px #dedede solid;
+    }
+    .brand ul li a:before{
+        background:url('/_skin/sidae/brand/new/ci/icon_down.png') center bottom no-repeat;
+        content:"";
+        display: inline-block;
+        width:20px;
+        height:15px;
+        vertical-align:middle;
+        margin-top:-5px;
+    }
+     /*CI BI :E*/
+     /*도서출판 :S*/
+    .business .business_con1{
+        margin:0 0 5% 0;
+    }
+    .business .business_con1 .div-table{
+        width:32rem;
+        padding:0 0 3% 0
+    }
+    .business .business_con1 .slide_title{
+        font-size:0.667rem;
+        line-height:130%;
+        margin: 4% 0 3% 0;
+    }
+    .business .business_con1 .slide_sub_title{
+        font-size:0.57rem;
+        max-width:90%;
+        letter-spacing: 0px;
+        line-height:130%;
+    }
+    .business .business_con1 .slide_sub_title br{
+        display: none;
+    }
+    .business .business_con2{
+        padding:5% 0;
+    }
+    .culture_con_tit > h1 {
+        font-size:0.85rem;
+    }
+    .detail_style_bn{
+        padding:29% 0 10% 0;
+        background-size:60%!important;
+    }
+    .business .detail_style_bn{
+        padding:35% 0 5% 0;
+        background-size:80%!important;
+    }
+    .popkon .detail_style_bn{
+        background-size:85%!important;
+        padding:68% 0 5% 0;
+    }
+    .popkon .detail_style_bn1{
+        background-size:80%!important;
+        padding:45% 0 5% 0;
+    }
+    .ai .detail_style_bn1{
+        background-size:70%!important;
+        padding:62% 0 5% 0;
+    }
+    .culture_wrap .detail_style_bn{
+        background-size:74%!important;
+        padding:58% 0 5% 0;
+    }
+    .culture_wrap .detail_style_bn2{
+        padding:52% 0 5% 0;
+    }
+    .culture_wrap .detail_style_bn3{
+        padding:62% 0 5% 0;
+
+    }
+    .detail_style_bn .culture_con_tit > p{
+        font-size:0.56rem;
+    }
+    .detail_style_bn .culture_con_tit > p br{
+        display: none;
+    }
+    .detail_style_bn .culture_con_tit > p:after{
+        display: none;
+    }
+    /*도서출판 :E*/
+    /*AI모의면접 : S*/
+    .ai .business_con2 .list_style1{
+        width:33rem;
+        margin:0 0 2% 0
+    }
+    .ai .business_con3 .list_style2 li{
+        width:48%;
+        margin:4% 0 0 2%
+    }
+    .ai .business_con2 .list_style1 li img{
+        width:100%;
+    }
+    .ai .business_con3 .list_style2 li:nth-of-type(2n+1){
+        margin:4% 0 0 0;
+    }
+    .ai .business_con3 .list_style2 li:nth-of-type(1),
+    .ai .business_con3 .list_style2 li:nth-of-type(2){
+        margin-top:0
+    }
+    .ai .business_con2 .list_style1 li p,
+    .ai .business_con3 .list_style2 li p{
+        font-size: 0.5556rem;
+        line-height: 140%;
+    }
+    /*AI모의면접 : E*/
+   /*모의고사:S*/
+    .pass .business_con1{
+        padding:7% 0;
+        text-align: center;
+    }
+    .pass .business_con1 .pass_img{
+        padding:6% 3.5% 12% 3.5%;
+        margin:6% auto 0 auto;
+    }
+    .pass .business_con1 .pass_img1{
+        margin:0 auto;
+    }
+    .pass .business_con1 .pass_img h2{
+        font-size:0.7778rem;
+    }
+    .pass .business_con1 .pass_img p{
+        font-size:0.5556rem;
+        line-height:150%;
+    }
+    .pass .business_con2 .inner > p{
+        font-size:0.7333rem;
+    }
+    .pass .business_con2 .inner > p.text-bg{
+        font-size:0.6667rem;
+        line-height:130%;
+    }
+    .pass .business_con2 ul li b{
+        font-size:0.567rem;
+    }
+    /*모의고사 :E*/
+   /*기업문화:S*/
+    .culture_con4 ul li {
+        padding:0.8rem 0 0.8rem 3.2rem!important;;
+        background-position: 1.0rem center!important;
+        background-size:1.25rem!important;
+    }
+    .culture_con4 ul li p{
+        font-size: 0.6111rem;
+    }
+    .culture_con4 ul li span{
+        font-size: 0.5rem;
+    }
+    /*기업문화:E*/
+     /*인재채용:S*/
+    .recuit_con1 .div-table{
+        width:31rem;
+    }
+    .recuit_con1 .div-table-cell .table-inner{
+        width:94%;
+        height:auto;
+        padding:22% 0;
+        height:11rem;
+    }
+    .recuit_con1 .div-table-cell .table-inner p{
+        font-size:0.8333rem;
+    }
+    .recuit_con1 .div-table-cell .table-inner span{
+        font-size: 0.6667rem;
+        line-height:120%;
+    }
+    .recuit_con2 .div-table .div-table-cell{
+        padding:0;
+        width:100%;
+        margin:5% 0 0 0;
+    }
+    .recuit_con2 .div-table .div-table-cell:first-child{
+        margin:0;
+    }
+    .recuit_con2 .div-table .div-table-cell:nth-of-type(2n){
+        margin:5% 0 0 0;
+    }
+    .recuit_con2 .div-table .div-table-cell img{
+        max-width: 13%
+    }
+    .recuit_con2 .table-inner i{
+        font-size:0.667rem;
+    }
+    .recuit_con2 .table-inner h2{
+        font-size: 0.7565rem;
+        margin:5% 0;
+    }
+    .recuit_con2 .table-inner p{
+        font-size:0.667rem;
+    }
+    .recuit_con2 .inner > p{
+        font-size:0.667rem;
+        line-height:140%;
+        text-align: center;
+    }
+    .recuit_con3{
+        padding:0 0 10% 0;
+    }
+    .step .table-inner{
+        display: table;
+        width:100%;
+        text-align:left;
+    }
+    .recuit_con2 .div-table.step .div-table-cell{
+        margin:8% 0 0 0
+    }
+    .recuit_con2 .div-table.step .div-table-cell:first-child{
+        margin:0;
+    }
+
+    .step .table-inner .icon,
+    .step .table-inner .txt{
+        display: table-cell;
+        vertical-align:middle;
+    }
+    .step .table-inner .icon{
+        width:25%;
+        text-align: center;
+    }
+    .step .table-inner .icon img{
+        max-width: 50%;
+    }
+    .step .table-inner .txt h2{
+        margin:0;
+    }
+    .step .table-inner .txt p{
+        margin:2% 0 0 0;
+    }
+    .faq_list li{
+        height:auto
+    }
+    .faq_list li .q,
+    .faq_list li .a{
+        line-height: 140%;
+        height: auto;
+        word-break: keep-all;
+    }
+    .faq_list li .q{
+        font-size: 0.667rem;
+        padding:4% 15% 4% 4%;
+        position:relative;
+    }
+    .faq_list li .a{
+        font-size: 0.6111rem;
+        display: none;
+        padding:4% 8% 4% 4%;
+    }
+    .faq_list li:after{
+        display:none;
+    }
+    .faq_list li .q:after{
+        position:absolute;
+        right:4%;
+        top:50%;
+        margin:-10px 0 0 0;;
+        width: 0.6111rem;
+        height:0.5556rem;
+        content:"";
+        background:url('/_skin/sidae/brand/new/common/list_down_icon.png') no-repeat center;
+        background-size: 0.6111rem;
+        background-size:contain;
+    }
+
+    .faq_list li.selected .a{
+        display: block;
+    }
+    /*인재채용:E*/
+    /*인사제도;S*/
+    .comsystem_con1 .three_squared .div-table-cell span{
+        font-size:0.667rem;
+    }
+    .comsystem_con1 p{
+        font-size:0.667rem;
+    }
+    .comsystem_con1 p > span {
+        margin:1% 0 0 0;
+        font-size:0.627rem;
+    }
+    .comsystem_con2 ul li {
+        padding:0.8rem 0 0.8rem 3.2rem!important;;
+        background-position: 1.0rem center!important;
+        background-size:1.25rem!important;
+    }
+    .comsystem_con2 ul li p{
+        font-size: 0.6211rem;
+        margin:0 0 1% 0;
+        text-align: left;
+    }
+    .comsystem_con2 ul li span{
+        font-size: 0.55rem;
+    }
+    /*인사제도:E*/
+    /*오시는길: S*/
+    .map_wrap .map iframe{
+        height:11.11rem;
+    }
+    .title_list li .title{
+        font-size:  0.6111rem;
+    }
+    .title_list li p{
+        font-size:0.5rem;
+    }
+    .title_list li .square{
+        margin:0;
+    }
+    .title_list li .square:before{
+        font-size:0.5rem;
+        width: 0.8333rem;
+        height:0.8333rem;
+        line-height:0.833rem;
+        margin:0 1% 0 0;
+    }
+    /*오시는길: E*/
+}
+/*반응형 :E*/

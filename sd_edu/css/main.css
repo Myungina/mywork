@@ -1,0 +1,1173 @@
+@charset "utf-8";
+.wrap{
+    width:100%;
+}
+.width_mid{
+    max-width: 1100px;
+    margin:0 auto;
+}
+/*HEADER :S*/
+#brd_header{
+    overflow:hidden;
+    padding:30px 0;
+    height: auto;
+    position:absolute;
+    width:100%;
+    background:#fff;
+    top:0;
+    left:0;
+}
+#brd_header.act{
+    position:fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    background:#fff;
+    z-index:90;
+    border-bottom:1px solid #cecece;
+}
+#brd_header h1{
+    float:left;
+    font-size:0;
+    height:45px;
+    width:185px;
+}
+#brd_header h1 a{
+    display: block;
+    height:100%;
+    background:url(/_skin/sidae/brand/new/logo.png) no-repeat left center;
+}
+#brd_header h1 a.logo_brand{
+    display: block;
+    height:100%;
+    background:url(/_skin/sidae/brand/new/logo_.png) no-repeat left center;
+    height:45px;
+}
+#brd_header ul{
+    float:right;
+    font-size:0;
+    position:relative;
+}
+#brd_header ul li{
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align: top;
+    margin:0 0 0 50px;
+    padding:0 0 3px 0;
+    position:relative;
+    box-sizing:border-box;
+    overflow:hidden;
+}
+#brd_header ul li:before{
+    border:1px #db0011 solid;
+    content:"";
+    position:absolute;
+    bottom:0px;
+    width:100%;
+    left:-400px;
+    transition:all 0.3s;
+}
+#brd_header ul li.act:before{
+    left:0;
+}
+#brd_header ul li.selected:before{
+    left:0;
+}
+#brd_header ul li:first-child{
+    margin:0;
+}
+#brd_header ul li a{
+    line-height:35px;
+    font-size:20px;
+    font-family: 'noto5';
+}
+#brd_header ul li.gnb_btn{
+    margin:0 0 0 40px;
+}
+#brd_header ul li.gnb_btn:before{
+    display: none;
+}
+#brd_header ul li.gnb_btn a{
+    font-size:0;
+    width:25px;
+    height:35px;
+    display: block;
+    background:url(/_skin/sidae/brand/new/gnb_bg.png) no-repeat center center;
+}
+#brd_header ul li.gnb_btn a#show-mgnb{
+    display: none;
+}
+.gnb-wrap{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:99;
+    top:0;
+    display: none;
+}
+.gnb-wrap .bg{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    z-index: 1;
+}
+.gnb-wrap .wht-wrap{
+    background:#fff;
+    position:absolute;
+    width:100%;
+    z-index: 2;
+}
+.gnb-wrap .wht-wrap .top{
+    overflow: hidden;
+    padding:30px 0 80px 0;
+}
+.gnb-wrap .wht-wrap .top h1{
+    float:left;
+    font-size:0;
+    height:36px;
+    width:185px;
+}
+.gnb-wrap .wht-wrap .top h1 a{
+    display: block;
+    width:185px;
+    height:36px;
+    background:url(/_skin/sidae/brand/new/logo.png) no-repeat left center;
+}
+.gnb-wrap .wht-wrap .top h1 a.logo_brand{
+    display: block;
+    width:185px;
+    height:46px;
+    background:url(/_skin/sidae/brand/new/logo_.png) no-repeat left center;
+}
+.gnb-wrap .wht-wrap .top  .close-btn{
+    float:right;
+    font-size:0;
+    width:26px;
+    height:26px;
+    background:url(/_skin/sidae/brand/new/close_btn.png) no-repeat center center;
+}
+.gnb-wrap .wht-wrap .sub-depth{
+}
+.gnb-wrap .wht-wrap .sub-depth ul{
+    font-size:0;
+    padding:0 0 110px 0;
+}
+.gnb-wrap .wht-wrap .sub-depth ul li{
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align:top;
+    margin:0 0 0 8.6%;
+    float:none;
+}
+.gnb-wrap .wht-wrap .sub-depth ul li:first-child{
+    margin:0;
+}
+.gnb-wrap .wht-wrap .sub-depth ul li.selected p,
+.gnb-wrap .wht-wrap .sub-depth ul li:hover p{
+    color:#000;
+}
+.gnb-wrap .wht-wrap .sub-depth ul li dd{
+    margin:20px 0 0 0;
+}
+.gnb-wrap .wht-wrap .sub-depth ul li dd:first-child{
+    margin:25px 0 0 0;
+}
+.gnb-wrap .wht-wrap .sub-depth ul li a{
+    line-height:100%;
+    font-size:18px;
+    color:#4e4e4e;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    border-bottom:2px #fff solid;
+    padding:0 0 5px 0;
+}
+.gnb-wrap .wht-wrap .sub-depth ul li a:hover,
+.gnb-wrap .wht-wrap .sub-depth ul li.selected dd.selected a{
+    color:#333;
+    box-sizing: border-box;
+    border-bottom:2px #db0011 solid;
+    font-family: 'noto5'
+}
+.gnb-wrap .wht-wrap .sub-depth ul li p{
+    font-size:35px;
+    font-family: 'noto5';
+    color:#b1b0b0;
+}
+.gnb-wrap .wht-wrap .sub-depth ul li:hover,
+.gnb-wrap .wht-wrap .sub-depth ul li.selected p{
+    color:#000;
+    border:1x #f00 solid;
+}
+#gnb-banner{
+    height:172px;
+}
+#gnb-banner.type1{
+    background:url(/_skin/sidae/brand/new/gnb_bn_01.png) no-repeat center bottom;
+}
+#gnb-banner.type2{
+    background:url(/_skin/sidae/brand/new/gnb_bn_02.png) no-repeat center bottom;
+}
+#gnb-banner.type3{
+    background:url(/_skin/sidae/brand/new/gnb_bn_04.png) no-repeat center bottom;
+}
+#gnb-banner.type4{
+    background:url(/_skin/sidae/brand/new/gnb_bn_05.png) no-repeat center bottom;
+}
+#gnb-banner.type5{
+    background:url(/_skin/sidae/brand/new/gnb_bn_03.png) no-repeat center bottom;
+}
+.m_gnb-wrap{
+    display: none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#fff;
+    z-index:100;
+}
+.m_gnb-wrap .bg{
+    position:fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height:100%;
+    z-index: 3;
+    background:rgba(0,0,0,0.8);
+}
+.m_gnb-wrap .gnb_list{
+    position: absolute;
+    width:100%;
+    z-index: 5;
+    background:#fff;
+    padding:12% 10% 8% 8%;
+}
+.m_gnb-wrap .gnb_list .close_btn{
+    font-size: 0;
+    position:absolute;
+    right:8%;
+    top:30px;
+    width:45px;
+    height:45px;
+    background:url(/_skin/sidae/brand/new/close_bg.png) no-repeat center center;
+}
+.m_gnb-wrap .gnb_list ul li p{
+    font-size:32px;
+    font-family: 'noto6';
+    color:#000;
+    background:url(/_skin/sidae/brand/new/gnb_arrow.png) no-repeat right center;
+}
+.m_gnb-wrap .gnb_list ul li p.act{
+    background:url(/_skin/sidae/brand/new/gnb_arrow_on.png) no-repeat right center;
+}
+.m_gnb-wrap .gnb_list ul li{
+    margin:5% 0 0 0;
+    cursor: pointer;
+    float:none;
+}
+.m_gnb-wrap .gnb_list ul li:first-child{
+    margin:0;
+}
+.m_gnb-wrap .gnb_list ul li dl{
+    display:none;
+    padding:4% 0 0 0;
+}
+.m_gnb-wrap .gnb_list ul li dd{
+    /*margin:4% 0 0 0;*/
+}
+.m_gnb-wrap .gnb_list ul li dd:first-child{
+    margin:0;
+}
+.m_gnb-wrap .gnb_list ul li dd a{
+    display:inline-block;
+    font-size:25px;
+    padding: 4% 0;
+    font-family: 'noto5';
+    color:#9f9f9f;
+    width: 100%;
+    line-height:100%;
+}
+.m_gnb-wrap .gnb_list ul li dd.selected a,
+.m_gnb-wrap .gnb_list ul li a:hover{
+    color:#1e1e1e;
+}
+/* HEADER : E*/
+
+/* SECTION : S */
+#section{
+    position:relative;
+    text-align:center;
+    width:100%;
+}
+#section .visual_wrap{
+    padding:0 50px;
+}
+#section .visual_wrap .pd_wrap{
+    display: table;
+    width:100%;
+    background:#292727 url(/_skin/sidae/brand/new/top_banner.png) no-repeat center center;
+    height:520px;
+}
+#section .visual_wrap .center_txt{
+    display: table-cell;
+    vertical-align:middle;
+}
+#section .visual_wrap p,
+#section .visual_wrap span{
+    color:#fff;
+}
+#section .visual_wrap p{
+    font-family:'noto5';
+    font-size:50px;
+    line-height:67px;
+    font-weight:600;
+    letter-spacing: -1px;
+}
+#section .visual_wrap span{
+    font-size:20px;
+    line-height:32px;
+    display: block;
+    margin:40px 0 0 0;
+}
+#section .business_wrap{
+    padding:110px 0;
+    text-align: left;
+}
+#section .business_wrap h2{
+    font-size:38px;
+    font-family: 'noto5';
+    letter-spacing: -2px;
+}
+#section .business_wrap .center_wrap{
+    position:relative;
+}
+#section .business_wrap .center_wrap .swiper-button-next,
+#section .business_wrap .center_wrap .swiper-button-prev{
+  width:45px;
+  height:60px;
+}
+#section .business_wrap .center_wrap .swiper-button-prev{
+    left:-65px;
+    background:url(/_skin/sidae/brand/new/l_arrow.png) no-repeat center center;
+}
+#section .business_wrap .center_wrap .swiper-button-next{
+    right:-65px;
+    background:url(/_skin/sidae/brand/new/r_arrow.png) no-repeat center center;
+}
+#section .business_wrap .center_wrap .swiper-button-next:after,
+#section .business_wrap .center_wrap .swiper-button-prev:after{
+    display: none;
+}
+#section .business_wrap .slide_list{
+    width:100%;
+    overflow: hidden;
+    padding:70px 0 0 0;
+}
+#section .business_wrap .slide_list ul li{
+    border:2px #8b8b8b solid;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+#section .business_wrap .slide_list ul li:hover{
+    border:2px #db0011 solid;
+}
+#section .business_wrap .slide_list ul li .img{
+    height:176px;
+    position:relative;
+}
+#section .business_wrap .slide_list ul li .img a{
+    display: block;
+    width: 100%;
+    height:100%;
+}
+#section .business_wrap .slide_list ul li .img img{
+    position:absolute;
+    width: 100%;
+    bottom:0;
+    left:0;
+}
+#section .business_wrap .slide_list ul li .txt{
+    padding:30px 10px;
+    text-align:center;
+    word-break: keep-all;
+
+}
+#section .business_wrap .slide_list ul li .txt p{
+    font-size:23px;
+    line-height:120%
+}
+#section .business_wrap .slide_list ul li .txt p b{
+    display: block;
+    margin:0 0 10px 0;
+}
+#section .business_wrap .slide_list ul li .txt span{
+    font-size:14px;
+    color:#7f7f7f;
+    display: block;
+    line-height:130%;
+}
+#section .business_wrap .slide_list ul li .txt .ani_bar:after{
+    content:"";
+    display: block;
+    width:25px;
+    height:12px;
+    margin:20px auto 0 auto;
+    background:url(/_skin/sidae/brand/new/line-bg.png) no-repeat center bottom;
+    background-position:0px 0;
+    transition:all 0.4s;
+}
+#section .business_wrap .slide_list ul li:hover .txt .ani_bar:after{
+    background-position:-35px 0;
+}
+#section .business_wrap .business_pagination{
+    text-align: center;
+    width: 100%;
+    padding:2% 0 0 0;
+    display:none;
+}
+#section .business_wrap .business_pagination span{
+    border:3px #fff solid;
+    width:18px;
+    height:18px;
+    box-sizing: border-box;
+}
+#section .business_wrap .business_pagination span.swiper-pagination-bullet{
+    background:#d4d4d4;
+    border:3px #fff solid;
+    opacity: 1;
+    box-sizing: border-box;
+}
+#section .business_wrap .business_pagination span.swiper-pagination-bullet-active{
+    background:#fff;
+    border:3px #de1424 solid;
+}
+
+
+#section .big_banner ul li{
+    text-align:left;
+    background:url(/_skin/sidae/brand/new/human_img.png) no-repeat center top;
+    padding:95px 0;
+    box-sizing: border-box;
+}
+#section .big_banner ul li:first-child{
+    padding:90px 0 145px 0;
+    background:url(/_skin/sidae/brand/new/social_img.png) no-repeat center bottom;
+    color:#fff;
+}
+#section .big_banner ul li p{
+    margin:0 0 45px 0;
+    font-size:38px;
+    font-family: 'noto5';
+    font-weight:600;
+    line-height:130%;
+    letter-spacing: -1px;
+}
+#section .big_banner ul li:first-child p{
+    color:#fff;
+}
+#section .big_banner ul li .width_mid > span{
+    line-height:150%;
+    font-size:18px;
+    display: block;
+    margin:0 0 30px 0;
+    letter-spacing: -0.5px;
+}
+#section .big_banner ul li:first-child .width_mid > span{
+    color:#eee5e5;
+}
+#section .big_banner ul li a{
+    border:1px #000 solid;
+    display: block;
+    width:130px;
+    height: 35px;
+    line-height:35px;
+    font-size:12px;
+    text-align:center;
+    position:relative;
+    text-transform: uppercase;
+    color:#000;
+}
+#section .big_banner ul li:first-child a{
+    border:1px #fff solid;
+    color:#fff;
+}
+#section .big_banner ul li:hover a{
+    border:1px #fff solid;
+    color:#fff;
+}
+#section .big_banner ul li .ani_bar{
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align: middle;
+    width:25px;
+    height:15px;
+    margin:0 0 0 2px;
+    background:url(/_skin/sidae/brand/new/black_line-bg.png) no-repeat center center;
+    background-position:0px 0;
+    transition:all 0.4s;
+}
+#section .big_banner ul li:first-child .ani_bar{
+    background:url(/_skin/sidae/brand/new/w_line-bg.png) no-repeat center center;
+    background-position:0px 0;
+}
+#section .big_banner ul li:hover .ani_bar{
+    background-position:-35px 0;
+}
+#section .icon_wrap{
+}
+#section .icon_wrap ul{
+    font-size:0;
+    padding: 60px 0 80px 0;
+}
+#section .icon_wrap ul li{
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align: top;
+    width:33.33%;
+    border-left:1px #e6e6e6 solid;
+    padding:30px 0 20px;
+}
+#section .icon_wrap ul li:first-child{
+    border:0;
+}
+#section .icon_wrap ul li span{
+    display: block;
+    font-size:22px;
+    text-transform:uppercase;
+    font-family: 'noto5';
+}
+#section .icon_wrap ul li span:before{
+    content: "";
+    display: block;
+    height:90px;
+    margin:0 0 25px 0;
+}
+#section .icon_wrap ul li a{
+    display: block;
+}
+#section .icon_wrap ul li.fir span:before{
+    background:url(/_skin/sidae/brand/new/icon_01.png) no-repeat center bottom;
+}
+#section .icon_wrap ul li.fir:hover span:before{
+    background:url(/_skin/sidae/brand/new/icon_01_on.png) no-repeat center bottom;
+}
+#section .icon_wrap ul li.sec span:before{
+    background:url(/_skin/sidae/brand/new/icon_02.png) no-repeat center bottom;
+}
+#section .icon_wrap ul li.sec:hover span:before{
+    background:url(/_skin/sidae/brand/new/icon_02_on.png) no-repeat center bottom;
+}
+#section .icon_wrap ul li.thir span:before{
+    background:url(/_skin/sidae/brand/new/icon_03.png) no-repeat center bottom;
+}
+#section .icon_wrap ul li.thir:hover span:before{
+    background:url(/_skin/sidae/brand/new/icon_03_on.png) no-repeat center bottom;
+}
+#section li{
+    float:none;
+}
+
+#brd_footer{
+    background:#dcdcdc;
+    padding:55px 0;
+    position:relative;
+}
+#brd_footer .width_mid{
+    position:relative;
+}
+#brd_footer #top_btn{
+    position:absolute;
+    right:0;
+    bottom:0px;
+    width:42px;
+    height:42px;
+    text-align:center;
+    line-height:42px;
+    background:#000;
+    color:#fff;
+    font-size:13px;
+    font-family: 'noto5';
+    border:2px #000 solid;
+}
+#brd_footer #top_btn:hover{
+    background:#fff;
+    color:#000;
+    border:2px #000 solid;
+    box-sizing: border-box;
+}
+#brd_footer .width_mid > ul{
+    font-size:0;
+}
+#brd_footer .width_mid > ul > li{
+    display:inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align:top;
+    width:75%;
+    font-size:12px;
+    float:none;
+    padding:0 0 0 3%;
+}
+#brd_footer .width_mid > ul > li:first-child{
+    width:17%;
+    padding:0;
+}
+#brd_footer .width_mid_new > ul > li:first-child {
+    width:130px;
+}
+#brd_footer .width_mid_new > ul > li:nth-of-type(2){
+    padding:0;
+}
+#brd_footer .width_mid > ul li h1{
+    font-size:0;
+    max-width:190px;
+    width: 100%;
+    height:54px;
+}
+#brd_footer .width_mid > ul li h1 a{
+    display: block;
+    background:url(/_skin/sidae/brand/new/logo.png) no-repeat center bottom;
+    background-size:contain;
+}
+#brd_footer .width_mid > ul li h1 a.logo_brand{
+    display: block;
+    background:url(/_skin/sidae/brand/new/footer_logo.png) no-repeat center bottom;
+    background-size:contain;
+
+}
+#brd_footer .width_mid > ul li h1 a{
+    display: block;
+    height:100%;
+}
+#brd_footer .width_mid > ul li dl{
+    font-size:0;
+    padding:5px 0 20px 0;
+}
+#brd_footer .width_mid > ul li dl dt{
+    font-size:14px;
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+    vertical-align: top;
+    position:relative;
+    margin:0 0 0 18px;
+    line-height:100%;
+}
+#brd_footer .width_mid > ul li dl dt:first-child{
+    margin:0;
+}
+#brd_footer .width_mid > ul li dl dt:before{
+    content: "";
+    height:12px;
+    width:1px;
+    background:#000;
+    position:absolute;
+    left:-10px;
+    top:50%;
+    margin:-5px 0 0 0;
+}
+#brd_footer .width_mid > ul li dl dt:first-child:before{
+    display: none;
+}
+#brd_footer .width_mid > ul li p{
+    font-size:14px;
+    color:#616161;
+    line-height:150%;
+    font-family: 'noto2'
+}
+#brd_footer .width_mid > ul li .m{
+    display: none;
+}
+#brd_footer .select_wrap{
+    position: absolute;
+    bottom:104px;
+    right:0;
+    max-width: 153px;
+    width:100%;
+}
+#brd_footer .select_wrap.act{
+    border:1px #000 solid;
+    background:#fff;
+    padding:15px 10px 0 8px;
+    box-sizing:border-box;
+    max-width: 173px;
+    right:-12px;
+}
+#brd_footer .select_wrap > a{
+    display: block;
+    color:#000;
+    padding:0 0 10px 0;
+    font-size:14px;
+    border-bottom:2px #9c9c9c solid;
+    position:relative;
+}
+#brd_footer .select_wrap > a:after{
+    content:"";
+    width:10px;
+    height:10px;
+    position:absolute;
+    right:0;
+    bottom:10px;
+    background:url(/_skin/sidae/brand/new/top_arrow.png) no-repeat center bottom;
+}
+#brd_footer .select_wrap.act > a{
+    border:0;
+}
+#brd_footer .select_wrap.act > a:after{
+    background:url(/_skin/sidae/brand/new/top_arrow_on.png) no-repeat center bottom;
+}
+#brd_footer .select_wrap ul{
+    display:none;
+    padding:0 0 10px 0;
+}
+#brd_footer .select_wrap ul li{
+	float:none;
+    margin:10px 0 0 0;
+}
+#brd_footer .select_wrap ul li:first-child{
+    margin:0;
+}
+#brd_footer .select_wrap ul li a{
+    display: block;
+    line-height:100%;
+    font-size:14px;
+    color:#919191;
+    letter-spacing: -0.5px
+}
+#brd_footer .select_wrap ul li a:hover{
+    color:#000;
+}
+
+
+@media (min-width:961px) and (max-width:1200px){
+    #brd_header ul{
+        float:right;
+        font-size:0;
+        position:relative;
+    }
+    #brd_header ul li{
+        margin:0 0 0 45px;
+        padding:0 0 3px 0;
+    }
+    #brd_header ul li a{
+        font-size:16px;
+    }
+    #brd_header ul li.gnb_btn{
+        margin:0 0 0 40px;
+    }
+    .gnb-wrap .wht-wrap .sub-depth ul{
+        font-size:0;
+        padding:0 0 80px 0;
+    }
+    .gnb-wrap .wht-wrap .sub-depth ul li{
+        margin:0 0 0 9%;
+    }
+    .gnb-wrap .wht-wrap .sub-depth ul li dd{
+        margin:10px 0 0 0;
+    }
+    .gnb-wrap .wht-wrap .sub-depth ul li dd:first-child{
+        margin:30px 0 0 0;
+    }
+    .gnb-wrap .wht-wrap .sub-depth ul li a{
+        font-size:14px;
+        padding:0 0 5px 0;
+    }
+    .gnb-wrap .wht-wrap .sub-depth ul li p{
+        font-size:25px;
+    }
+    #gnb-banner{
+        height:135px;
+    }
+    .width_mid{
+        max-width: 90%;
+    }
+    #brd_header .width_mid{
+        max-width: 90%;
+    }
+    #section .business_wrap .center_wrap{
+        width:94%;
+        margin:0 auto
+    }
+    #section .business_wrap .slide_list ul li{
+    }
+    #section .business_wrap .slide_list ul li .img{
+        height:130px;
+        overflow: hidden;
+    }
+    #section .business_wrap .slide_list ul li .txt span{
+        font-size:13px;
+        letter-spacing: -1px;
+    }
+    #brd_footer .width_mid{
+        max-width:90%;
+    }
+    #brd_footer .select_wrap{
+        bottom:125px;
+    }
+
+}
+
+@media (min-width:0px) and (max-width:960px){
+    .gnb-wrap{display: none!important;}
+    .width_mid{
+        max-width:90%;
+    }
+    #brd_header{
+        padding:20px 0;
+    }
+    #brd_header ul li{
+        display: none;
+    }
+    #brd_header ul li.gnb_btn{
+        display: block;
+    }
+    #brd_header ul li.gnb_btn a#show-gnb{
+        display: none;
+    }
+    #brd_header ul li.gnb_btn a#show-mgnb{
+        display: block;
+    }
+    #section .business_wrap .center_wrap .swiper-button-next,
+    #section .business_wrap .center_wrap .swiper-button-prev{
+        display: none;
+    }
+    #section .business_wrap .business_pagination{
+        display:block;
+    }
+    #section .business_wrap .business_pagination span{
+        margin:0 0 0 0.2%;
+    }
+    #section .business_wrap .slide_list ul li .img{
+        height:176px;
+        position:relative;
+        overflow:hidden;
+    }
+    #section .business_wrap .slide_list ul li.fir .img{
+        background:url(/_skin/sidae/brand/new/m_business_img_01.png) no-repeat center bottom;
+    }
+    #section .business_wrap .slide_list ul li.sec .img{
+        background:url(/_skin/sidae/brand/new/m_business_img_02.png) no-repeat center bottom;
+    }
+    #section .business_wrap .slide_list ul li.thir .img{
+        background:url(/_skin/sidae/brand/new/m_business_img_03.png) no-repeat center bottom;
+    }
+    #section .business_wrap .slide_list ul li.four .img{
+        background:url(/_skin/sidae/brand/new/m_business_img_04.png) no-repeat center bottom;
+    }
+    #section .business_wrap .slide_list ul li .img img{
+        display: none;
+    }
+    #section .business_wrap .slide_list ul li .txt{
+        padding: 30px 5px;
+        letter-spacing: -1px;
+    }
+    #section .business_wrap .slide_list ul li .txt span{
+        font-size:13px;
+    }
+    #section .visual_wrap{
+        padding:0;
+    }
+    #section .big_banner ul li,
+    #section .big_banner ul li:first-child{
+        background-size:cover;
+    }
+    /*FOOTER*/
+    #brd_footer{
+        padding:6% 0;
+    }
+    #brd_footer #top_btn{
+        font-size:13px;
+    }
+    #brd_footer h1{
+        position:relative;
+    }
+    #brd_footer #top_btn.act{
+       position: fixed;
+        right:5%;
+        bottom:6%;
+    }
+    #brd_footer .width_mid{
+        max-width:90%;
+    }
+    #brd_footer .width_mid > ul > li{
+        width:100%;
+        font-size:12px;
+        text-align: center;
+    }
+    #brd_footer .width_mid > ul > li:first-child{
+        width:100%;
+        padding:0 0 3% 0;
+    }
+    #brd_footer .width_mid > ul li h1{
+        margin:0 auto;
+    }
+    #brd_footer .width_mid > ul li dl{
+        padding:5px 0 20px 0;
+    }
+    #brd_footer .width_mid > ul li dl dt{
+        font-size:14px;
+        margin:0 0 0 2%;
+    }
+    #brd_footer .width_mid > ul li dl dt:before{
+        height:12px;
+        left:-6%;
+    }
+    #brd_footer .width_mid > ul li p{
+        font-size:14px;
+    }
+    #brd_footer .width_mid > ul li p .m{
+        display: block;
+    }
+    #brd_footer .select_wrap{
+        display: none;
+    }
+}
+
+@media (min-width:0px) and (max-width:700px){
+    /*HEADER*/
+    #brd_header{
+        padding:2.5% 0;
+    }
+    #brd_header h1{
+        width:30%;
+    }
+    #brd_header h1 a{
+        background-size:95%;
+        background-position:left center;
+        background-size:contain;
+    }
+    #brd_header h1 a.logo_brand{
+        background-size:95%;
+        background-position:left center;
+        background-size:contain;
+    }
+    .m_gnb-wrap .gnb_list{
+        position: absolute;
+        width:100%;
+        z-index: 5;
+        background:#fff;
+        padding:3.5rem 2rem 10% 2rem;
+    }
+    .m_gnb-wrap .gnb_list .close_btn{
+        right:2rem;
+        top:1rem;
+        width:1.067rem;
+        height:1.067rem;
+        background-size: contain;
+    }
+    .m_gnb-wrap .gnb_list ul li p{
+        font-size:1.089rem;
+    }
+    .m_gnb-wrap .gnb_list ul li{
+        margin:7% 0 0 0;
+    }
+    .m_gnb-wrap .gnb_list ul li dl{
+        padding:6% 0 0 0;
+    }
+    .m_gnb-wrap .gnb_list ul li dd a{
+        font-size:0.8722rem;
+    }
+
+    /* SECTION : S */
+    #section .visual_wrap{
+        padding:0;
+    }
+    #section .visual_wrap .pd_wrap{
+        height:14.44rem;
+        background-size:cover;
+    }
+    #section .visual_wrap p{
+        font-size: 1.389rem;
+        line-height: 1.861rem;
+    }
+    #section .visual_wrap span{
+        font-size:0.6667rem;
+        line-height: 0.9722rem;
+        margin:5% 0 0 0;
+    }
+    #section .business_wrap{
+        padding:2.956rem 0;
+    }
+    #section .business_wrap h2{
+        font-size: 1.056rem;
+    }
+    #section .business_wrap .center_wrap{
+        position:relative;
+    }
+     #section .business_wrap .business_pagination{
+        display:block;
+        padding:3% 0 0 0;
+    }
+    #section .business_wrap .business_pagination span{
+        margin:0 0 0 1.5%;
+        width:0.7rem;
+        height: 0.7rem;
+    }
+     #section .business_wrap .slide_list{
+        padding:1.944rem 0 0 0;
+    }
+     #section .business_wrap .slide_list ul li{
+        border:1px #8b8b8b solid;
+    }
+    #section .business_wrap .slide_list ul li:hover{
+        border:1px #db0011 solid;
+    }
+    #section .business_wrap .slide_list ul li .img{
+        height:5rem;
+        background-size:contain!important;
+        background-position: center top!important;
+    }
+    #section .business_wrap .slide_list ul li .txt{
+        padding: 3% 1%;
+        letter-spacing: -1px;
+    }
+    #section .business_wrap .slide_list ul li .txt p{
+        font-size:0.7244rem;
+        line-height:130%;
+    }
+    #section .business_wrap .slide_list ul li .txt p b{
+        margin:0 0 2% 0;
+    }
+    #section .business_wrap .slide_list ul li .txt span{
+        font-size: 0.6067rem;
+    }
+    #section .big_banner ul li{
+        padding: 2.639rem 0;
+    }
+    #section .big_banner ul li:first-child{
+        padding:2.5rem 0 3.889rem 0;
+    }
+    #section .big_banner ul li p{
+        margin:0 0 5% 0;
+        font-size:1.111rem;
+    }
+    #section .big_banner ul li:first-child p{
+        color:#fff;
+    }
+    #section .big_banner ul li .width_mid > span{
+        font-size:0.5556rem;
+        margin:0 0 4% 0;
+    }
+    #section .big_banner ul li a{
+        width:130px;
+        height: 35px;
+        line-height:35px;
+        font-size:12px;
+    }
+    #section .icon_wrap ul{
+        font-size:0;
+        padding:6% 0;
+    }
+    #section .icon_wrap ul li{
+        padding:2% 0;
+    }
+    #section .icon_wrap ul li span{
+        font-size:0.6067rem;
+    }
+    #section .icon_wrap ul li span:before{
+        height:2.5rem;
+        margin:0 0 0.8333rem 0;
+    }
+    #section .icon_wrap ul li.fir span:before,
+    #section .icon_wrap ul li.fir:hover span:before{
+        background-size: 1.917rem;
+    }
+    #section .icon_wrap ul li.sec span:before,
+     #section .icon_wrap ul li.sec:hover span:before{
+        background-size: 2rem;
+    }
+    #section .icon_wrap ul li.thir span:before,
+    #section .icon_wrap ul li.thir:hover span:before{
+        background-size: 1.861rem;
+    }
+
+    /*FOOTER*/
+    #brd_footer{
+        padding:9% 0;
+    }
+    #brd_footer h1 .more_txt{
+        position:absolute;
+        width:1rem;
+        height:1rem;
+        right:-1.2rem;
+        top:5px;
+        font-size:0;
+        cursor: pointer;
+        transition:all 0.3s;
+    }
+    #brd_footer h1 .more_txt{
+        right:0;
+        top:10px;
+    }
+    #brd_footer h1 .more_txt.act{
+        transform: rotate(180deg)
+    }
+    #brd_footer h1 .more_txt:before{
+        content: "∨";
+        font-size:0.75rem;
+        line-height:1.0rem;
+        display: block;
+    }
+    #brd_footer #top_btn{
+        font-size:0.527rem;
+        width:1.5rem;
+        height:1.5rem;
+        line-height: 1.5rem;
+        top:0;
+    }
+
+    #brd_footer .width_mid{
+        max-width:92%;
+    }
+    #brd_footer .width_mid > ul li h1{
+        height: 1.111rem;
+        max-width:5.8rem;
+    }
+    #brd_footer .width_mid_new > ul li h1{
+        height: 2.3rem;
+    }
+    #brd_footer .width_mid > ul li h1 a{
+        background-size:5.656rem;
+    }
+    #brd_footer .width_mid > ul li h1 a.logo_brand{
+        /* background-size: 4.656rem; */
+    }
+    #brd_footer .width_mid > ul > li{
+        width:100%;
+        font-size:0.677rem;
+        text-align: center;
+    }
+    #brd_footer .width_mid > ul > li:first-child{
+        width:100%;
+        padding:0 0 3% 0;
+    }
+    #brd_footer .width_mid > ul li dl{
+        padding:2% 0 3% 0;
+    }
+    #brd_footer .width_mid > ul li dl dt{
+        font-size:0.667rem;
+        margin:0 0 0 2%;
+    }
+    #brd_footer .width_mid > ul li dl dt:before{
+        height:0.6rem;
+        left:-0.2rem;
+        margin:-0.22rem 0 0 0;
+    }
+    #brd_footer .width_mid > ul li p{
+        font-size:0.567rem;
+        word-break:keep-all;
+        width:88%;
+        margin:0 auto;
+        display: none;
+    }
+    #brd_footer .select_wrap{
+        display: none;
+    }
+}
+
