@@ -156,26 +156,6 @@ function myRoomfileDownNew(tb_id,mode,chk_pds,chk_mp3,idx){
 				
 			for(var i =0; i<data.length;i++){
 				if(mode=="pds"){
-				
-					// html_text+= '		<td style="text-align:center;">	';
-						// //html_text+= '		<form name="download_pds_idx"  id="download_pds_idx'+i+'" method="post"  action="/myroom/tb_file_download.php" target="_blank">'; //개별다운으로 바꿀시 열어
-						// //html_text+= '			<input type="hidden" name="from_w" class="from_where" value="">';//개별다운으로 바꿀시 열어
-						// //html_text+= '		</form>';//개별다운으로 바꿀시 열어
-					// html_text+= '		</td>';
-					// html_text+= '		<td style="text-align: left;">';
-					// html_text+= '			<p class="mov_name">['+data[i].tb_no+'강] '+data[i].tb_content+'('+data[i].orifile+').'+data[i].pds_ext_p+'</p>';
-					// html_text+= '		</td>';
-				// }else{
-					// html_text+= '		<td style="text-align:center;">	';
-						// //html_text+= '		<form name="download_mp3_idx" id="download_mp3_idx'+i+'"  method="post"  action="/myroom/tb_file_download.php" target="_blank">';//개별다운으로 바꿀시 열어
-						// //html_text+= '			<input type="hidden" name="from_w" class="from_where" value="">';//개별다운으로 바꿀시 열어
-						// html_text+= '			<input type="checkbox" name="chkid[]" class="input_label_chk" id="list_m_'+i+'" value="'+i+'" >';
-						// html_text+= '			<label for="list_m_'+i+'" class="label_chk"></label>';
-						// //html_text+= '		</form>';//개별다운으로 바꿀시 열어
-					// html_text+= '		</td>';
-					// html_text+= '		<td style="text-align: left;">';
-					// html_text+= '			<p class="mov_name">['+data[i].tb_no+'강] '+data[i].tb_content+'.'+data[i].pds_ext_p+'</p>';
-					// html_text+= '		</td>';
 					
 					html_text+= '<li>';
 	        		html_text+= '	<div class="cmListTxt w_100 ">';
@@ -183,26 +163,11 @@ function myRoomfileDownNew(tb_id,mode,chk_pds,chk_mp3,idx){
 					html_text+= '		<input type="hidden" name="replacename[]" value="'+data[i].encodefilename+'">';
 					html_text+= '		<input type="hidden" name="newfilename[]" value="'+data[i].encodenewfilename+'">';
 
-					
-					// ▼▼▼▼ 아카마이 상태가 안좋아서 임시방편 시작 sd_kandyg 2022-02-15 ▼▼▼▼
-					//var urls="https://sddata-sdedu.akamaized.net/data/_pds3down/"+data[i].pds_dir;
-					//html_text+= '		<a class="cmChkboxLabe pdl20" href="'+urls+'/'+data[i].pds_newfile+'" target="_blank">['+data[i].tb_no+'강] '+data[i].tb_content+'('+data[i].orifile+').'+data[i].pds_ext_p+'</a>';
-					// ▲▲▲▲ 아카마이 상태가 안좋아서 임시방편 끝 sd_kandyg 2022-02-15 ▲▲▲▲▲ 이거 지우면 아래 두줄 주석 풀어요 그리고 /_skin/myclass/page/class_detail.htm여기 299줄쯤 주석3개도 살려요
-
-
-
 	        		html_text+= '		<input type="checkbox" name="chkid[]" class="cmChkbox file_check_cnt" onchange="chkselFn();" id="list_m_'+i+'" value="'+i+'">';
 					html_text+= '		<label for="list_m_'+i+'"  class="cmChkboxLabel pdl20">['+data[i].tb_no+'강] '+data[i].tb_content+'('+data[i].orifile+').'+data[i].pds_ext_p+'</label>';
 
-
 					html_text+= '	</div>	';
 	        		html_text+= '</li>';
-						
-
-
-
-
-					
 				}
 			} 
 			if(mode=="pds"){
