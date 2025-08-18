@@ -1,0 +1,67 @@
+*{
+    border:none;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+ul li,
+ul ol{
+    list-style: none;
+}
+
+.container{
+    width:100%;
+    margin:0 auto;    
+    padding:5%;
+}
+.inner{
+    position:relative;
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    overflow:hidden;
+}
+.inner_top{
+    margin-bottom:20px;
+    padding-bottom:10px;
+    border-bottom:1px solid #000000;
+    font-size:17px;
+    line-height:17px;
+}
+.content_txt{
+    padding:10px;
+    background:#eeeeee;
+    
+}
+.example_area{
+    padding:10px;
+}
+/*타이머*/
+.sdDateTimer ul{
+    display:flex;
+    width: auto;
+    justify-items: center;
+    align-items: center;
+}
+.sdDateTimer ul li{
+    position:relative;
+    padding:0 15px 0 5px;
+}
+.sdDateTimer ul li:after{
+    position:absolute;
+    display:block;
+    right:0;
+    top:0;
+}
+.sdDateTimer .day:after{
+    content:'일'
+}
+.sdDateTimer .hour:after{
+    content:'시'
+}
+.sdDateTimer .min:after{
+    content:'분'
+}
+.sdDateTimer .sec:after{
+    content:'초'
+}
