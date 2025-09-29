@@ -24,12 +24,12 @@ class SideaDateTimer {
             this.endDate = new Date(endDate);
         }
 
-        this.el = el; //타이머가 될 요소
-        this.endDate = new Date(endDate); //이벤트 종료 날자
-        this.timerType = timerType; //타이머 종류 ( 분단위 . 초단위 .일단위)
-        this.TimerHtml = TimerHtml; //리턴
-        this.intervalId = null; //디뎨이 결과 실행
-        this.isRunning = false; //상태값
+        this.el = el; // 타이머 출력 html
+        this.endDate = new Date(endDate); // 이벤트 종료 날자
+        this.timerType = timerType; //타이머 종류 (D-10일 :dayTimer , D- 11일 11시11분11초 : secTimer , D- 11일 11시 11분: hourTimer)
+        this.TimerHtml = TimerHtml; 
+        this.intervalId = null; // 디뎨이 결과 실행
+        this.isRunning = false; // 상태값
 
 
         // 타이머 타입별 계산 함수 미리 정의
@@ -51,13 +51,20 @@ class SideaDateTimer {
     // 날짜 계산 - 타입별
     calcDate = () => {
         const countDate = this.endDate - Date.now();
+        const timer_status = this.el.dataset.status;
         if (countDate <= 0) {
             this.stop();
-            return {day: 0, hour: 0, minute: 0, seconds: 0};
-        }
+            this.removeCount();
+            if(timer_status == 'set_txt'){ //data-status == 'set_txt'면 타이머 종료시 'DAY'출력 -> 단, 디데이 타입이 day일때만
+                return {day: "DAY"}; 
+            }else{
+                return {day: 0, hour: 0, minute: 0, seconds: 0 };
+            }
 
-        const calcFunction = this.calcFunctions[this.timerType] || this.calcWithSeconds; //모든 디데이 카운터 디폴트는 초단위까지 생성
-        return calcFunction(countDate);
+        }else{
+            const calcFunction = this.calcFunctions[this.timerType] || this.calcWithSeconds; //모든 디데이 카운터 디폴트는 초단위까지 생성
+            return calcFunction(countDate);
+        }
     }
 
     calcWithSeconds = (countDate) => { //초
@@ -128,21 +135,27 @@ class SideaDateTimer {
 
 //타이머 적용fn
 export default class SideaDateTimerSet {
-    constructor(el) {
-        this.container = el || document.querySelectorAll('.sdDateTimer'); //container;
+    constructor(el , option) {
+        
+        if (el instanceof Element) {  //혹시 한개여도 배열로 감싸기
+                this.container = [el]; 
+            } else if (el instanceof NodeList || el instanceof HTMLCollection) {
+                this.container = Array.from(el);
+            }else {
+                this.container = Array.from(document.querySelectorAll('.sdDateTimer'));
+            }
+        this.endDate = option.setenddate;
+        this.timerType = option.type || 'setTimer'; //default 초단위
         this.timers = new Map(); // 타이머
     }
 
     init = ()=> {
         const containers = Array.from(this.container);
-
-        containers.forEach((el, index) => {
-            const endDate = el.dataset.target;
-            const timerType = el.dataset.type || 'setTimer'; //없으면 초단위
-
-            if (!this.validateElement(el, endDate, index)) return;  //값이 없으면 실행 안함.
-
-            this.createTimer(el, endDate, timerType, index);
+        const EndTime = this.endDate;
+        const TimerType = this.timerType;
+        containers.forEach((TimerEl, index) => {
+            if (!this.validateElement(TimerEl, EndTime , index)) return;  //값이 없으면 실행 안함.
+            this.createTimer(TimerEl, EndTime , TimerType, index);
         });
     }
     //유효성 검사

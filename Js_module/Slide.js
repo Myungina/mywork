@@ -1,8 +1,10 @@
-import SideaDateTimerSet from "./Timer.js";
+import sidaeDateTimerSet from "./Timer.js";
 
 export default class sidaePopupSlide {
-    constructor(el) {
+    constructor(el , option) {
         this.container = el || document.querySelectorAll('.cm_popup_rolling');
+        this.autoplay = option.autoplay || "auto";
+        this.speed = option.speed || 2000;
     }
 
     init = () => {
@@ -10,7 +12,7 @@ export default class sidaePopupSlide {
         swipercontainer.forEach((el, index) => {
             let AutoBnCnt = el.querySelectorAll('.swiper-slide:not(.swiper-slide-duplicate)').length;
             let AutoBnLoot = AutoBnCnt > 1 ? true : false;
-            let AutoBnCntSettings = AutoBnCnt > 1 ? {delay: 3000, disableOnInteraction: true} : false;
+            let AutoBnCntSettings = AutoBnCnt > 1 ? {delay: this.speed, disableOnInteraction: true} : false;
             //console.log(AutoBnCnt)
             if (AutoBnCnt == 0) {
                 //0개 일시 해당 html삭제
@@ -25,6 +27,7 @@ export default class sidaePopupSlide {
 
             }
         })
+        console.log('Swiper 확인:', typeof Swiper);
     }
 
     validateElement = (el , index) => {
@@ -33,10 +36,24 @@ export default class sidaePopupSlide {
             return false;
         }
         return true;
+    }    
+    
+    swiperInTimer = (el , index) => {
+        const swiperTimer = Array.from(el.querySelectorAll('.swiper-slide:not(.swiper-slide-duplicate)'));
+        
+        swiperTimer.forEach((slideEl, index)=>{
+            const timerArea = slideEl.querySelector('.swiperTimer'); // querySelector 사용 (단일 요소)
+            if(timerArea){
+                const setEndTime = timerArea.dataset.target;
+                const timerSet = new sidaeDateTimerSet(timerArea, {setenddate: setEndTime});
+                timerSet.init();
+        }
+            
+        })
     }
 
     swiperSet = (el, index,  AutoBnCnt, AutoBnLoot, AutoBnCntSettings) => {
-
+        const self = this;
         let cm_popup_rolling = new Swiper(el, {
             slidesPerView: 1,
             spaceBetween: 25,
@@ -46,24 +63,21 @@ export default class sidaePopupSlide {
             pagination: {
                 el: el.querySelector('.rolling_page'),
                 type: 'bullets',
+                clickable:true
             },
             on: {
-                slideChangeTransitionStart: function () {                
-                    document.querySelectorAll('.swiper-slide-active').forEach((el , index) => {
-                        if(el.querySelector('.event_timer_area')){
-                            const timer = el.querySelector('.sdDateTimer').dataset.target;
-                            const SlideTimer = new SideaDateTimerSet({
-                                timerContainer : el.querySelector('.event_timer_area .sdDateTimer'),
-                                timer_val : timer
-                            });
-                            SlideTimer.init();
-                        }
-                    })                 
+                slideChangeTransitionStart: function () {                                        
+                    if(document.querySelectorAll('.sdDateTimer').length > 0){
+                        self.swiperInTimer(el , index);
+                    }
+                }
+                ,init:function(){
+                    if(document.querySelectorAll('.sdDateTimer').length > 0){
+                        self.swiperInTimer(el , index);
+                    }
                 }
             }
         });
-
-        //console.log(cm_popup_rolling);
 
         //클릭시 자동롤링 재시작
         cm_popup_rolling.on('click touchEnd', function () {
@@ -85,4 +99,5 @@ export default class sidaePopupSlide {
 
         cm_popup_rolling.update();
     }
+
 }
