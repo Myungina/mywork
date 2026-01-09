@@ -6,8 +6,8 @@
  *      ㄴ default : sdDateTimer
  *      ㄴ 다른 클래스를 사용하여 젹용시
  *          const timerContainer = document.querySelectorAll('.sdDateTimer') 선언후 new sidaeDateTimerSet(timerContainer) 전달
- *  endDate : 이벤트 종료 일자 (data-target)
- *  timerType : 타이머 형식 (data-type)
+ *  endDate : 이벤트 종료 일자
+ *  timerType : 타이머 형식
  *  TimerHtml : 콜백함수
  *
  *  - 25.07.17 ina
