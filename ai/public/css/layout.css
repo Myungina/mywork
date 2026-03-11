@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap');
+html{
+    font-size: clamp(16px, 1.1vw, 16px);
+}
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #fafbff 0%, #f0f4ff 50%, #fdf2f8 100%);
+}
+.glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slideInUp {
+    animation: slideInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/*텍스트 관련*/
+.product_deps_title{
+    padding-left: 0.4rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #9333ea;
+}
+/*가격단*/
+.coupon_set_info{
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    gap:8px;
+    font-size: 0.8rem;
+}
+.coupon_set_info .sale_count{
+    padding:0.1rem 0.5rem;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: #ffffff;
+    font-weight: 400;
+    border-radius:9999px;
+    letter-spacing:-0.03rem;
+}
+.coupon_set_info .origin_price{
+    color:#b2b2b2;
+    text-decoration:line-through;
+    font-size: 1rem;
+    font-weight: 400;
+}
+.total_price{
+    font-size: 1.3rem;
+    color:#6366f1;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -1px;
+}
+.badge_wrap{
+    display:flex;
+    width:100%;
+    flex-wrap: wrap;
+    justify-content:start;
+    align-items: center;
+    gap: 5px;
+    margin: 0 0 7px 0;
+}
+.badge{
+    padding: 4px 10px;
+    margin:0 0.2rem 0 0;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-radius: 20px;
+    border: 1px solid rgba(251,191,36,0.3);
+    white-space: nowrap;
+    color: #92400e;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+}
+.cs_agree_list{
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    margin: 1rem auto;
+}
+.cs_agree_list th,
+.cs_agree_list td {
+    line-height: 1.2;
+    padding: 0.7rem 0.4rem;
+    text-align: center;
+    letter-spacing: -0.075em;
+    font-size: 0.91rem;
+    font-family: 'noto3';
+    font-weight: normal;
+}
+
+.cs_agree_list th + th,
+.cs_agree_list td + td {
+    border-left: 1px solid #ddd;
+}
+.cs_agree_list thead th {
+    background: #f2f2f1;
+    font-weight:700;
+}
+@media  (max-width:767px) {
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .badge{
+        padding:0.1vw 2vw;
+        margin:0 0 0.3rem 0;
+    }
+}

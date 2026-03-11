@@ -1,0 +1,24 @@
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f97316, #f59e0b);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f97316, #f59e0b);
+    cursor: pointer;
+    border: none;
+}
+.font-extrabold{
+    font-weight: 700;
+}
+.text-market-b{
+    font-family:"market-b";
+}

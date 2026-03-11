@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시대에듀 AI 강의·교재 추천 시스템</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--Theme-->
+    <script type="text/babel" src="../public/js/Components/Icon.js"></script>
+
+    <link rel="stylesheet" href="../public/css/variables.css"/>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+    const {useState, useMemo, useEffect, useRef} = React;
+
+    // ========================================
+    // 자격증 데이터베이스 (시대에듀 전체 67개)
+    // ========================================
+    // ========================================
+    // API에서 데이터 로드
+    // ========================================
+    let certificationsDB = {}; // API에서 로드됨
+    let examInfoDB = {}; // API에서 로드됨
+    let isDataLoaded = false;
+
+    // API 호출 함수
+    async function loadDataFromAPI() {
+        try {
+            console.log('📡 API에서 데이터 로드 중...');
+
+            // 두 API를 병렬로 호출
+            const [certsResponse, examResponse] = await Promise.all([
+                fetch('../api/certifications.php'),
+                fetch('../api/exam_info.php')
+            ]);
+
+            if (!certsResponse.ok || !examResponse.ok) {
+                throw new Error('API 호출 실패');
+            }
+
+            const certsData = await certsResponse.json();
+            const examData = await examResponse.json();
+
+            if (!certsData.success || !examData.success) {
+                throw new Error('데이터 로드 실패');
+            }
+
+            certificationsDB = certsData.data;
+            examInfoDB = examData.data;
+            isDataLoaded = true;
+
+            console.log(`✅ 데이터 로드 완료: 자격증 ${certsData.count}개, 시험정보 ${examData.count}개`);
+
+            return true;
+        } catch (error) {
+            console.error('❌ 데이터 로드 실패:', error);
+            return false;
+        }
+    }
+
+    // ========================================
+    // 카테고리 설정
+    // ========================================
+    const categoryConfig = {
+        "전문자격": {bg: "bg-indigo-100", text: "text-indigo-600", icon: "⚖️", gradient: "from-indigo-500 to-purple-500"},
+        "금융/보험/회계": {
+            bg: "bg-emerald-100",
+            text: "text-emerald-600",
+            icon: "💰",
+            gradient: "from-emerald-500 to-teal-500"
+        },
+        "소방/전기/위험물": {bg: "bg-orange-100", text: "text-orange-600", icon: "⚡", gradient: "from-orange-500 to-red-500"},
+        "심리/상담": {bg: "bg-pink-100", text: "text-pink-600", icon: "💝", gradient: "from-pink-500 to-rose-500"},
+        "생활/산업기술": {bg: "bg-sky-100", text: "text-sky-600", icon: "🔧", gradient: "from-sky-500 to-blue-500"},
+        "무역/물류/유통": {
+            bg: "bg-violet-100",
+            text: "text-violet-600",
+            icon: "🚢",
+            gradient: "from-violet-500 to-purple-500"
+        },
+        "나무/조경/식물": {bg: "bg-lime-100", text: "text-lime-600", icon: "🌳", gradient: "from-lime-500 to-green-500"},
+        "언어/외국어": {bg: "bg-amber-100", text: "text-amber-600", icon: "🌏", gradient: "from-amber-500 to-yellow-500"},
+        "면허증": {bg: "bg-cyan-100", text: "text-cyan-600", icon: "📋", gradient: "from-cyan-500 to-teal-500"},
+        "기타 자격": {bg: "bg-gray-100", text: "text-gray-600", icon: "📌", gradient: "from-gray-500 to-slate-500"},
+        "공무원": {bg: "bg-blue-100", text: "text-blue-600", icon: "🏛️", gradient: "from-blue-500 to-indigo-500"},
+        "대학/학점": {bg: "bg-purple-100", text: "text-purple-600", icon: "🎓", gradient: "from-purple-500 to-fuchsia-500"},
+        "안쌤 영재교육": {bg: "bg-rose-100", text: "text-rose-600", icon: "⭐", gradient: "from-rose-500 to-pink-500"}
+    };
+
+    const difficultyConfig = {
+        1: {label: "쉬움", color: "text-green-500", bg: "bg-green-100", emoji: "🟢"},
+        2: {label: "보통", color: "text-blue-500", bg: "bg-blue-100", emoji: "🔵"},
+        3: {label: "중상", color: "text-yellow-500", bg: "bg-yellow-100", emoji: "🟡"},
+        4: {label: "어려움", color: "text-orange-500", bg: "bg-orange-100", emoji: "🟠"},
+        5: {label: "최고난도", color: "text-red-500", bg: "bg-red-100", emoji: "🔴"}
+    };
+
+    // 자격증별 상세 수험정보 데이터베이스 (전체 60개 콘텐츠)
+
+    // AI 분석 텍스트 생성 함수 - 콘텐츠별 맞춤 상세 분석
+    function generateAIAnalysisText(cert, userProfile, isFromSearch = false) {
+        // 전체 자격증 검색에서는 AI 분석 제외
+        if (isFromSearch) return [];
+
+        const lines = [];
+        const score = cert.score || 0;
+        const matchLevel = score >= 80 ? "매우 높은" : score >= 60 ? "높은" : score >= 40 ? "평균 수준의" : "다소 낮은";
+        const duration = cert.duration?.optimal || 6;
+        const monthlyHours = cert.monthlyHours?.recommended || 60;
+        const passRate = cert.passRate?.overall || 30;
+        const cost = cert.cost?.total || "50~100만원";
+        const salary = cert.salary?.entry || 3000;
+        const outlook = cert.outlook || 3;
+        const outlookText = outlook >= 4 ? "매우 좋음" : outlook >= 3 ? "좋음" : "보통";
+
+        // 해당 자격증의 상세 수험정보 가져오기
+        const examInfo = examInfoDB[cert.name] || null;
+
+        // ===== 1. 도입부: AI 매칭 결과 요약 =====
+        lines.push(`[AI 매칭 분석] 본 AI 분석 결과에 따르면, 귀하의 ${cert.name} 준비 적합도는 ${score}점(${matchLevel} 수준)으로 평가되었습니다. 귀하의 전공, 관심 분야, 학습 가용 시간을 종합적으로 분석한 결과입니다.`);
+
+        // ===== 2. 시험 정보 및 과목 안내 =====
+        if (examInfo) {
+            lines.push(`[시험 과목] ${examInfo.examSubjects}`);
+            lines.push(`[시험 형태] ${examInfo.examFormat} | 합격 기준: ${examInfo.passStandard}`);
+            lines.push(`[시험 일정] ${examInfo.examSchedule}`);
+        }
+
+        // ===== 3. 준비 기간 및 학습량 분석 =====
+        lines.push(`[준비 기간 분석] 권장 준비 기간은 ${cert.duration?.min || 3}~${cert.duration?.max || 12}개월이며, 최적 학습 기간은 ${duration}개월입니다. 귀하의 현재 학습 여건을 고려할 때 현실적인 합격 도전이 가능합니다.`);
+
+        if (monthlyHours >= 80) {
+            lines.push(`[학습량 주의] 월 ${monthlyHours}시간 이상의 집중 학습이 요구되는 고난도 시험입니다. 하루 평균 ${Math.round(monthlyHours / 30 * 10) / 10}시간 이상의 꾸준한 학습과 철저한 시간 관리 전략이 필수입니다.`);
+        } else if (monthlyHours >= 50) {
+            lines.push(`[학습량 안내] 월 ${monthlyHours}시간 정도의 꾸준한 학습이 권장됩니다. 하루 평균 ${Math.round(monthlyHours / 30 * 10) / 10}시간 학습으로 계획적인 시간 배분이 중요합니다.`);
+        } else {
+            lines.push(`[학습량 안내] 월 ${monthlyHours}시간 정도의 학습량으로, 다른 자격증 대비 비교적 부담 없이 준비할 수 있는 수준입니다.`);
+        }
+
+        // ===== 4. 사용자 상황별 맞춤 전략 =====
+        if (userProfile?.employment === "직장인") {
+            lines.push(`[직장인 맞춤 전략] 직장과 병행 시 학습 지속성이 합격률에 큰 영향을 미칩니다. 평일 야간 2시간 + 주말 집중 학습 패턴을 권장하며, 출퇴근 시간을 활용한 이론 암기가 효과적입니다.`);
+        } else if (userProfile?.employment === "취준생/이직준비") {
+            lines.push(`[취준생 맞춤 전략] 집중 학습이 가능한 최적의 시기입니다. 하루 6~8시간 풀타임 학습으로 단기 합격을 목표로 하고, 체계적인 커리큘럼 이행을 통해 최단 기간 합격을 노려보세요.`);
+        } else if (userProfile?.employment === "학생") {
+            lines.push(`[학생 맞춤 전략] 학업과 병행 시 방학 기간 집중 공략이 핵심입니다. 학기 중에는 기초 이론 학습, 방학에는 문제풀이와 실전 모의고사에 집중하는 전략을 권장합니다.`);
+        } else if (userProfile?.employment === "주부/경단녀") {
+            lines.push(`[경력단절자 맞춤 전략] 가사와 병행 가능한 유연한 학습 계획이 중요합니다. 오전 시간대 집중 학습, 온라인 강의 활용으로 효율적인 시간 관리가 가능합니다.`);
+        }
+
+        // ===== 5. 합격 전략 및 학습 팁 =====
+        if (examInfo?.studyTip) {
+            lines.push(`[합격 핵심 전략] ${examInfo.studyTip}`);
+        }
+
+        // ===== 6. 합격률 및 경쟁 분석 =====
+        if (passRate) {
+            if (passRate < 20) {
+                lines.push(`[합격률 분석] 전체 합격률 ${passRate}%로 난이도가 높은 시험입니다. 그러나 체계적인 준비와 충분한 학습 시간 확보 시 평균 대비 합격 확률을 크게 높일 수 있습니다.`);
+            } else if (passRate < 40) {
+                lines.push(`[합격률 분석] 전체 합격률 ${passRate}%로 적정 수준의 경쟁률을 보입니다. 핵심 과목 집중 공략과 기출문제 분석으로 충분히 합격 가능합니다.`);
+            } else {
+                lines.push(`[합격률 분석] 전체 합격률 ${passRate}%로 비교적 높은 편입니다. 기본기에 충실하고 꾸준히 학습하면 합격 가능성이 높습니다.`);
+            }
+        }
+
+        // ===== 7. 비용 대비 효과 분석 =====
+        lines.push(`[투자 비용 분석] 총 예상 비용 ${cost}(교재+강의+응시료 포함)은 자격증 취득 후 예상 수익 대비 합리적인 투자입니다.`);
+
+        // ===== 8. 진로 및 전망 =====
+        if (examInfo?.careerPath) {
+            lines.push(`[진로 및 활용] ${examInfo.careerPath}`);
+        }
+
+        if (typeof salary === 'number') {
+            lines.push(`[소득 전망] 신입 기준 초봉 약 ${salary.toLocaleString()}만원으로, 경력에 따라 상승 가능성이 높습니다. 직업 전망 '${outlookText}' 평가는 장기 커리어 측면에서 긍정적인 신호입니다.`);
+        }
+
+        // ===== 9. 자격증 취득의 이점 =====
+        if (examInfo?.advantage) {
+            lines.push(`[취득 이점] ${examInfo.advantage}`);
+        }
+
+        // ===== 10. 관련 분야 경험 가산 =====
+        if (cert.tags?.some(t => ["법률", "보험", "금융", "회계", "세무"].includes(t))) {
+            lines.push(`[관련 경험 분석] 법률, 금융, 회계 분야 경험이나 관련 전공 이수자의 경우 학습 효율이 30% 이상 높아질 것으로 분석됩니다.`);
+        } else if (cert.tags?.some(t => ["IT", "데이터", "프로그래밍"].includes(t))) {
+            lines.push(`[관련 경험 분석] IT, 프로그래밍 경험이 있다면 실기 과목에서 큰 강점이 될 수 있습니다. 기초 코딩 능력이 합격에 유리합니다.`);
+        } else if (cert.tags?.some(t => ["안전", "소방", "전기"].includes(t))) {
+            lines.push(`[관련 경험 분석] 현장 실무 경험이 있다면 이론 이해도가 높고, 실기 시험에서도 유리합니다. 관련 산업체 근무 경력은 큰 자산입니다.`);
+        }
+
+        // ===== 11. 종합 결론 =====
+        if (score >= 70) {
+            lines.push(`[종합 결론] 귀하의 조건은 ${cert.name} 준비에 매우 적합합니다. 체계적인 학습 계획 수립과 꾸준한 실행으로 목표 달성이 충분히 가능합니다. 지금 바로 시작하시기를 강력히 권장합니다!`);
+        } else if (score >= 50) {
+            lines.push(`[종합 결론] 충분한 준비 기간과 학습 관리가 가능하다면 ${cert.name}은 도전 가치가 높은 자격증입니다. 약점 보완에 집중하고 강점을 살리는 전략으로 합격을 목표하세요.`);
+        } else {
+            lines.push(`[종합 결론] ${cert.name}은 현재 조건에서 다소 도전적일 수 있으나, 충분한 준비 기간을 확보하고 관련 기초 지식을 쌓는다면 합격 가능성을 높일 수 있습니다. 기초부터 차근차근 준비해 보세요.`);
+        }
+
+        return lines;
+    }
+
+    // 타이핑 효과 컴포넌트
+    function TypingText({lines, isActive}) {
+        const [displayedLines, setDisplayedLines] = useState([]);
+        const [currentLineIndex, setCurrentLineIndex] = useState(0);
+        const [currentCharIndex, setCurrentCharIndex] = useState(0);
+        const [isComplete, setIsComplete] = useState(false);
+        const [showCursor, setShowCursor] = useState(true);
+        const containerRef = useRef(null);
+
+        useEffect(() => {
+            if (!isActive || !lines || lines.length === 0) {
+                setDisplayedLines([]);
+                setCurrentLineIndex(0);
+                setCurrentCharIndex(0);
+                setIsComplete(false);
+                return;
+            }
+
+            // 커서 깜빡임
+            const cursorInterval = setInterval(() => {
+                setShowCursor(prev => !prev);
+            }, 500);
+
+            return () => clearInterval(cursorInterval);
+        }, [isActive, lines]);
+
+        useEffect(() => {
+            if (!isActive || !lines || lines.length === 0 || isComplete) return;
+
+            if (currentLineIndex >= lines.length) {
+                setIsComplete(true);
+                return;
+            }
+
+            const currentLine = lines[currentLineIndex];
+
+            if (currentCharIndex < currentLine.length) {
+                const timeout = setTimeout(() => {
+                    setDisplayedLines(prev => {
+                        const newLines = [...prev];
+                        if (newLines.length <= currentLineIndex) {
+                            newLines.push(currentLine.slice(0, currentCharIndex + 1));
+                        } else {
+                            newLines[currentLineIndex] = currentLine.slice(0, currentCharIndex + 1);
+                        }
+                        return newLines;
+                    });
+                    setCurrentCharIndex(prev => prev + 1);
+                }, 25); // 타이핑 속도
+
+                return () => clearTimeout(timeout);
+            } else {
+                // 다음 줄로 이동
+                const timeout = setTimeout(() => {
+                    setCurrentLineIndex(prev => prev + 1);
+                    setCurrentCharIndex(0);
+                }, 300); // 줄 간 딜레이
+
+                return () => clearTimeout(timeout);
+            }
+        }, [isActive, lines, currentLineIndex, currentCharIndex, isComplete]);
+
+        // 자동 스크롤
+        useEffect(() => {
+            if (containerRef.current) {
+                containerRef.current.scrollTop = containerRef.current.scrollHeight;
+            }
+        }, [displayedLines]);
+
+        if (!isActive || !lines || lines.length === 0) return null;
+
+        // [] 안의 내용을 볼드 처리하는 함수
+        const formatLine = (text) => {
+            const parts = text.split(/(\[[^\]]+\])/g);
+            return parts.map((part, i) => {
+                if (part.startsWith('[') && part.endsWith(']')) {
+                    return <strong key={i} className="text-violet-700 font-bold">{part.slice(1, -1)}</strong>;
+                }
+                return <span key={i}>{part}</span>;
+            });
+        };
+
+        return (
+            <div ref={containerRef} className="space-y-3">
+                {displayedLines.map((line, idx) => (
+                    <p key={idx} className="text-gray-700 text-base leading-relaxed flex items-start gap-3">
+                        <span className="text-violet-500 mt-1 flex-shrink-0">•</span>
+                        <span className="flex-1">
+                {formatLine(line)}
+                            {idx === displayedLines.length - 1 && !isComplete && (
+                                <span
+                                    className={`inline-block w-0.5 h-5 bg-violet-500 ml-0.5 align-middle ${showCursor ? 'opacity-100' : 'opacity-0'}`}></span>
+                            )}
+              </span>
+                    </p>
+                ))}
+                {!isComplete && displayedLines.length === 0 && (
+                    <div className="flex items-center gap-3 text-violet-600 py-4">
+                        <div className="flex gap-1.5">
+                            <span className="w-2.5 h-2.5 bg-violet-500 rounded-full animate-bounce"
+                                  style={{animationDelay: '0ms'}}></span>
+                            <span className="w-2.5 h-2.5 bg-violet-500 rounded-full animate-bounce"
+                                  style={{animationDelay: '150ms'}}></span>
+                            <span className="w-2.5 h-2.5 bg-violet-500 rounded-full animate-bounce"
+                                  style={{animationDelay: '300ms'}}></span>
+                        </div>
+                        <span className="text-base font-medium">AI가 귀하의 조건을 분석하고 있습니다...</span>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    // ========================================
+    // AI 추천 알고리즘
+    // ========================================
+    function getAdvancedRecommendations(userProfile) {
+        const {background, duration, employment, dailyHours, interests, goal, budget} = userProfile;
+        const monthlyHours = dailyHours * 22;
+        const durationMap = {"3개월": 3, "6개월": 6, "12개월": 12, "24개월": 24, "36개월 이상": 36};
+        const durationMonths = durationMap[duration] || 12;
+        const budgetMap = {"50만원 이하": 50, "100만원": 100, "200만원": 200, "300만원": 300, "제한없음": 999};
+        const maxBudget = budgetMap[budget] || 999;
+
+        const results = [];
+
+        Object.entries(certificationsDB).forEach(([name, cert]) => {
+            let score = 0;
+            let reasons = [];
+            let warnings = [];
+            let highlights = [];
+
+            // 1. 시간 적합성 (25점)
+            const requiredHours = cert.monthlyHours?.recommended || 60;
+            const hourRatio = monthlyHours / requiredHours;
+            if (hourRatio >= 1.2) {
+                score += 25;
+                reasons.push("✅ 충분한 학습 시간");
+                highlights.push("시간 여유");
+            } else if (hourRatio >= 1.0) {
+                score += 22;
+                reasons.push("✅ 적정 학습 시간");
+            } else if (hourRatio >= 0.8) {
+                score += 18;
+                reasons.push("⚠️ 시간 관리 필요");
+            } else if (hourRatio >= 0.6) {
+                score += 12;
+                warnings.push("시간 부족");
+            } else {
+                score += 5;
+                warnings.push("시간 크게 부족");
+            }
+
+            // 2. 기간 적합성 (20점)
+            const certDurationOpt = cert.duration?.optimal || 6;
+            const certDurationMin = cert.duration?.min || 3;
+            if (durationMonths >= certDurationOpt) {
+                score += 20;
+                reasons.push("✅ 충분한 준비 기간");
+                highlights.push("기간 충분");
+            } else if (durationMonths >= certDurationMin) {
+                score += 15;
+                reasons.push("✅ 집중 학습 시 가능");
+            } else if (durationMonths >= certDurationMin * 0.7) {
+                score += 10;
+                warnings.push("기간 촉박");
+            } else {
+                score += 3;
+                warnings.push("기간 매우 부족");
+            }
+
+            // 3. 배경 적합성 (20점)
+            if (background === "비전공자") {
+                if (cert.difficulty <= 3) {
+                    score += 20;
+                    reasons.push("✅ 비전공자 도전 적합");
+                    highlights.push("입문 용이");
+                } else if (cert.difficulty === 4) {
+                    score += 12;
+                    reasons.push("⚠️ 난이도 도전적");
+                } else {
+                    score += 8;
+                    warnings.push("고난도 - 충분한 준비 필요");
+                }
+            } else if (background === "전공자") {
+                if (cert.difficulty >= 3) {
+                    score += 20;
+                    reasons.push("✅ 전공 지식 활용");
+                    highlights.push("전공 우대");
+                } else {
+                    score += 18;
+                    reasons.push("✅ 수월한 접근");
+                }
+            } else {
+                score += 20;
+                reasons.push("✅ 실무 경험 활용");
+                highlights.push("경력 활용");
+            }
+
+            // 4. 현재 상황 (15점)
+            if (employment === "직장인") {
+                if (cert.difficulty <= 2) {
+                    score += 15;
+                    reasons.push("✅ 직장 병행 적합");
+                } else if (cert.difficulty === 3) {
+                    score += 12;
+                    reasons.push("⚠️ 병행 가능 (시간관리 필요)");
+                } else {
+                    score += 7;
+                    warnings.push("병행 어려움");
+                }
+            } else if (employment === "취업준비생") {
+                score += 15;
+                reasons.push("✅ 풀타임 집중 가능");
+                highlights.push("집중 학습");
+            } else if (employment === "학생") {
+                if (cert.difficulty <= 3) {
+                    score += 13;
+                    reasons.push("✅ 학업 병행 가능");
+                } else {
+                    score += 8;
+                    warnings.push("학업과 부담될 수 있음");
+                }
+            } else {
+                score += 14;
+                reasons.push("✅ 유연한 일정 가능");
+            }
+
+            // 5. 목표 적합성 (10점)
+            if (goal === "고소득" && (cert.salary?.senior >= 7000 || cert.tags?.includes("고소득"))) {
+                score += 10;
+                reasons.push("💰 고소득 달성 가능");
+                highlights.push("고소득");
+            } else if (goal === "안정적 취업" && (cert.tags?.includes("공기업") || cert.tags?.includes("안정") || cert.outlook >= 4)) {
+                score += 10;
+                reasons.push("🏢 안정적 취업 유리");
+                highlights.push("취업 유리");
+            } else if (goal === "이직/전환" && cert.outlook >= 4) {
+                score += 10;
+                reasons.push("🔄 커리어 전환 효과적");
+                highlights.push("이직 유리");
+            } else if (goal === "창업" && (cert.tags?.includes("창업") || cert.tags?.includes("전문직"))) {
+                score += 10;
+                reasons.push("🚀 독립/창업 가능");
+                highlights.push("창업 가능");
+            }
+
+            // 6. 관심분야 매칭 (10점)
+            if (interests && interests.length > 0) {
+                const interestMap = {
+                    "회계/세무": ["회계", "세무", "감사"],
+                    "법률": ["법률", "등기", "소송"],
+                    "부동산": ["부동산", "중개", "감정"],
+                    "IT/데이터": ["IT", "개발", "데이터", "AI"],
+                    "안전/설비": ["안전", "소방", "전기", "위험물"],
+                    "금융/투자": ["금융", "투자", "보험"],
+                    "물류/무역": ["물류", "무역", "관세"],
+                    "상담/복지": ["상담", "심리", "복지"]
+                };
+                let matched = false;
+                interests.forEach(interest => {
+                    const keywords = interestMap[interest] || [interest];
+                    if (cert.tags?.some(tag => keywords.some(k => tag.includes(k)))) matched = true;
+                });
+                if (matched) {
+                    score += 10;
+                    reasons.push("❤️ 관심 분야 일치");
+                    highlights.push("관심 분야");
+                }
+            }
+
+            // 예산 체크 (비용 범위의 최대값과 비교)
+            const costStr = cert.cost?.total || "100만원";
+            const costNumbers = costStr.match(/\d+/g);
+            const maxCost = costNumbers ? Math.max(...costNumbers.map(Number)) : 100;
+            if (maxCost > maxBudget) {
+                score -= 10;
+                warnings.push(`예산 초과 (${cert.cost?.total})`);
+            }
+
+            // 뱃지 보너스
+            if (cert.badge) {
+                score += 3;
+                highlights.push(cert.badge);
+            }
+
+            if (score >= 40) {
+                const matchLevel = score >= 85 ? "최적" : score >= 70 ? "추천" : score >= 55 ? "적합" : "도전";
+                const matchGradient = {
+                    "최적": "from-violet-500 to-purple-600",
+                    "추천": "from-emerald-500 to-teal-600",
+                    "적합": "from-amber-500 to-orange-600",
+                    "도전": "from-pink-500 to-rose-600"
+                };
+                results.push({
+                    name, ...cert,
+                    score,
+                    reasons: reasons.slice(0, 4),
+                    warnings: warnings.slice(0, 2),
+                    highlights: highlights.slice(0, 3),
+                    matchLevel,
+                    matchGradient: matchGradient[matchLevel]
+                });
+            }
+        });
+
+        return results.sort((a, b) => b.score - a.score).slice(0, 8);
+    }
+
+    // ========================================
+    // 메인 컴포넌트
+    // ========================================
+    function SidaeAIRecommender() {
+        const [dataLoaded, setDataLoaded] = useState(false);
+        const [step, setStep] = useState(0);
+        const [userProfile, setUserProfile] = useState({
+            background: "",
+            duration: "",
+            employment: "",
+            dailyHours: 3,
+            interests: [],
+            goal: "",
+            budget: ""
+        });
+        const [recommendations, setRecommendations] = useState([]);
+        const [showResults, setShowResults] = useState(false);
+        const [selectedCert, setSelectedCert] = useState(null);
+        const [activeTab, setActiveTab] = useState('overview');
+        const [compareList, setCompareList] = useState([]);
+        const [showCompare, setShowCompare] = useState(false);
+        const [searchQuery, setSearchQuery] = useState("");
+        const [showAllCerts, setShowAllCerts] = useState(false);
+        const [selectedCategory, setSelectedCategory] = useState("전체");
+        const [aiAnalysisLines, setAiAnalysisLines] = useState([]);
+        const [showAiAnalysis, setShowAiAnalysis] = useState(false);
+        const [isFromAllCerts, setIsFromAllCerts] = useState(false);
+        const [isAnalyzing, setIsAnalyzing] = useState(false);
+        const [visibleRecommendations, setVisibleRecommendations] = useState([]);
+
+        const totalSteps = 6;
+        const interestOptions = [
+            {value: "회계/세무", icon: "📊"}, {value: "법률", icon: "⚖️"},
+            {value: "부동산", icon: "🏠"}, {value: "IT/데이터", icon: "💻"},
+            {value: "안전/설비", icon: "🔧"}, {value: "금융/투자", icon: "💰"},
+            {value: "물류/무역", icon: "🚢"}, {value: "상담/복지", icon: "💝"}
+        ];
+
+        const categories = ["전체", ...Object.keys(categoryConfig)];
+
+        // 데이터 로딩
+        useEffect(() => {
+            loadDataFromAPI().then(success => {
+                if (success) {
+                    setDataLoaded(true);
+                } else {
+                    alert('데이터를 불러오는데 실패했습니다. 페이지를 새로고침해주세요.');
+                }
+            });
+        }, []);
+
+        // 추천 결과 순차적으로 표시하는 효과
+        useEffect(() => {
+            if (showResults && recommendations.length > 0 && isAnalyzing && visibleRecommendations.length === 0) {
+                // 5초 후 순차적으로 표시 시작 (기존 3초 + 2초)
+                const startTimer = setTimeout(() => {
+                    recommendations.forEach((cert, idx) => {
+                        setTimeout(() => {
+                            setVisibleRecommendations(prev => [...prev, cert]);
+                            if (idx === recommendations.length - 1) {
+                                setTimeout(() => setIsAnalyzing(false), 500);
+                            }
+                        }, idx * 800); // 각 항목 0.8초 간격 (기존 0.4초의 2배)
+                    });
+                }, 5000); // 5초 로딩
+
+                return () => clearTimeout(startTimer);
+            }
+        }, [showResults, recommendations, isAnalyzing, visibleRecommendations.length]);
+
+        const handleNext = () => {
+            if (step < totalSteps - 1) setStep(step + 1);
+            else {
+                const results = getAdvancedRecommendations(userProfile);
+                setRecommendations(results);
+                setShowResults(true);
+                setIsAnalyzing(true);
+                setVisibleRecommendations([]);
+            }
+        };
+        const handleBack = () => {
+            if (showResults) {
+                setShowResults(false);
+                setSelectedCert(null);
+                setIsAnalyzing(false);
+                setVisibleRecommendations([]);
+            } else if (step > 0) setStep(step - 1);
+        };
+        const handleReset = () => {
+            setStep(0);
+            setUserProfile({
+                background: "",
+                duration: "",
+                employment: "",
+                dailyHours: 3,
+                interests: [],
+                goal: "",
+                budget: ""
+            });
+            setRecommendations([]);
+            setShowResults(false);
+            setSelectedCert(null);
+            setCompareList([]);
+            setIsAnalyzing(false);
+            setVisibleRecommendations([]);
+        };
+        const toggleInterest = (interest) => {
+            setUserProfile(prev => ({
+                ...prev,
+                interests: prev.interests.includes(interest) ? prev.interests.filter(i => i !== interest) : prev.interests.length < 3 ? [...prev.interests, interest] : prev.interests
+            }));
+        };
+        const toggleCompare = (cert) => {
+            setCompareList(prev => prev.find(c => c.name === cert.name) ? prev.filter(c => c.name !== cert.name) : prev.length < 3 ? [...prev, cert] : prev);
+        };
+        const isStepValid = () => {
+            switch (step) {
+                case 0:
+                    return !!userProfile.background;
+                case 1:
+                    return !!userProfile.duration;
+                case 2:
+                    return !!userProfile.employment;
+                case 3:
+                    return userProfile.dailyHours > 0;
+                case 4:
+                    return !!userProfile.goal;
+                case 5:
+                    return !!userProfile.budget;
+                default:
+                    return true;
+            }
+        };
+
+        const filteredCerts = useMemo(() => {
+            if (!showAllCerts) return [];
+            return Object.entries(certificationsDB).filter(([name, cert]) => {
+                const matchCategory = selectedCategory === "전체" || cert.category === selectedCategory;
+                const matchSearch = !searchQuery || name.toLowerCase().includes(searchQuery.toLowerCase()) || cert.category?.toLowerCase().includes(searchQuery.toLowerCase()) || cert.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+                return matchCategory && matchSearch;
+            }).map(([name, cert]) => ({name, ...cert}));
+        }, [showAllCerts, searchQuery, selectedCategory]);
+
+        const Icon = ({name, className = "w-5 h-5"}) => {
+            const C = Icons[name];
+            return C ? <C className={className}/> : null;
+        };
+
+        // selectedCert가 변경될 때 AI 분석 텍스트 생성
+        useEffect(() => {
+            if (selectedCert) {
+                setShowAiAnalysis(false);
+                setAiAnalysisLines([]);
+                // 전체 자격증 검색에서 온 경우 AI 분석 제외
+                if (isFromAllCerts) {
+                    return;
+                }
+                // 약간의 딜레이 후 타이핑 시작
+                const timer = setTimeout(() => {
+                    const lines = generateAIAnalysisText(selectedCert, userProfile, false);
+                    setAiAnalysisLines(lines);
+                    setShowAiAnalysis(true);
+                }, 500);
+                return () => clearTimeout(timer);
+            } else {
+                setShowAiAnalysis(false);
+                setAiAnalysisLines([]);
+            }
+        }, [selectedCert, isFromAllCerts]);
+
+        // 로딩 중 표시
+        if (!dataLoaded) {
+            return (
+                <div
+                    className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+                    <div className="text-center">
+                        <div
+                            className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-600 mb-4"></div>
+                        <p className="text-xl font-semibold text-gray-700">데이터 로딩 중...</p>
+                        <p className="text-sm text-gray-500 mt-2">잠시만 기다려주세요</p>
+                    </div>
+                </div>
+            );
+        }
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+            <div
+                className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-violet-50 via-white to-rose-50"></div>
+            <div
+                className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-violet-200/40 to-indigo-200/40 rounded-full blur-3xl"></div>
+            <div
+                className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-br from-pink-200/40 to-rose-200/40 rounded-full blur-3xl"></div>
+            <div
+                className="absolute top-1/3 right-1/4 w-48 h-48 bg-gradient-to-br from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl"></div>
+        </div>
+        return (
+            <div className="min-h-screen">
+                {/* 배경 장식 */}
+
+
+                <div className="relative max-w-5xl mx-auto px-4 py-6">
+                    {/* 헤더 */}
+                    <header className="text-center mb-8">
+                        <div
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-500 to-purple-600 rounded-full shadow-lg shadow-violet-200 mb-4">
+                            <Icon name="Sparkles" className="w-4 h-4 text-white"/>
+                            <span className="text-sm text-white font-semibold">AI 맞춤 추천</span>
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-extrabold mb-2 cursor-pointer" onClick={() => {
+                            setStep(0);
+                            setShowResults(false);
+                            setSelectedCert(null);
+                            setShowAllCerts(false);
+                            setIsFromAllCerts(false);
+                            setUserProfile({
+                                background: "",
+                                duration: "",
+                                employment: "",
+                                dailyHours: 3,
+                                interests: [],
+                                goal: "",
+                                budget: ""
+                            });
+                            setRecommendations([]);
+                            setCompareList([]);
+                        }}>
+                            <span
+                                className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 hover:from-violet-500 hover:via-purple-500 hover:to-pink-500 transition-all">시대에듀</span>
+                        </h1>
+                        <p className="text-lg text-gray-600 font-medium">AI 강의·교재 추천 시스템</p>
+
+                        {/* 빠른 메뉴 */}
+                        <div className="flex justify-center gap-3 mt-5">
+                            <button onClick={() => {
+                                setShowAllCerts(true);
+                                setShowResults(false);
+                                setSelectedCert(null);
+                            }}
+                                    className="px-5 py-2.5 text-sm bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-violet-300 rounded-full text-gray-700 font-medium transition-all shadow-sm flex items-center gap-2">
+                                <Icon name="Search" className="w-4 h-4"/> 전체 자격증 검색
+                            </button>
+                            {compareList.length > 0 && (
+                                <button onClick={() => setShowCompare(true)}
+                                        className="px-5 py-2.5 text-sm bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 rounded-full text-white font-medium transition-all shadow-lg shadow-violet-200 flex items-center gap-2">
+                                    <Icon name="Filter" className="w-4 h-4"/> 비교 ({compareList.length})
+                                </button>
+                            )}
+                        </div>
+                    </header>
+
+                    {/* 전체 자격증 검색 */}
+                    {showAllCerts && !selectedCert && (
+                        <div className="glass rounded-3xl border border-white/50 shadow-xl p-6 mb-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="text-xl font-bold text-gray-800">전체 자격증 ({filteredCerts.length}개)</h2>
+                                <button onClick={() => setShowAllCerts(false)}
+                                        className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-full transition-colors">
+                                    <Icon name="X" className="w-5 h-5"/>
+                                </button>
+                            </div>
+
+                            {/* 검색바 */}
+                            <div className="relative mb-4">
+                                <Icon name="Search"
+                                      className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"/>
+                                <input type="text" placeholder="자격증명, 카테고리, 키워드 검색..." value={searchQuery}
+                                       onChange={(e) => setSearchQuery(e.target.value)}
+                                       className="w-full pl-12 pr-4 py-3.5 bg-white border-2 border-gray-200 focus:border-violet-400 rounded-2xl text-gray-800 placeholder-gray-400 focus:outline-none transition-colors"/>
+                            </div>
+
+                            {/* 카테고리 필터 */}
+                            <div className="flex gap-2 overflow-x-auto pb-3 mb-4 scrollbar-hide">
+                                {categories.map(cat => (
+                                    <button key={cat} onClick={() => setSelectedCategory(cat)}
+                                            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${selectedCategory === cat ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+                                        {cat === "전체" ? "🔍 전체" : `${categoryConfig[cat]?.icon || ""} ${cat}`}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* 자격증 목록 */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2">
+                                {filteredCerts.map(cert => (
+                                    <button key={cert.name} onClick={() => {
+                                        setSelectedCert(cert);
+                                        setActiveTab('overview');
+                                        setIsFromAllCerts(true);
+                                        setShowAllCerts(false);
+                                    }}
+                                            className="text-left p-4 bg-white hover:bg-gray-50 rounded-2xl border-2 border-gray-100 hover:border-violet-300 transition-all shadow-sm hover:shadow-md group">
+                                        <div className="flex items-center gap-2 mb-2">
+                        <span
+                            className={`px-2.5 py-1 text-xs font-semibold rounded-full ${categoryConfig[cert.category]?.bg} ${categoryConfig[cert.category]?.text}`}>
+                          {categoryConfig[cert.category]?.icon} {cert.category}
+                        </span>
+                                            <span
+                                                className={`text-xs font-medium ${difficultyConfig[cert.difficulty]?.color}`}>
+                          {difficultyConfig[cert.difficulty]?.emoji} {difficultyConfig[cert.difficulty]?.label}
+                        </span>
+                                            {cert.badge && <span
+                                                className="px-2 py-0.5 text-xs bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-full font-bold">{cert.badge}</span>}
+                                        </div>
+                                        <h3 className="font-bold text-gray-800 group-hover:text-violet-600 transition-colors">{cert.name}</h3>
+                                        <p className="text-sm text-gray-500 line-clamp-1 mt-1">{cert.description}</p>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 비교 모달 */}
+                    {showCompare && compareList.length > 0 && (
+                        <div
+                            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                            <div
+                                className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-auto">
+                                <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                                    <h2 className="text-xl font-bold text-gray-800">📊 자격증 비교</h2>
+                                    <button onClick={() => setShowCompare(false)}
+                                            className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-full">
+                                        <Icon name="X" className="w-5 h-5"/>
+                                    </button>
+                                </div>
+                                <div className="p-6 overflow-x-auto">
+                                    <table className="w-full text-sm">
+                                        <thead>
+                                        <tr className="border-b-2 border-gray-100">
+                                            <th className="py-3 px-4 text-left text-gray-500 font-semibold">항목</th>
+                                            {compareList.map(cert => <th key={cert.name}
+                                                                         className="py-3 px-4 text-left font-bold text-gray-800">{cert.name}</th>)}
+                                        </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-50">
+                                        <tr className="hover:bg-gray-50">
+                                            <td className="py-3 px-4 text-gray-500">카테고리</td>
+                                            {compareList.map(cert => <td key={cert.name} className="py-3 px-4"><span
+                                                className={`px-2 py-1 rounded-full text-xs font-medium ${categoryConfig[cert.category]?.bg} ${categoryConfig[cert.category]?.text}`}>{cert.category}</span>
+                                            </td>)}</tr>
+                                        <tr className="hover:bg-gray-50">
+                                            <td className="py-3 px-4 text-gray-500">난이도</td>
+                                            {compareList.map(cert => <td key={cert.name}
+                                                                         className={`py-3 px-4 font-medium ${difficultyConfig[cert.difficulty]?.color}`}>{difficultyConfig[cert.difficulty]?.emoji} {difficultyConfig[cert.difficulty]?.label}</td>)}
+                                        </tr>
+                                        <tr className="hover:bg-gray-50">
+                                            <td className="py-3 px-4 text-gray-500">준비기간</td>
+                                            {compareList.map(cert => <td key={cert.name}
+                                                                         className="py-3 px-4 text-gray-800">{cert.duration?.min}~{cert.duration?.max}개월</td>)}
+                                        </tr>
+                                        <tr className="hover:bg-gray-50">
+                                            <td className="py-3 px-4 text-gray-500">합격률</td>
+                                            {compareList.map(cert => <td key={cert.name}
+                                                                         className="py-3 px-4 text-gray-800">{cert.passRate?.overall || '-'}%</td>)}
+                                        </tr>
+                                        <tr className="hover:bg-gray-50">
+                                            <td className="py-3 px-4 text-gray-500">예상비용</td>
+                                            {compareList.map(cert => <td key={cert.name}
+                                                                         className="py-3 px-4 text-gray-800">{cert.cost?.total}</td>)}
+                                        </tr>
+                                        <tr className="hover:bg-gray-50">
+                                            <td className="py-3 px-4 text-gray-500">연봉(중견)</td>
+                                            {compareList.map(cert => <td key={cert.name}
+                                                                         className="py-3 px-4 text-emerald-600 font-semibold">{cert.salary?.mid ? `${cert.salary.mid.toLocaleString()}만원` : '-'}</td>)}
+                                        </tr>
+                                        <tr className="hover:bg-gray-50">
+                                            <td className="py-3 px-4 text-gray-500">전망</td>
+                                            {compareList.map(cert => <td key={cert.name}
+                                                                         className="py-3 px-4 text-amber-500">{"⭐".repeat(cert.outlook || 3)}</td>)}
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="p-4 border-t border-gray-100 flex justify-end gap-2">
+                                    <button onClick={() => setCompareList([])}
+                                            className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 font-medium">초기화
+                                    </button>
+                                    <button onClick={() => setShowCompare(false)}
+                                            className="px-6 py-2 text-sm bg-gradient-to-r from-violet-500 to-purple-600 text-white rounded-full font-semibold shadow-lg">닫기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 메인 카드 */}
+                    {!showAllCerts && (
+                        <div className="glass rounded-3xl border border-white/50 shadow-xl overflow-hidden">
+                            {!showResults && !selectedCert ? (
+                                <>
+                                    {/* 진행률 */}
+                                    <div className="px-6 pt-6">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-sm text-gray-500 font-medium">진행률</span>
+                                            <span
+                                                className="text-sm text-violet-600 font-bold">{Math.round((step / (totalSteps - 1)) * 100)}%</span>
+                                        </div>
+                                        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                                            <div
+                                                className="h-full bg-gradient-to-r from-violet-500 to-purple-600 transition-all duration-500 rounded-full"
+                                                style={{width: `${(step / (totalSteps - 1)) * 100}%`}}/>
+                                        </div>
+                                        <div className="flex justify-between mt-3">
+                                            {[...Array(totalSteps)].map((_, i) => (
+                                                <div key={i}
+                                                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${i <= step ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg' : 'bg-gray-100 text-gray-400'}`}>{i + 1}</div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* 질문 영역 */}
+                                    <div className="p-6">
+                                        {step === 0 && (
+                                            <div className="animate-fadeIn">
+                                                <div className="flex items-center gap-3 mb-6">
+                                                    <div
+                                                        className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-200">
+                                                        <Icon name="GraduationCap" className="w-7 h-7 text-white"/>
+                                                    </div>
+                                                    <div>
+                                                        <h2 className="text-xl font-bold text-gray-800">학습 배경을
+                                                            알려주세요</h2>
+                                                        <p className="text-gray-500 text-sm">맞춤 추천을 위해 필요해요</p>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                    {[
+                                                        {
+                                                            value: "비전공자",
+                                                            icon: "BookOpen",
+                                                            desc: "새로운 분야 도전",
+                                                            sub: "진입장벽 낮은 자격증",
+                                                            color: "from-emerald-500 to-teal-500"
+                                                        },
+                                                        {
+                                                            value: "전공자",
+                                                            icon: "Award",
+                                                            desc: "관련 학과 전공",
+                                                            sub: "전공 활용 자격증",
+                                                            color: "from-violet-500 to-purple-500"
+                                                        },
+                                                        {
+                                                            value: "경력자",
+                                                            icon: "Briefcase",
+                                                            desc: "실무 경험 보유",
+                                                            sub: "경력 연계 자격증",
+                                                            color: "from-orange-500 to-amber-500"
+                                                        }
+                                                    ].map(opt => (
+                                                        <button key={opt.value} onClick={() => setUserProfile(p => ({
+                                                            ...p,
+                                                            background: opt.value
+                                                        }))}
+                                                                className={`p-5 rounded-2xl border-2 text-left transition-all ${userProfile.background === opt.value ? `bg-gradient-to-br ${opt.color} text-white shadow-xl scale-[1.02]` : 'bg-white border-gray-200 hover:border-violet-300 hover:shadow-lg'}`}>
+                                                            <Icon name={opt.icon}
+                                                                  className={`w-10 h-10 mb-3 ${userProfile.background === opt.value ? 'text-white' : 'text-gray-400'}`}/>
+                                                            <div
+                                                                className={`font-bold text-lg ${userProfile.background === opt.value ? 'text-white' : 'text-gray-800'}`}>{opt.value}</div>
+                                                            <div
+                                                                className={`text-sm ${userProfile.background === opt.value ? 'text-white/80' : 'text-gray-500'}`}>{opt.desc}</div>
+                                                            <div
+                                                                className={`text-xs mt-1 ${userProfile.background === opt.value ? 'text-white/70' : 'text-gray-400'}`}>{opt.sub}</div>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {step === 1 && (
+                                            <div className="animate-fadeIn">
+                                                <div className="flex items-center gap-3 mb-6">
+                                                    <div
+                                                        className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-lg shadow-pink-200">
+                                                        <Icon name="Calendar" className="w-7 h-7 text-white"/>
+                                                    </div>
+                                                    <div>
+                                                        <h2 className="text-xl font-bold text-gray-800">목표 취득 기간은?</h2>
+                                                        <p className="text-gray-500 text-sm">자격증 취득까지 투자할 수 있는 기간</p>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                                                    {["3개월", "6개월", "12개월", "24개월", "36개월 이상"].map(d => (
+                                                        <button key={d} onClick={() => setUserProfile(p => ({
+                                                            ...p,
+                                                            duration: d
+                                                        }))}
+                                                                className={`py-4 px-3 rounded-2xl border-2 font-semibold transition-all ${userProfile.duration === d ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white border-transparent shadow-xl' : 'bg-white border-gray-200 text-gray-700 hover:border-pink-300 hover:shadow-lg'}`}>
+                                                            {d}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                                <p className="text-gray-400 text-sm mt-4 text-center">💡 긴 기간일수록 고난이도 자격증
+                                                    도전 가능</p>
+                                            </div>
+                                        )}
+
+                                        {step === 2 && (
+                                            <div className="animate-fadeIn">
+                                                <div className="flex items-center gap-3 mb-6">
+                                                    <div
+                                                        className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-200">
+                                                        <Icon name="Users" className="w-7 h-7 text-white"/>
+                                                    </div>
+                                                    <div>
+                                                        <h2 className="text-xl font-bold text-gray-800">현재 상태는?</h2>
+                                                        <p className="text-gray-500 text-sm">학습 시간 확보 가능성을 파악해요</p>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    {[
+                                                        {value: "직장인", desc: "근무 중", tip: "야간/주말 학습", icon: "💼"},
+                                                        {value: "취업준비생", desc: "구직 중", tip: "풀타임 집중", icon: "🎯"},
+                                                        {value: "학생", desc: "재학 중", tip: "학업 병행", icon: "📚"},
+                                                        {value: "기타", desc: "경력단절/프리랜서", tip: "유연한 시간", icon: "🌟"}
+                                                    ].map(opt => (
+                                                        <button key={opt.value} onClick={() => setUserProfile(p => ({
+                                                            ...p,
+                                                            employment: opt.value
+                                                        }))}
+                                                                className={`py-5 px-5 rounded-2xl border-2 text-left transition-all ${userProfile.employment === opt.value ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-xl' : 'bg-white border-gray-200 hover:border-emerald-300 hover:shadow-lg'}`}>
+                                                            <span className="text-2xl">{opt.icon}</span>
+                                                            <div
+                                                                className={`font-bold mt-2 ${userProfile.employment === opt.value ? 'text-white' : 'text-gray-800'}`}>{opt.value}</div>
+                                                            <div
+                                                                className={`text-sm ${userProfile.employment === opt.value ? 'text-white/80' : 'text-gray-500'}`}>{opt.desc}</div>
+                                                            <div
+                                                                className={`text-xs mt-1 ${userProfile.employment === opt.value ? 'text-white/70' : 'text-gray-400'}`}>📌 {opt.tip}</div>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {step === 3 && (
+                                            <div className="animate-fadeIn">
+                                                <div className="flex items-center gap-3 mb-6">
+                                                    <div
+                                                        className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-200">
+                                                        <Icon name="Clock" className="w-7 h-7 text-white"/>
+                                                    </div>
+                                                    <div>
+                                                        <h2 className="text-xl font-bold text-gray-800">하루 학습 시간은?</h2>
+                                                        <p className="text-gray-500 text-sm">평일 기준 투자 가능한 시간</p>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 border-2 border-orange-100">
+                                                    <div className="text-center mb-6">
+                                                        <span
+                                                            className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500">{userProfile.dailyHours}</span>
+                                                        <span className="text-2xl text-gray-500 ml-2">시간</span>
+                                                    </div>
+                                                    <input type="range" min="1" max="10" step="0.5"
+                                                           value={userProfile.dailyHours}
+                                                           onChange={(e) => setUserProfile(p => ({
+                                                               ...p,
+                                                               dailyHours: parseFloat(e.target.value)
+                                                           }))}
+                                                           className="w-full h-3 bg-white rounded-full appearance-none cursor-pointer shadow-inner"
+                                                           style={{accentColor: '#f97316'}}/>
+                                                    <div className="flex justify-between text-sm text-gray-400 mt-2">
+                                                        <span>1시간</span><span>10시간</span></div>
+                                                    <div className="mt-4 text-center p-3 bg-white rounded-xl">
+                                                        <span className="text-gray-500">월 약 </span>
+                                                        <span
+                                                            className="text-orange-500 font-bold text-xl">{Math.round(userProfile.dailyHours * 22)}</span>
+                                                        <span className="text-gray-500">시간 학습</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {step === 4 && (
+                                            <div className="animate-fadeIn">
+                                                <div className="flex items-center gap-3 mb-6">
+                                                    <div
+                                                        className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-lg shadow-rose-200">
+                                                        <Icon name="Target" className="w-7 h-7 text-white"/>
+                                                    </div>
+                                                    <div>
+                                                        <h2 className="text-xl font-bold text-gray-800">자격증 취득 목표는?</h2>
+                                                        <p className="text-gray-500 text-sm">목표와 관심 분야를 선택하세요</p>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-3 mb-6">
+                                                    {[
+                                                        {value: "고소득", icon: "TrendingUp", desc: "전문직 고연봉", emoji: "💰"},
+                                                        {
+                                                            value: "안정적 취업",
+                                                            icon: "Building",
+                                                            desc: "공기업/대기업",
+                                                            emoji: "🏢"
+                                                        },
+                                                        {value: "이직/전환", icon: "Zap", desc: "커리어 전환", emoji: "🔄"},
+                                                        {value: "창업", icon: "Star", desc: "독립 개업", emoji: "🚀"}
+                                                    ].map(opt => (
+                                                        <button key={opt.value} onClick={() => setUserProfile(p => ({
+                                                            ...p,
+                                                            goal: opt.value
+                                                        }))}
+                                                                className={`py-4 px-4 rounded-2xl border-2 text-left transition-all ${userProfile.goal === opt.value ? 'bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-xl' : 'bg-white border-gray-200 hover:border-rose-300 hover:shadow-lg'}`}>
+                                                            <span className="text-xl">{opt.emoji}</span>
+                                                            <div
+                                                                className={`font-bold mt-1 ${userProfile.goal === opt.value ? 'text-white' : 'text-gray-800'}`}>{opt.value}</div>
+                                                            <div
+                                                                className={`text-xs ${userProfile.goal === opt.value ? 'text-white/80' : 'text-gray-400'}`}>{opt.desc}</div>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                                <div className="mt-4">
+                                                    <p className="text-sm text-gray-500 mb-3 font-medium">관심 분야 (최대 3개,
+                                                        선택사항)</p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {interestOptions.map(opt => (
+                                                            <button key={opt.value}
+                                                                    onClick={() => toggleInterest(opt.value)}
+                                                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${userProfile.interests.includes(opt.value) ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+                                                                <span>{opt.icon}</span><span>{opt.value}</span>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {step === 5 && (
+                                            <div className="animate-fadeIn">
+                                                <div className="flex items-center gap-3 mb-6">
+                                                    <div
+                                                        className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-200">
+                                                        <Icon name="DollarSign" className="w-7 h-7 text-white"/>
+                                                    </div>
+                                                    <div>
+                                                        <h2 className="text-xl font-bold text-gray-800">준비 예산은?</h2>
+                                                        <p className="text-gray-500 text-sm">교재, 강의, 응시료 포함 총 예상 비용</p>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                                                    {["50만원 이하", "100만원", "200만원", "300만원", "제한없음"].map(b => (
+                                                        <button key={b}
+                                                                onClick={() => setUserProfile(p => ({...p, budget: b}))}
+                                                                className={`py-4 px-3 rounded-2xl border-2 font-semibold transition-all ${userProfile.budget === b ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white border-transparent shadow-xl' : 'bg-white border-gray-200 text-gray-700 hover:border-green-300 hover:shadow-lg'}`}>
+                                                            {b}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                                <p className="text-gray-400 text-sm mt-4 text-center">💡 예산에는 응시료, 교재비,
+                                                    학원비가 포함돼요</p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* 버튼 */}
+                                    <div className="px-6 pb-6 flex gap-3">
+                                        {step > 0 && <button onClick={handleBack}
+                                                             className="px-6 py-3 rounded-2xl border-2 border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-all">이전</button>}
+                                        <button onClick={handleNext} disabled={!isStepValid()}
+                                                className={`flex-1 py-3.5 rounded-2xl font-bold transition-all flex items-center justify-center gap-2 ${isStepValid() ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-xl shadow-violet-200 hover:shadow-2xl hover:scale-[1.01]' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>
+                                            {step === totalSteps - 1 ? <><Icon name="Sparkles" className="w-5 h-5"/> AI
+                                                분석 시작</> : <>다음 <Icon name="ChevronRight" className="w-5 h-5"/></>}
+                                        </button>
+                                    </div>
+                                </>
+                            ) : selectedCert ? (
+                                /* 상세보기 - 풍부한 정보 버전 */
+                                <div className="p-6 animate-fadeIn">
+                                    <button onClick={() => {
+                                        setSelectedCert(null);
+                                        setIsFromAllCerts(false);
+                                        if (!showResults) setShowAllCerts(true);
+                                    }}
+                                            className="flex items-center gap-2 text-violet-600 hover:text-violet-700 font-medium mb-6 group">
+                                        <Icon name="ChevronRight"
+                                              className="w-5 h-5 rotate-180 group-hover:-translate-x-1 transition-transform"/>
+                                        <span>{showResults ? '목록으로 돌아가기' : '전체 자격증으로 돌아가기'}</span>
+                                    </button>
+
+                                    {/* 헤더 영역 - 강화 */}
+                                    <div
+                                        className="bg-gradient-to-br from-slate-50 via-white to-violet-50 rounded-3xl p-6 mb-6 border border-gray-200 shadow-sm">
+                                        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-2 mb-3 flex-wrap">
+                                                    <span
+                                                        className={`px-4 py-1.5 rounded-full text-sm font-bold ${categoryConfig[selectedCert.category]?.bg} ${categoryConfig[selectedCert.category]?.text} shadow-sm`}>{categoryConfig[selectedCert.category]?.icon} {selectedCert.category}</span>
+                                                    <span
+                                                        className={`px-4 py-1.5 rounded-full text-sm font-semibold ${difficultyConfig[selectedCert.difficulty]?.bg} ${difficultyConfig[selectedCert.difficulty]?.color} shadow-sm`}>{difficultyConfig[selectedCert.difficulty]?.emoji} 난이도: {difficultyConfig[selectedCert.difficulty]?.label}</span>
+                                                    {selectedCert.badge && <span
+                                                        className="px-4 py-1.5 text-sm bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-full font-bold shadow-md animate-pulse">{selectedCert.badge}</span>}
+                                                </div>
+                                                <h2 className="text-3xl font-black text-gray-800 mb-2">{selectedCert.name}</h2>
+                                                <p className="text-gray-600 text-lg leading-relaxed">{selectedCert.description}</p>
+                                                {selectedCert.tags && (
+                                                    <div className="flex flex-wrap gap-2 mt-4">
+                                                        {selectedCert.tags.slice(0, 5).map((tag, i) => (
+                                                            <span key={i}
+                                                                  className="px-3 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium">#{tag}</span>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            {selectedCert.matchLevel && (
+                                                <div className="flex flex-col items-center">
+                                                    <div
+                                                        className={`px-6 py-4 rounded-2xl bg-gradient-to-r ${selectedCert.matchGradient} text-white shadow-xl`}>
+                                                        <div className="text-center">
+                                                            <div className="text-sm opacity-90 mb-1">AI 매칭 결과</div>
+                                                            <div className="text-3xl font-black">{selectedCert.score}점
+                                                            </div>
+                                                            <div
+                                                                className="text-lg font-bold mt-1">{selectedCert.matchLevel}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* 핵심 정보 카드 - 6개로 확장 */}
+                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+                                        <div
+                                            className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-4 border border-violet-100 text-center hover:shadow-md transition-shadow">
+                                            <div className="text-2xl mb-1">📅</div>
+                                            <div className="text-gray-500 text-xs mb-1">준비기간</div>
+                                            <div
+                                                className="text-gray-800 font-bold">{selectedCert.duration?.min}~{selectedCert.duration?.max}개월
+                                            </div>
+                                            <div
+                                                className="text-xs text-violet-600 mt-1">최적 {selectedCert.duration?.optimal}개월
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-4 border border-emerald-100 text-center hover:shadow-md transition-shadow">
+                                            <div className="text-2xl mb-1">📊</div>
+                                            <div className="text-gray-500 text-xs mb-1">합격률</div>
+                                            <div
+                                                className="text-gray-800 font-bold text-lg">{selectedCert.passRate?.overall || '-'}%
+                                            </div>
+                                            <div className="text-xs text-emerald-600 mt-1">전체 평균</div>
+                                        </div>
+                                        <div
+                                            className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 border border-amber-100 text-center hover:shadow-md transition-shadow">
+                                            <div className="text-2xl mb-1">💰</div>
+                                            <div className="text-gray-500 text-xs mb-1">예상비용</div>
+                                            <div className="text-gray-800 font-bold">{selectedCert.cost?.total}</div>
+                                            <div className="text-xs text-amber-600 mt-1">교재+강의</div>
+                                        </div>
+                                        <div
+                                            className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-4 border border-pink-100 text-center hover:shadow-md transition-shadow">
+                                            <div className="text-2xl mb-1">💵</div>
+                                            <div className="text-gray-500 text-xs mb-1">초봉</div>
+                                            <div
+                                                className="text-gray-800 font-bold">{selectedCert.salary?.entry ? `${selectedCert.salary.entry.toLocaleString()}만` : '-'}</div>
+                                            <div className="text-xs text-pink-600 mt-1">신입 기준</div>
+                                        </div>
+                                        <div
+                                            className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-4 border border-blue-100 text-center hover:shadow-md transition-shadow">
+                                            <div className="text-2xl mb-1">⏱️</div>
+                                            <div className="text-gray-500 text-xs mb-1">월 학습시간</div>
+                                            <div
+                                                className="text-gray-800 font-bold">{selectedCert.monthlyHours?.recommended || 60}시간
+                                            </div>
+                                            <div className="text-xs text-blue-600 mt-1">권장 시간</div>
+                                        </div>
+                                        <div
+                                            className="bg-gradient-to-br from-cyan-50 to-sky-50 rounded-2xl p-4 border border-cyan-100 text-center hover:shadow-md transition-shadow">
+                                            <div className="text-2xl mb-1">📈</div>
+                                            <div className="text-gray-500 text-xs mb-1">전망</div>
+                                            <div
+                                                className="text-gray-800 font-bold">{'⭐'.repeat(selectedCert.outlook || 3)}</div>
+                                            <div
+                                                className="text-xs text-cyan-600 mt-1">{selectedCert.outlook >= 4 ? '매우 좋음' : selectedCert.outlook >= 3 ? '좋음' : '보통'}</div>
+                                        </div>
+                                    </div>
+
+                                    {/* AI 분석 결과 텍스트 - 타이핑 효과 (추천 결과에서만 표시) */}
+                                    {!isFromAllCerts && (
+                                        <div
+                                            className="bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-50 rounded-2xl p-6 border border-violet-200 shadow-sm mb-6">
+                                            <div className="flex items-center gap-3 mb-4">
+                                                <div
+                                                    className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                                                    <Icon name="Brain" className="w-7 h-7 text-white"/>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h4 className="font-bold text-gray-800 text-xl">AI 종합 분석 리포트</h4>
+                                                    <p className="text-sm text-violet-600">귀하의 학습 조건과 목표에 맞춘 맞춤형 분석
+                                                        결과입니다</p>
+                                                </div>
+                                                {showAiAnalysis && aiAnalysisLines.length > 0 && (
+                                                    <div
+                                                        className="flex items-center gap-2 px-4 py-2 bg-emerald-100 rounded-full">
+                                                        <span
+                                                            className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                                        <span
+                                                            className="text-sm text-emerald-700 font-medium">AI 분석 중</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="bg-white/70 rounded-xl p-5 min-h-[150px]">
+                                                <TypingText lines={aiAnalysisLines} isActive={showAiAnalysis}/>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="space-y-4">
+                                        {/* 탭 네비게이션 - 개선 */}
+                                        <div className="bg-gray-50 rounded-2xl p-1">
+                                            <div className="flex overflow-x-auto scrollbar-hide gap-1">
+                                                {[
+                                                    {id: 'overview', label: '개요', icon: '📋'},
+                                                    {id: 'career', label: '진로/전망', icon: '🎯'},
+                                                    {id: 'exam', label: '시험안내', icon: '📝'},
+                                                    {id: 'pass', label: '합격현황', icon: '📊'},
+                                                    {id: 'faq', label: 'FAQ', icon: '❓'}
+                                                ].map(tab => (
+                                                    <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+                                                            className={`flex-1 min-w-[100px] flex flex-col items-center gap-1 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all rounded-xl ${activeTab === tab.id ? 'bg-white text-violet-700 shadow-md' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'}`}>
+                                                        <span className="text-xl">{tab.icon}</span>
+                                                        <span className="font-bold">{tab.label}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* 탭 콘텐츠 - 대폭 개선 */}
+                                        <div className="space-y-4">
+                                            {activeTab === 'overview' && (
+                                                <>
+                                                    {/* 자격증 상세 소개 */}
+                                                    <div
+                                                        className="bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-50 rounded-2xl p-6 border border-violet-100">
+                                                        <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                            <span
+                                                                className="w-8 h-8 bg-violet-500 text-white rounded-lg flex items-center justify-center text-sm">📋</span>
+                                                            자격증 상세 소개
+                                                        </h4>
+                                                        <div className="bg-white/70 rounded-xl p-4 mb-4">
+                                                            <p className="text-gray-700 leading-relaxed text-base">{selectedCert.overview || selectedCert.description}</p>
+                                                        </div>
+                                                        {selectedCert.employment && (
+                                                            <div className="mt-4">
+                                                                <div
+                                                                    className="text-sm font-semibold text-violet-700 mb-2">🏢
+                                                                    주요 취업처
+                                                                </div>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    {selectedCert.employment.map((emp, i) => (
+                                                                        <span key={i}
+                                                                              className="px-4 py-2 bg-white text-gray-700 rounded-xl text-sm font-medium border border-violet-200 shadow-sm">{emp}</span>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    {/* 추천 대상 */}
+                                                    {selectedCert.suitable && (
+                                                        <div
+                                                            className="bg-white rounded-2xl p-6 border-2 border-gray-100 shadow-sm">
+                                                            <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                <span
+                                                                    className="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">👤</span>
+                                                                이런 분께 추천합니다
+                                                            </h4>
+                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                                {selectedCert.suitable.map((s, i) => (
+                                                                    <div key={i}
+                                                                         className="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl border border-emerald-100">
+                                                                        <span
+                                                                            className="w-6 h-6 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xs font-bold">{i + 1}</span>
+                                                                        <span
+                                                                            className="text-gray-700 font-medium">{s}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* 학습 전략 */}
+                                                    {selectedCert.studyTips && (
+                                                        <div
+                                                            className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-100">
+                                                            <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                <span
+                                                                    className="w-8 h-8 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm">💡</span>
+                                                                합격을 위한 학습 전략
+                                                            </h4>
+                                                            <div className="space-y-3">
+                                                                {selectedCert.studyTips.map((tip, i) => (
+                                                                    <div key={i}
+                                                                         className="flex items-start gap-3 p-4 bg-white rounded-xl border border-amber-200 shadow-sm">
+                                                                        <span
+                                                                            className="w-7 h-7 bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0">{i + 1}</span>
+                                                                        <p className="text-gray-700 font-medium">{tip}</p>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* AI 분석 결과 */}
+                                                    {selectedCert.reasons?.length > 0 && (
+                                                        <div
+                                                            className="bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 rounded-2xl p-6 border border-emerald-200 shadow-sm">
+                                                            <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                <span
+                                                                    className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center"><Icon
+                                                                    name="Brain" className="w-5 h-5 text-white"/></span>
+                                                                AI 맞춤 분석 결과
+                                                            </h4>
+                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                                                                {selectedCert.reasons?.map((r, i) => (
+                                                                    <div key={i}
+                                                                         className="flex items-start gap-3 p-3 bg-white rounded-xl border border-emerald-100">
+                                                                        <span
+                                                                            className="text-emerald-500 text-lg">✓</span>
+                                                                        <span
+                                                                            className="text-gray-700 font-medium text-sm">{r}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            {selectedCert.warnings?.length > 0 && (
+                                                                <div
+                                                                    className="mt-4 p-4 bg-amber-50 rounded-xl border border-amber-200">
+                                                                    <div className="text-amber-700 font-bold mb-2">⚠️
+                                                                        주의사항
+                                                                    </div>
+                                                                    <div className="space-y-2">
+                                                                        {selectedCert.warnings?.map((w, i) => (
+                                                                            <p key={i}
+                                                                               className="text-amber-600 text-sm flex items-center gap-2">
+                                                                                <span
+                                                                                    className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>{w}
+                                                                            </p>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                            {selectedCert.highlights?.length > 0 && (
+                                                                <div className="mt-4 flex flex-wrap gap-2">
+                                                                    {selectedCert.highlights.map((h, i) => (
+                                                                        <span key={i}
+                                                                              className="px-3 py-1.5 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-full text-xs font-bold shadow-sm">⭐ {h}</span>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </>
+                                            )}
+
+                                            {activeTab === 'career' && (
+                                                <>
+                                                    {/* 진로 및 전망 */}
+                                                    <div
+                                                        className="bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 rounded-2xl p-6 border border-emerald-100">
+                                                        <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                            <span
+                                                                className="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+                                                            진로 및 전망
+                                                        </h4>
+                                                        <div className="bg-white/70 rounded-xl p-4">
+                                                            <p className="text-gray-700 leading-relaxed text-base">
+                                                                {selectedCert.career?.description || `${selectedCert.name} 자격증 취득 시 관련 분야에서 전문가로 활동할 수 있습니다. 취업, 이직, 승진 등 다양한 경력 개발에 도움이 됩니다.`}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* 주요 활동 분야 */}
+                                                    <div
+                                                        className="bg-white rounded-2xl p-6 border-2 border-gray-100 shadow-sm">
+                                                        <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                            <span
+                                                                className="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center text-sm">📌</span>
+                                                            주요 활동 분야
+                                                        </h4>
+                                                        {selectedCert.career?.fields ? (
+                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                                {selectedCert.career.fields.map((field, i) => (
+                                                                    <div key={i}
+                                                                         className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 hover:shadow-md transition-shadow">
+                                                                          <span
+                                                                              className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 text-white rounded-xl flex items-center justify-center text-lg shadow-md">
+                                                                            {['🏢', '💼', '🏛️', '🏭', '📊', '💻', '🔬', '⚖️'][i % 8]}
+                                                                          </span>
+                                                                        <span
+                                                                            className="text-gray-700 font-medium">{field}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : selectedCert.employment ? (
+                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                                {selectedCert.employment.map((emp, i) => (
+                                                                    <div key={i}
+                                                                         className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+                                                                        <span
+                                                                            className="w-10 h-10 bg-blue-500 text-white rounded-xl flex items-center justify-center">🏢</span>
+                                                                        <span
+                                                                            className="text-gray-700 font-medium">{emp}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <p className="text-gray-500">취업 분야 정보가 준비 중입니다.</p>
+                                                        )}
+                                                    </div>
+
+                                                    {/* 연봉 정보 */}
+                                                    <div
+                                                        className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 rounded-2xl p-6 border border-amber-100">
+                                                        <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                            <span
+                                                                className="w-8 h-8 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm">💰</span>
+                                                            예상 연봉 정보
+                                                        </h4>
+                                                        <div className="grid grid-cols-3 gap-4 mb-4">
+                                                            <div
+                                                                className="bg-white rounded-2xl p-5 text-center border border-gray-200 shadow-sm">
+                                                                <div className="text-gray-500 text-sm mb-2">🌱 신입
+                                                                    (1~3년)
+                                                                </div>
+                                                                <div
+                                                                    className="text-2xl font-black text-gray-800">{selectedCert.salary?.entry ? `${selectedCert.salary.entry.toLocaleString()}만` : '-'}</div>
+                                                            </div>
+                                                            <div
+                                                                className="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-5 text-center border border-emerald-200 shadow-md">
+                                                                <div
+                                                                    className="text-emerald-700 text-sm mb-2 font-semibold">💪
+                                                                    중견 (4~7년)
+                                                                </div>
+                                                                <div
+                                                                    className="text-2xl font-black text-emerald-700">{selectedCert.salary?.mid ? `${selectedCert.salary.mid.toLocaleString()}만` : '-'}</div>
+                                                            </div>
+                                                            <div
+                                                                className="bg-gradient-to-br from-violet-100 to-purple-100 rounded-2xl p-5 text-center border border-violet-200 shadow-md">
+                                                                <div
+                                                                    className="text-violet-700 text-sm mb-2 font-semibold">👑
+                                                                    고경력 (8년+)
+                                                                </div>
+                                                                <div
+                                                                    className="text-2xl font-black text-violet-700">{selectedCert.salary?.senior ? `${selectedCert.salary.senior.toLocaleString()}만` : '-'}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            className="bg-white/70 rounded-xl p-4 text-sm text-gray-600">
+                                                            <p>💡 <strong>참고:</strong> 연봉은 기업 규모, 지역, 개인 역량에 따라 차이가 있을 수
+                                                                있습니다.</p>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* 전망 지수 */}
+                                                    <div
+                                                        className="bg-gradient-to-br from-cyan-50 to-sky-50 rounded-2xl p-6 border border-cyan-100">
+                                                        <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                            <span
+                                                                className="w-8 h-8 bg-cyan-500 text-white rounded-lg flex items-center justify-center text-sm">📈</span>
+                                                            취업 전망 지수
+                                                        </h4>
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="flex-1">
+                                                                <div
+                                                                    className="h-4 bg-gray-200 rounded-full overflow-hidden">
+                                                                    <div
+                                                                        className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full transition-all"
+                                                                        style={{width: `${(selectedCert.outlook || 3) * 20}%`}}></div>
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                className="text-2xl font-black text-cyan-600">{selectedCert.outlook || 3}/5
+                                                            </div>
+                                                        </div>
+                                                        <div className="mt-3 text-sm text-gray-600">
+                                                            {selectedCert.outlook >= 5 ? '🔥 취업 전망이 매우 밝습니다. 수요가 지속적으로 증가하고 있습니다.' :
+                                                                selectedCert.outlook >= 4 ? '⭐ 취업 전망이 좋습니다. 안정적인 일자리를 기대할 수 있습니다.' :
+                                                                    selectedCert.outlook >= 3 ? '✅ 보통 수준의 전망입니다. 경력과 역량에 따라 기회가 있습니다.' :
+                                                                        '📌 틈새시장 공략이 필요합니다. 전문성 강화가 중요합니다.'}
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )}
+
+                                            {activeTab === 'exam' && (
+                                                <>
+                                                    {/* 시험 과목 */}
+                                                    {selectedCert.examInfo?.subjects ? (
+                                                        <div
+                                                            className="bg-gradient-to-br from-blue-50 via-indigo-50 to-violet-50 rounded-2xl p-6 border border-blue-100">
+                                                            <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                <span
+                                                                    className="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center text-sm">📝</span>
+                                                                시험 과목 안내
+                                                            </h4>
+
+                                                            {selectedCert.examInfo.subjects &&
+                                                                Object.values(selectedCert.examInfo.subjects).map((subject, subjectIdx) => (
+                                                                    <div key={subjectIdx}
+                                                                         className="mb-5 bg-white rounded-xl p-5 border border-blue-100 shadow-sm">
+                                                                        {subject.examTit && (
+                                                                            <div
+                                                                                className="flex items-center gap-2 mb-3">
+                                                                                <span
+                                                                                    className="px-3 py-1 bg-blue-500 text-white rounded-lg text-sm font-bold">
+                                                                                  {subject.examTit}
+                                                                                </span>
+                                                                            </div>
+                                                                        )}
+
+                                                                        {subject.examSubTxt.map((subTxt, idx) => (
+                                                                            <div key={idx} className="mb-4">
+                                                                                <span
+                                                                                    className="text-gray-500 text-sm block mb-2">{subTxt}</span>
+                                                                                <div
+                                                                                    className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                                                    {subject.examList[idx]?.map((s, i) => (
+                                                                                        <div key={i}
+                                                                                             className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                                                                                            <span
+                                                                                                className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold">{i + 1} </span>
+                                                                                            <span
+                                                                                                className="text-gray-700 font-medium text-sm">{s}</span>
+                                                                                        </div>
+                                                                                    ))}
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                ))}
+
+                                                            {selectedCert.examInfo.subjects.required && (
+                                                                <div
+                                                                    className="bg-white rounded-xl p-5 border border-violet-100 shadow-sm">
+                                                                    <div className="flex items-center gap-2 mb-3">
+                                                                        <span
+                                                                            className="px-3 py-1 bg-violet-500 text-white rounded-lg text-sm font-bold">필수과목</span>
+                                                                    </div>
+                                                                    <div
+                                                                        className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                                        {selectedCert.examInfo.subjects.required.map((s, i) => (
+                                                                            <div key={i}
+                                                                                 className="flex items-center gap-2 p-3 bg-violet-50 rounded-lg border border-violet-100">
+                                                                                <span
+                                                                                    className="w-6 h-6 bg-violet-500 text-white rounded-full flex items-center justify-center text-xs font-bold">{i + 1}</span>
+                                                                                <span
+                                                                                    className="text-gray-700 font-medium text-sm">{s}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div
+                                                            className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+                                                            <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                <span
+                                                                    className="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center text-sm">📝</span>
+                                                                시험 정보
+                                                            </h4>
+                                                            <div className="bg-white rounded-xl p-4">
+                                                                <p className="text-gray-600">상세 시험 과목 정보가 준비 중입니다.</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* 합격 기준 */}
+                                                    {selectedCert.examInfo?.passStandard && (
+                                                        <div
+                                                            className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
+                                                            <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                <span
+                                                                    className="w-8 h-8 bg-green-500 text-white rounded-lg flex items-center justify-center text-sm">✅</span>
+                                                                합격 기준
+                                                            </h4>
+                                                            <div
+                                                                className="bg-white rounded-xl p-5 border border-green-100">
+                                                                <p className="text-gray-700 leading-relaxed">{selectedCert.examInfo.passStandard}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* 지역별 선발인원 */}
+                                                    {selectedCert.examInfo?.regions && (
+                                                        <div
+                                                            className="bg-white rounded-2xl p-6 border-2 border-gray-100 shadow-sm">
+                                                            <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                <span
+                                                                    className="w-8 h-8 bg-rose-500 text-white rounded-lg flex items-center justify-center text-sm">📍</span>
+                                                                지역별 선발인원
+                                                            </h4>
+                                                            <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
+                                                                {selectedCert.examInfo.regions.map((r, i) => (
+                                                                    <div key={i}
+                                                                         className="text-center p-4 bg-gradient-to-br from-rose-50 to-pink-50 rounded-xl border border-rose-100 hover:shadow-md transition-shadow">
+                                                                        <div
+                                                                            className="text-sm text-gray-600 mb-1">{r.region}</div>
+                                                                        <div
+                                                                            className="text-xl font-black text-rose-600">{r.quota}명
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* 시험 일정 */}
+                                                    <div
+                                                        className="bg-gradient-to-br from-purple-50 to-fuchsia-50 rounded-2xl p-6 border border-purple-100">
+                                                        <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                            <span
+                                                                className="w-8 h-8 bg-purple-500 text-white rounded-lg flex items-center justify-center text-sm">📅</span>
+                                                            시험 일정 및 준비 정보
+                                                        </h4>
+                                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                            <div
+                                                                className="bg-white rounded-xl p-4 border border-purple-100 text-center">
+                                                                <div
+                                                                    className="text-purple-600 text-sm font-semibold mb-2">시험
+                                                                    일정
+                                                                </div>
+                                                                <div
+                                                                    className="text-gray-800 font-bold">{selectedCert.examSchedule?.round || selectedCert.examSchedule?.date || `${selectedCert.examSchedule?.year || 2025}년`}</div>
+                                                            </div>
+                                                            <div
+                                                                className="bg-white rounded-xl p-4 border border-purple-100 text-center">
+                                                                <div
+                                                                    className="text-purple-600 text-sm font-semibold mb-2">준비
+                                                                    기간
+                                                                </div>
+                                                                <div
+                                                                    className="text-gray-800 font-bold">{selectedCert.duration?.min}~{selectedCert.duration?.max}개월
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                className="bg-white rounded-xl p-4 border border-purple-100 text-center">
+                                                                <div
+                                                                    className="text-purple-600 text-sm font-semibold mb-2">예상
+                                                                    비용
+                                                                </div>
+                                                                <div
+                                                                    className="text-gray-800 font-bold">{selectedCert.cost?.total}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )}
+
+                                            {activeTab === 'pass' && (
+                                                <>
+                                                    {selectedCert.passHistory && selectedCert.passHistory.length > 0 ? (
+                                                        <>
+                                                            <div
+                                                                className="bg-white rounded-2xl p-6 border-2 border-gray-100 shadow-sm">
+                                                                <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                    <span
+                                                                        className="w-8 h-8 bg-violet-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+                                                                    연도별 합격자 현황
+                                                                </h4>
+                                                                <div className="overflow-x-auto">
+                                                                    <table className="w-full text-sm">
+                                                                        <thead>
+                                                                        <tr className="bg-gradient-to-r from-violet-100 to-purple-100">
+                                                                            <th className="px-4 py-3 text-left font-bold text-violet-700 rounded-tl-xl">연도</th>
+                                                                            <th className="px-4 py-3 text-center font-bold text-violet-700">응시자</th>
+                                                                            <th className="px-4 py-3 text-center font-bold text-violet-700">합격자</th>
+                                                                            <th className="px-4 py-3 text-center font-bold text-violet-700 rounded-tr-xl">합격률</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        {selectedCert.passHistory.map((h, i) => (
+                                                                            <tr key={i}
+                                                                                className={`border-t border-gray-100 ${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-violet-50 transition-colors`}>
+                                                                                <td className="px-4 py-4 font-bold text-gray-800">{h.year}년</td>
+                                                                                <td className="px-4 py-4 text-center text-gray-600">{(h.firstApplied || h.applied || 0).toLocaleString()}명</td>
+                                                                                <td className="px-4 py-4 text-center text-emerald-600 font-semibold">{(h.firstPassed || h.passed || 0).toLocaleString()}명</td>
+                                                                                <td className="px-4 py-4 text-center">
+                                                                                    <span
+                                                                                        className="px-3 py-1 bg-violet-100 text-violet-700 rounded-full font-bold">{h.firstRate || h.rate || '-'}%</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        ))}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* 합격률 분석 */}
+                                                            <div
+                                                                className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100">
+                                                                <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                    <span
+                                                                        className="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">📈</span>
+                                                                    합격률 분석
+                                                                </h4>
+                                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                                    <div
+                                                                        className="bg-white rounded-xl p-4 text-center border border-emerald-100">
+                                                                        <div className="text-gray-500 text-xs mb-1">평균
+                                                                            합격률
+                                                                        </div>
+                                                                        <div
+                                                                            className="text-2xl font-black text-emerald-600">{selectedCert.passRate?.overall || '-'}%
+                                                                        </div>
+                                                                    </div>
+                                                                    <div
+                                                                        className="bg-white rounded-xl p-4 text-center border border-emerald-100">
+                                                                        <div
+                                                                            className="text-gray-500 text-xs mb-1">난이도
+                                                                        </div>
+                                                                        <div
+                                                                            className="text-xl font-bold text-gray-800">{difficultyConfig[selectedCert.difficulty]?.label}</div>
+                                                                    </div>
+                                                                    <div
+                                                                        className="bg-white rounded-xl p-4 text-center border border-emerald-100">
+                                                                        <div
+                                                                            className="text-gray-500 text-xs mb-1">경쟁률
+                                                                        </div>
+                                                                        <div
+                                                                            className="text-xl font-bold text-gray-800">{selectedCert.passRate?.overall ? Math.round(100 / selectedCert.passRate.overall) + ':1' : '-'}</div>
+                                                                    </div>
+                                                                    <div
+                                                                        className="bg-white rounded-xl p-4 text-center border border-emerald-100">
+                                                                        <div className="text-gray-500 text-xs mb-1">추천
+                                                                            준비기간
+                                                                        </div>
+                                                                        <div
+                                                                            className="text-xl font-bold text-gray-800">{selectedCert.duration?.optimal || '-'}개월
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <div
+                                                            className="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-2xl p-8 border border-violet-200 text-center">
+                                                            <div className="text-6xl mb-4">📊</div>
+                                                            <h4 className="font-bold text-gray-800 text-xl mb-3">합격자
+                                                                현황</h4>
+                                                            <div
+                                                                className="bg-white rounded-xl p-6 inline-block shadow-sm border border-violet-100">
+                                                                <div className="text-gray-500 text-sm mb-2">전체 합격률</div>
+                                                                <div
+                                                                    className="text-4xl font-black text-violet-600">{selectedCert.passRate?.overall || '-'}%
+                                                                </div>
+                                                            </div>
+                                                            <p className="text-gray-500 text-sm mt-4">상세 연도별 데이터가 준비
+                                                                중입니다.</p>
+                                                        </div>
+                                                    )}
+                                                </>
+                                            )}
+
+                                            {activeTab === 'faq' && (
+                                                <>
+                                                    {selectedCert.faq && selectedCert.faq.length > 0 ? (
+                                                        <div className="space-y-4">
+                                                            <div
+                                                                className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-100">
+                                                                <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                                    <span
+                                                                        className="w-8 h-8 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm">❓</span>
+                                                                    자주 묻는 질문
+                                                                </h4>
+                                                                <div className="space-y-4">
+                                                                    {selectedCert.faq.map((item, i) => (
+                                                                        <div key={i}
+                                                                             className="bg-white rounded-xl overflow-hidden border border-amber-100 shadow-sm">
+                                                                            <div
+                                                                                className="p-4 bg-gradient-to-r from-amber-100 to-orange-100">
+                                                                                <div className="flex items-start gap-3">
+                                                                                    <span
+                                                                                        className="w-7 h-7 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0">Q</span>
+                                                                                    <span
+                                                                                        className="text-gray-800 font-semibold">{item.q}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="p-4">
+                                                                                <div className="flex items-start gap-3">
+                                                                                    <span
+                                                                                        className="w-7 h-7 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0">A</span>
+                                                                                    <span
+                                                                                        className="text-gray-600 leading-relaxed">{item.a}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div
+                                                            className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 rounded-2xl p-8 border border-amber-200 text-center">
+                                                            <div className="text-6xl mb-4">❓</div>
+                                                            <h4 className="font-bold text-gray-800 text-xl mb-3">자주 묻는
+                                                                질문</h4>
+                                                            <p className="text-gray-500">FAQ가 준비 중입니다.</p>
+                                                            <div
+                                                                className="mt-6 p-4 bg-white rounded-xl border border-amber-100 text-left max-w-md mx-auto">
+                                                                <div className="text-amber-600 font-semibold mb-2">💡
+                                                                    알아두면 좋은 정보
+                                                                </div>
+                                                                <ul className="text-sm text-gray-600 space-y-2">
+                                                                    <li>• 준비
+                                                                        기간: {selectedCert.duration?.min}~{selectedCert.duration?.max}개월
+                                                                    </li>
+                                                                    <li>• 월 권장
+                                                                        학습시간: {selectedCert.monthlyHours?.recommended || 60}시간
+                                                                    </li>
+                                                                    <li>• 예상 비용: {selectedCert.cost?.total}</li>
+                                                                    <li>•
+                                                                        난이도: {difficultyConfig[selectedCert.difficulty]?.label}</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* 추가 도움말 */}
+                                                    <div
+                                                        className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-6 border border-violet-100">
+                                                        <h4 className="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                                                            <span
+                                                                className="w-8 h-8 bg-violet-500 text-white rounded-lg flex items-center justify-center text-sm">💬</span>
+                                                            추가 문의
+                                                        </h4>
+                                                        <div
+                                                            className="bg-white rounded-xl p-4 border border-violet-100">
+                                                            <p className="text-gray-600 text-sm leading-relaxed">
+                                                                더 궁금한 사항이 있으시면 시대에듀 고객센터(1522-1623)로 문의해 주세요.
+                                                                전문 상담사가 친절하게 안내해 드립니다.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-6 grid grid-cols-2 gap-3">
+                                        <button
+                                            className="py-4 rounded-2xl bg-gradient-to-r from-violet-500 to-purple-600 text-white font-bold shadow-xl shadow-violet-200 hover:shadow-2xl transition-all flex items-center justify-center gap-2">
+                                            <Icon name="Play" className="w-5 h-5"/> 강의 보러가기
+                                        </button>
+                                        <button
+                                            className="py-4 rounded-2xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                                            <Icon name="Book" className="w-5 h-5"/> 교재 보기
+                                        </button>
+                                    </div>
+                                    <button
+                                        className="w-full mt-3 py-3 rounded-2xl border-2 border-violet-200 text-violet-600 font-semibold hover:bg-violet-50 transition-all flex items-center justify-center gap-2">
+                                        <Icon name="Phone" className="w-5 h-5"/> 전문 상담 신청
+                                    </button>
+                                </div>
+                            ) : (
+                                /* 결과 목록 */
+                                <div className="p-6 animate-fadeIn">
+                                    {/* 로딩 애니메이션 - 클로드 스타일 */}
+                                    {isAnalyzing && visibleRecommendations.length === 0 && (
+                                        <div className="flex flex-col items-center justify-center py-20">
+                                            <div className="relative mb-8">
+                                                {/* 클로드 스타일 펄싱 점들 */}
+                                                <div className="flex items-center gap-1">
+                                                    <span className="w-3 h-3 bg-[#D97757] rounded-full animate-pulse"
+                                                          style={{
+                                                              animationDelay: '0ms',
+                                                              animationDuration: '1s'
+                                                          }}></span>
+                                                    <span className="w-3 h-3 bg-[#D97757] rounded-full animate-pulse"
+                                                          style={{
+                                                              animationDelay: '200ms',
+                                                              animationDuration: '1s'
+                                                          }}></span>
+                                                    <span className="w-3 h-3 bg-[#D97757] rounded-full animate-pulse"
+                                                          style={{
+                                                              animationDelay: '400ms',
+                                                              animationDuration: '1s'
+                                                          }}></span>
+                                                </div>
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-800 mb-2">AI가 분석 중입니다</h3>
+                                            <p className="text-gray-500 text-sm">귀하의 조건에 맞는 최적의 자격증을 찾고 있습니다...</p>
+                                        </div>
+                                    )}
+
+                                    {/* 결과 표시 */}
+                                    {visibleRecommendations.length > 0 && (
+                                        <>
+                                            <div className="text-center mb-6">
+                                                <div
+                                                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-violet-500 to-purple-600 rounded-full shadow-lg shadow-violet-200 mb-3">
+                                                    <Icon name="Sparkles" className="w-4 h-4 text-white"/><span
+                                                    className="text-white font-bold">AI 분석 완료!</span>
+                                                </div>
+                                                <h2 className="text-xl font-bold text-gray-800 mb-1">{userProfile.background} · {userProfile.employment} 맞춤
+                                                    추천</h2>
+                                                <p className="text-gray-500 text-sm">{userProfile.duration} /
+                                                    하루 {userProfile.dailyHours}시간 / 예산 {userProfile.budget}</p>
+                                            </div>
+
+                                            <div className="space-y-3">
+                                                {visibleRecommendations.map((cert, idx) => (
+                                                    <div key={cert.name}
+                                                         className="bg-white hover:bg-gray-50 rounded-2xl border-2 border-gray-100 hover:border-violet-300 p-4 transition-all shadow-sm hover:shadow-lg animate-slideInUp"
+                                                         style={{animationDelay: `${idx * 0.1}s`}}>
+                                                        <div className="flex items-start gap-4">
+                                                            <div
+                                                                className={`w-14 h-14 rounded-xl flex flex-col items-center justify-center flex-shrink-0 shadow-lg ${idx === 0 ? 'bg-gradient-to-br from-amber-400 to-orange-500 text-white' : idx === 1 ? 'bg-gradient-to-br from-gray-300 to-gray-400 text-white' : idx === 2 ? 'bg-gradient-to-br from-amber-600 to-amber-700 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                                                                <span
+                                                                    className="text-[10px] font-medium opacity-80">추천</span>
+                                                                <span
+                                                                    className="text-lg font-extrabold">{idx + 1}순위</span>
+                                                            </div>
+                                                            <div className="flex-1 min-w-0">
+                                                                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                                                    <span
+                                                                        className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${categoryConfig[cert.category]?.bg} ${categoryConfig[cert.category]?.text}`}>{cert.category}</span>
+                                                                    <span
+                                                                        className={`px-2.5 py-0.5 text-xs font-bold rounded-full bg-gradient-to-r ${cert.matchGradient} text-white`}>{cert.matchLevel}</span>
+                                                                    {cert.highlights?.slice(0, 2).map((h, i) => <span
+                                                                        key={i}
+                                                                        className="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600 font-medium">{h}</span>)}
+                                                                </div>
+                                                                <h3 className="text-lg font-bold text-gray-800">{cert.name}</h3>
+                                                                <p className="text-sm text-gray-500 line-clamp-1">{cert.description}</p>
+                                                                <div
+                                                                    className="flex items-center gap-4 mt-2 text-xs text-gray-400 font-medium">
+                                                                    <span>📅 {cert.duration?.min}~{cert.duration?.max}개월</span>
+                                                                    <span>💰 {cert.cost?.total}</span>
+                                                                    <span>📊 합격률 {cert.passRate?.overall || '-'}%</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex flex-col items-end gap-2">
+                                                                <div
+                                                                    className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-purple-600">{cert.score}</div>
+                                                                <div className="flex gap-1">
+                                                                    <button onClick={() => {
+                                                                        setSelectedCert(cert);
+                                                                        setActiveTab('overview');
+                                                                        setIsFromAllCerts(false);
+                                                                    }}
+                                                                            className="px-4 py-2 text-xs bg-gradient-to-r from-violet-500 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all">상세보기
+                                                                    </button>
+                                                                    <button onClick={() => toggleCompare(cert)}
+                                                                            className={`px-3 py-2 text-xs rounded-xl font-semibold transition-all ${compareList.find(c => c.name === cert.name) ? 'bg-pink-100 text-pink-600' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>
+                                                                        {compareList.find(c => c.name === cert.name) ? '✓' : '+'}
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {!isAnalyzing && recommendations.length === 0 && (
+                                        <div className="text-center py-12">
+                                            <div className="text-5xl mb-3">🔍</div>
+                                            <p className="text-gray-600 font-medium">조건에 맞는 자격증이 없습니다</p>
+                                            <p className="text-gray-400 text-sm">조건을 완화해서 다시 검색해 보세요</p>
+                                        </div>
+                                    )}
+
+                                    {!isAnalyzing && visibleRecommendations.length > 0 && (
+                                        <div className="mt-6 grid grid-cols-2 gap-3">
+                                            <button onClick={handleReset}
+                                                    className="py-3 rounded-2xl border-2 border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-all">다시
+                                                검색
+                                            </button>
+                                            <button onClick={() => setShowAllCerts(true)}
+                                                    className="py-3 rounded-2xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-all flex items-center justify-center gap-2">
+                                                <Icon name="Search" className="w-4 h-4"/> 전체 자격증
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 푸터 */}
+                    <footer className="mt-8 text-center">
+                        <div className="flex justify-center gap-4 mb-4">
+                            <a href="#"
+                               className="text-gray-400 hover:text-violet-600 text-sm font-medium transition-colors">시대에듀
+                                홈</a>
+                            <span className="text-gray-300">|</span>
+                            <a href="#"
+                               className="text-gray-400 hover:text-violet-600 text-sm font-medium transition-colors">수강신청</a>
+                            <span className="text-gray-300">|</span>
+                            <a href="#"
+                               className="text-gray-400 hover:text-violet-600 text-sm font-medium transition-colors">고객센터</a>
+                        </div>
+                        <p className="text-gray-400 text-sm">© 2025 시대에듀. All rights reserved.</p>
+                        <p className="text-gray-300 text-xs mt-1">AI 추천은 참고용이며, 최종 결정은 전문 상담을 권장합니다.</p>
+                    </footer>
+                </div>
+
+                <style>{`
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+            .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+            input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #f97316, #f59e0b); cursor: pointer; box-shadow: 0 4px 12px rgba(249,115,22,0.4); }
+            input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #f97316, #f59e0b); cursor: pointer; border: none; }
+          `}</style>
+            </div>
+        );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(SidaeAIRecommender));
+</script>
+</body>
+</html>
