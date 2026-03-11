@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <code>
+        <a href="javascript:void(0);" onclick="openCurriculum('12345678', '001001')" class="gray">커리큘럼</a>    
+    </code>    
+</body>
+</html>
+
+
+<script>
+//모바일 커리큘럼 
+function openCurriculum(it_id, cat_id){
+        $.post('/curriculum.php',{
+            it_id:it_id,
+            cat_id:cat_id
+        },function(html){
+            $('#lecInfo #curriculum_area').html(html);
+            $('#lecInfo').show();
+            $('body').addClass('stop-scrolling');
+        });
+}
+</script>
